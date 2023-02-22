@@ -5,6 +5,7 @@ and write it to the database
 """
 
 # import modules
+import os
 from nornir import InitNornir
 from nornir_pyfgt.plugins.tasks import pyfgt_get_url
 from typing import Union, Dict, Optional
@@ -12,7 +13,8 @@ from nornir_utils.plugins.functions import print_result
 from backend import db
 
 # init nornir
-nr = InitNornir(config_file="/home/scheme/FortiFetch/inventory/config.yaml")
+NORNIR_CONFIG = os.getenv("NORNIR_CONFIG_PATH")
+nr = InitNornir(config_file=NORNIR_CONFIG)
 
 
 def get_fortigate_device_info(task):
