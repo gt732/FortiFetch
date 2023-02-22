@@ -1,0 +1,4 @@
+# defaults.yaml
+---
+username: ${FORTIFETCH_PW}
+password: ${FORTIFETCH_PW}
