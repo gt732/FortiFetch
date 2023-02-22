@@ -11,7 +11,7 @@ CREATE TABLE interface (
   name TEXT,
   vdom TEXT,
   mode TEXT,
-  state TEXT,
+  status TEXT,
   mtu INTEGER,
   ip TEXT,
   type TEXT,

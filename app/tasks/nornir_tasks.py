@@ -32,3 +32,18 @@ def get_fortigate_device_info(task) -> Result:
     return Result(
         name="get_fortigate_device_info", host=task.host, result=task.host.result
     )
+
+
+def get_fortigate_interface_info(task) -> Result:
+    """
+    Get the fortigate interface information
+
+    Returns:
+        Result: The result of the task
+
+    """
+    task.run(task=pyfgt_get_url, url="/api/v2/cmdb/system/interface")
+
+    return Result(
+        name="get_fortigate_interface_info", host=task.host, result=task.host.result
+    )
