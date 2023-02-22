@@ -3,9 +3,7 @@ CREATE TABLE device (
   hostname TEXT,
   serial_number TEXT,
   version TEXT,
-  model TEXT,
-  primary_dns TEXT,
-  secondary_dns TEXT
+  model TEXT
 );
 
 CREATE TABLE interface (
