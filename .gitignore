@@ -131,3 +131,6 @@ dmypy.json
 
 #db
 db/FortiFetch.db
+
+#nornir
+inventory/
