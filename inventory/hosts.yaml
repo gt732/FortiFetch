@@ -1,9 +1,0 @@
----
-NJ-FGT:
-  hostname: 192.168.0.223
-
-TX-FGT:
-  hostname: 192.168.0.158
-
-FL-FGT:
-  hostname: 192.168.0.219
