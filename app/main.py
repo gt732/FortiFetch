@@ -21,7 +21,6 @@ def create_sql_database():
 
 @app.command("update-all-devices")
 def update_all_devices():
-    print("Updating devices in database")
     FortiFetch.update_all_devices()
 
 

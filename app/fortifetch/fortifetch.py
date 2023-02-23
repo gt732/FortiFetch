@@ -7,14 +7,14 @@ logic of the application.
 # import os sys
 import os
 import sys
+import time
 
 # Add the parent directory of 'app' to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # imports
 from typing import List, Dict, Optional
-from data_cleaning.clean_nornir_data import *
-from tasks.nornir_tasks import *
+from data_cleaning.clean_fgt_data import *
 from backend import db
 
 
@@ -24,7 +24,10 @@ class FortiFetch:
 
     @staticmethod
     def update_all_devices():
+
         db.write_device_info()
+
+        db.write_interface_info()
 
     @staticmethod
     def create_sql_database():

@@ -11,23 +11,19 @@ which are used to perform backend tasks such as:
 import os
 import sys
 import sqlite3
+import time
 
 # Add the parent directory of 'app' to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # import modules
-from data_cleaning.clean_nornir_data import *
+from data_cleaning.clean_fgt_data import *
 
 # Define constants
 DATABASE_NAME = "FortiFetch.db"
 DB_DIRECTORY = os.path.join(os.path.dirname(__file__), "../../db")
 SCHEMA_FILE = os.path.join(DB_DIRECTORY, "schema.sql")
 DB_PATH = os.path.join(DB_DIRECTORY, DATABASE_NAME)
-DB_CONN = sqlite3.connect(DB_PATH)
-
-CLEANED_DATA = {
-    "DEVICE_INFO": clean_device_data(),
-}
 
 
 def create_database():
@@ -36,57 +32,99 @@ def create_database():
     table schemas are defined in `schema.sql`. This function should be called once
     when the application is first run.
     """
-    if os.path.exists(DB_PATH):
-        print("Database already exists")
-        return
-
-    with open(SCHEMA_FILE) as f:
-        schema_sql = f.read()
-        DB_CONN.executescript(schema_sql)
-
-    DB_CONN.close()
-    print("Database created at", DB_PATH)
+    with sqlite3.connect(DB_PATH) as conn:
+        try:
+            with open(SCHEMA_FILE) as f:
+                schema_sql = f.read()
+                conn.executescript(schema_sql)
+            print("Database created at", DB_PATH)
+        except sqlite3.OperationalError as e:
+            if str(e) == f"table device already exists":
+                print("Database already exists")
+            else:
+                print(f"An error occurred while executing SQL script: {e}")
 
 
 def write_device_info():
     """
-    Write device information to the `device` table in the database, but only if the
-    device does not already exist in the table.
+    Write device information to the `device` table in the database
     """
-    # Loop through devices in CLEANED_DATA["DEVICE_INFO"]
-    for device in CLEANED_DATA["DEVICE_INFO"]:
-        hostname = device["hostname"]
-        serial_number = device["serial_number"]
-        version = device["version"]
-        model = device["model"]
+    print("Updating devices in database")
+    device_info = clean_device_data()
+    with sqlite3.connect(DB_PATH) as conn:
+        for device in device_info:
+            hostname = device["hostname"]
+            serial_number = device["serial_number"]
+            version = device["version"]
+            model = device["model"]
 
-        # Check if the device already exists in the database
-        select_query = "SELECT COUNT(*) FROM device WHERE hostname = ? AND serial_number = ? AND version = ? AND model = ?"
-        cursor = DB_CONN.execute(
-            select_query, (hostname, serial_number, version, model)
-        )
-        row_count = cursor.fetchone()[0]
+            # Check if the device already exists in the database
+            select_query = "SELECT COUNT(*) FROM device WHERE hostname = ? AND serial_number = ? AND version = ? AND model = ?"
+            cursor = conn.execute(
+                select_query, (hostname, serial_number, version, model)
+            )
+            row_count = cursor.fetchone()[0]
 
-        if row_count == 0:
-            # Insert device information into the database
-            insert_query = """
-            INSERT INTO device (hostname, serial_number, version, model)
-            VALUES (?, ?, ?, ?)
-            """
-            DB_CONN.execute(insert_query, (hostname, serial_number, version, model))
+            if row_count == 0:
+                # Insert device information into the database
+                insert_query = """
+                INSERT INTO device (hostname, serial_number, version, model)
+                VALUES (?, ?, ?, ?)
+                """
+                conn.execute(insert_query, (hostname, serial_number, version, model))
 
-            DB_CONN.commit()
-            print(f"Device information for {hostname} written to database")
-        else:
-            # Update device information in the database
-            update_query = """
-            UPDATE device
-            SET version = ?
-            WHERE hostname = ? AND serial_number = ? AND model = ?
-            """
-            DB_CONN.execute(update_query, (version, hostname, serial_number, model))
+                conn.commit()
+            else:
+                # Update device information in the database
+                update_query = """
+                UPDATE device
+                SET version = ?
+                WHERE hostname = ? AND serial_number = ? AND model = ?
+                """
+                conn.execute(update_query, (version, hostname, serial_number, model))
 
-            DB_CONN.commit()
-            print(f"Device information for {hostname} updated in database")
+                conn.commit()
+    print("Device information updated successfully")
 
-    DB_CONN.close()
+
+def write_interface_info():
+    """
+    Write interface information to the `interface` table in the database
+    """
+    print("Updating interfaces in database")
+    interface_info = clean_interface_data()
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        for interface in interface_info:
+            allowaccess = interface["allowaccess"]
+            hostname = interface["hostname"]
+            ip = interface["ip"]
+            interface_name = interface["name"]
+            mode = interface["mode"]
+            mtu = interface["mtu"]
+            status = interface["status"]
+            type = interface["type"]
+            vdom = interface["vdom"]
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+            cursor.execute(
+                "INSERT OR IGNORE INTO interface (device_id, name) VALUES (?, ?)",
+                (device_id, interface_name),
+            )
+            cursor.execute(
+                "UPDATE interface SET type=?, ip=?, mtu=?, mode=?, status=?, allowaccess=?, vdom=? WHERE device_id=? AND name=?",
+                (
+                    type,
+                    ip,
+                    mtu,
+                    mode,
+                    status,
+                    allowaccess,
+                    vdom,
+                    device_id,
+                    interface_name,
+                ),
+            )
+
+            conn.commit()
+    print(f"Interface information updated successfully")
