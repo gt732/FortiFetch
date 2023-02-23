@@ -68,22 +68,14 @@ def clean_interface_data() -> List[Dict]:
     for firewall in device_info:
         for device, value in firewall.items():
             for interface in value:
-                intf_name = interface["name"]
-                intf_vdom = interface["vdom"]
-                intf_mode = interface["mode"]
-                intf_status = interface["status"]
-                intf_mtu = interface["mtu"]
-                intf_ip = interface["ip"]
-                intf_type = interface["type"]
-                intf_allowaccess = interface["allowaccess"]
-                # Clean the data as necessary (e.g. remove leading/trailing whitespace)
-                intf_name = intf_name.strip()
-                intf_vdom = intf_vdom.strip()
-                intf_mode = intf_mode.strip()
-                intf_status = intf_status.strip()
-                intf_ip = intf_ip.strip()
-                intf_type = intf_type.strip()
-                intf_allowaccess = intf_allowaccess.strip()
+                intf_name = interface.get("name", "")
+                intf_vdom = interface.get("vdom", "")
+                intf_mode = interface.get("mode", "")
+                intf_status = interface.get("status", "")
+                intf_mtu = interface.get("mtu", "")
+                intf_ip = interface.get("ip", "")
+                intf_type = interface.get("type", "")
+                intf_allowaccess = interface.get("allowaccess", "")
                 # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
@@ -111,8 +103,8 @@ def clean_address_data() -> List[Dict]:
     for firewall in device_info:
         for device, value in firewall.items():
             for address in value:
-                address_name = address["name"]
-                address_type = address["type"]
+                address_name = address.get("name", "")
+                address_type = address.get("type", "")
                 address_subnet = address.get("subnet", "")
                 address_startip = address.get("start-ip", "")
                 address_endip = address.get("end-ip", "")
@@ -146,8 +138,8 @@ def clean_address_group_data() -> List[Dict]:
     for firewall in device_info:
         for device, value in firewall.items():
             for address in value:
-                address_name = address["name"]
-                address_member = address["member"]
+                address_name = address.get("name", "")
+                address_member = address.get("member", "")
 
                 # Extract the member values as a string
                 member_string = ""
@@ -178,9 +170,9 @@ def clean_application_data() -> List[Dict]:
     for firewall in device_info:
         for device, value in firewall.items():
             for profile in value:
-                profile_name = profile["name"]
-                profile_entries = profile["entries"]
-                profile_comment = profile["comment"]
+                profile_name = profile.get("name", "")
+                profile_entries = profile.get("entries", "")
+                profile_comment = profile.get("comment", "")
 
                 # Extract the entries values as a string
                 entries_string = ""
@@ -196,6 +188,52 @@ def clean_application_data() -> List[Dict]:
                     "name": profile_name,
                     "entries": entries_string,
                     "comment": profile_comment,
+                }
+                # Append the dictionary to the cleaned_data list
+                cleaned_data.append(cleaned_dict)
+    return cleaned_data
+
+
+def clean_av_data() -> List[Dict]:
+    """
+    Get the antivirus profile information from the get_fortigate_application_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_av_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for profile in value:
+                profile_name = profile.get("name", "")
+                profile_comment = str(profile.get("comment", ""))
+                profile_http = str(profile.get("http", ""))
+                profile_ftp = str(profile.get("ftp", ""))
+                profile_imap = str(profile.get("imap", ""))
+                profile_pop3 = str(profile.get("pop3", ""))
+                profile_smtp = str(profile.get("smtp", ""))
+                profile_nntp = str(profile.get("nntp", ""))
+                profile_mapi = str(profile.get("mapi", ""))
+                profile_ssh = str(profile.get("ssh", ""))
+                profile_cifs = str(profile.get("cifs", ""))
+                profile_nac_quar = str(profile.get("nac-quar", ""))
+                profile_content_disarm = str(profile.get("content-disarm", ""))
+
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "name": profile_name,
+                    "comment": profile_comment,
+                    "http": profile_http,
+                    "ftp": profile_ftp,
+                    "imap": profile_imap,
+                    "pop3": profile_pop3,
+                    "smtp": profile_smtp,
+                    "nntp": profile_nntp,
+                    "mapi": profile_mapi,
+                    "ssh": profile_ssh,
+                    "cifs": profile_cifs,
+                    "nac_quar": profile_nac_quar,
+                    "content_disarm": profile_content_disarm,
                 }
                 # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)

@@ -140,6 +140,12 @@ ftp TEXT,
 imap TEXT,
 pop3 TEXT,
 smtp TEXT,
+mapi TEXT,
+nntp TEXT,
+cifs TEXT,
+ssh TEXT,
+nac_quar TEXT,
+content_disarm TEXT,
 device_id INTEGER,
 FOREIGN KEY (device_id) REFERENCES device(device_id)
 );

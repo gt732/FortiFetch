@@ -237,3 +237,81 @@ def write_application_info():
 
     print("Application profile information updated successfully")
     print("*" * 80)
+
+
+def write_av_info():
+    """
+    Get the antivirus profile information from the clean_av_data() function and
+    write antivirus profile information to the `avprofile` table in the database.
+    """
+    print("Updating antivirus profile in database")
+    av_info = clean_av_data()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        for av in av_info:
+            hostname = av["hostname"]
+            name = av["name"]
+            comment = av["comment"]
+            http = av["http"]
+            ftp = av["ftp"]
+            imap = av["imap"]
+            pop3 = av["pop3"]
+            smtp = av["smtp"]
+            nntp = av["nntp"]
+            mapi = av["mapi"]
+            ssh = av["ssh"]
+            cifs = av["cifs"]
+
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+
+            cursor.execute(
+                """
+                INSERT OR IGNORE INTO avprofile 
+                (device_id, name, comment, http, ftp, imap, pop3, smtp, nntp, mapi, ssh, cifs) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+                (
+                    device_id,
+                    name,
+                    comment,
+                    http,
+                    ftp,
+                    imap,
+                    pop3,
+                    smtp,
+                    nntp,
+                    mapi,
+                    ssh,
+                    cifs,
+                ),
+            )
+
+            cursor.execute(
+                """
+                UPDATE avprofile 
+                SET comment=?, http=?, ftp=?, imap=?, pop3=?, smtp=?, nntp=?, mapi=?, ssh=?, cifs=? 
+                WHERE device_id=? AND name=?
+            """,
+                (
+                    comment,
+                    http,
+                    ftp,
+                    imap,
+                    pop3,
+                    smtp,
+                    nntp,
+                    mapi,
+                    ssh,
+                    cifs,
+                    device_id,
+                    name,
+                ),
+            )
+
+            conn.commit()
+
+    print("Antivirus profile information updated successfully")
+    print("*" * 80)

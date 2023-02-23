@@ -94,3 +94,11 @@ def get_fortigate_application_info() -> List[Dict]:
         application profile data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/application/list")
+
+
+def get_fortigate_av_info() -> List[Dict]:
+    """
+    Returns:
+        application profile data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/antivirus/profile")
