@@ -321,3 +321,69 @@ def write_av_info():
 
     print("Antivirus profile information updated successfully")
     print("*" * 80)
+
+
+def write_dnsfilter_info():
+    """
+    Get the dnsfilter profile information from the clean_dnsfilter_data() function and
+    write dnsfilter profile information to the `dnsprofile` table in the database.
+    """
+    print("Updating dnsprofile profile in database")
+    cleaned_data = clean_dnsfilter_data()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        for profile in cleaned_data:
+            hostname = profile["hostname"]
+            name = profile["name"]
+            comment = profile["comment"]
+            domain_filter = profile["domain_filter"]
+            ftgd_dns = profile["ftgd_dns"]
+            block_botnet = profile["block_botnet"]
+            safe_search = profile["safe_search"]
+            youtube_restrict = profile["youtube_restrict"]
+
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+
+            cursor.execute(
+                """
+                INSERT OR IGNORE INTO dnsprofile 
+                (device_id, name, comment, domain_filter, ftgd_dns, block_botnet, safe_search, youtube_restrict) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+                (
+                    device_id,
+                    name,
+                    comment,
+                    domain_filter,
+                    ftgd_dns,
+                    block_botnet,
+                    safe_search,
+                    youtube_restrict,
+                ),
+            )
+
+            cursor.execute(
+                """
+                UPDATE dnsprofile 
+                SET comment=?, domain_filter=?, ftgd_dns=?, block_botnet=?, safe_search=?, youtube_restrict=? 
+                WHERE device_id=? AND name=?
+            """,
+                (
+                    comment,
+                    domain_filter,
+                    ftgd_dns,
+                    block_botnet,
+                    safe_search,
+                    youtube_restrict,
+                    device_id,
+                    name,
+                ),
+            )
+
+            conn.commit()
+
+    print("Dnsprofile profile information updated successfully")
+    print("*" * 80)

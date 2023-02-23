@@ -238,3 +238,37 @@ def clean_av_data() -> List[Dict]:
                 # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
+
+
+def clean_dnsfilter_data() -> List[Dict]:
+    """
+    Get the dnsfilter profile information from the get_fortigate_dnsfilter_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_dnsfilter_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for profile in value:
+                profile_name = profile.get("name", "")
+                profile_comment = profile.get("comment", "")
+                profile_domain_filter = str(profile.get("domain-filter", ""))
+                profile_ftgd_dns = str(profile.get("ftgd-dns", ""))
+                profile_block_botnet = profile.get("block-botnet", "")
+                profile_safe_search = profile.get("safe-search", "")
+                profile_youtube_restrict = profile.get("youtube-restrict", "")
+
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "name": profile_name,
+                    "comment": profile_comment,
+                    "domain_filter": profile_domain_filter,
+                    "ftgd_dns": profile_ftgd_dns,
+                    "block_botnet": profile_block_botnet,
+                    "safe_search": profile_safe_search,
+                    "youtube_restrict": profile_youtube_restrict,
+                }
+                # Append the dictionary to the cleaned_data list
+                cleaned_data.append(cleaned_dict)
+    return cleaned_data

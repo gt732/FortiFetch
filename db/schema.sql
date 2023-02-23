@@ -87,9 +87,11 @@ CREATE TABLE dnsprofile (
   dnsprofile_id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT,
   comment TEXT,
-  "domain-filter" TEXT,
-  "ftgd-dns" TEXT,
-  "block-botnet" TEXT,
+  domain_filter TEXT,
+  ftgd_dns TEXT,
+  block_botnet TEXT,
+  safe_search TEXT,
+  youtube_restrict TEXT,
   device_id INTEGER,
   FOREIGN KEY (device_id) REFERENCES device(device_id)
 );
