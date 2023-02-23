@@ -98,3 +98,46 @@ def clean_interface_data() -> List[Dict]:
                 # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
+
+
+def clean_address_data() -> List[Dict]:
+    """
+    Get the interface information from the get_fortigate_interface_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_address_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for address in value:
+                address_name = address["name"]
+                address_type = address["type"]
+                address_subnet = address.get("subnet")
+                if address_subnet:
+                    address_subnet = address["subnet"]
+                address_startip = address.get("start-ip")
+                if address_startip:
+                    address_startip = address["start-ip"]
+                address_endip = address.get("end-ip")
+                if address_endip:
+                    address_endip = address["end-ip"]
+                address_fqdn = address.get("fqdn")
+                if address_fqdn:
+                    address_fqdn = address["fqdn"]
+                address_country = address["country"]
+                address_associated_interface = address["associated-interface"]
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "name": address_name,
+                    "subnet": address_subnet,
+                    "address_type": address_type,
+                    "start_ip": address_startip,
+                    "end_ip": address_endip,
+                    "fqdn": address_fqdn,
+                    "country": address_country,
+                    "associated_interface": address_associated_interface,
+                }
+                # Append the dictionary to the cleaned_data list
+                cleaned_data.append(cleaned_dict)
+    return cleaned_data

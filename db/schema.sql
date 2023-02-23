@@ -148,12 +148,12 @@ CREATE TABLE address (
 address_id INTEGER PRIMARY KEY AUTOINCREMENT,
 name TEXT,
 subnet TEXT,
-type TEXT,
+address_type TEXT,
 start_ip TEXT,
 end_ip TEXT,
 fqdn TEXT,
 country TEXT,
-"associated-interface" TEXT,
+associated_interface TEXT,
 device_id INTEGER,
 FOREIGN KEY (device_id) REFERENCES device(device_id)
 );

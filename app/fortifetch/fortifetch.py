@@ -29,6 +29,8 @@ class FortiFetch:
 
         db.write_interface_info()
 
+        db.write_address_info()
+
     @staticmethod
     def create_sql_database():
         db.create_database()

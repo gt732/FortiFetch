@@ -86,6 +86,7 @@ def write_device_info():
 
                 conn.commit()
     print("Device information updated successfully")
+    print("*" * 80)
 
 
 def write_interface_info():
@@ -130,3 +131,49 @@ def write_interface_info():
 
             conn.commit()
     print(f"Interface information updated successfully")
+    print("*" * 80)
+
+
+def write_address_info():
+    """
+    Get the address information from the clean_address_data() function and
+    Write interface information to the `address` table in the database
+    """
+    print("Updating addresses in database")
+    address_info = clean_address_data()
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        for address in address_info:
+            associated_interface = address["associated_interface"]
+            country = address["country"]
+            end_ip = address["end_ip"]
+            fqdn = address["fqdn"]
+            hostname = address["hostname"]
+            name = address["name"]
+            start_ip = address["start_ip"]
+            subnet = address["subnet"]
+            address_type = address["address_type"]
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+            cursor.execute(
+                "INSERT OR IGNORE INTO address (device_id, name) VALUES (?, ?)",
+                (device_id, name),
+            )
+            cursor.execute(
+                "UPDATE address SET associated_interface=?, country=?, end_ip=?, fqdn=?, start_ip=?, subnet=?, address_type=? WHERE device_id=? AND name=?",
+                (
+                    associated_interface,
+                    country,
+                    end_ip,
+                    fqdn,
+                    start_ip,
+                    subnet,
+                    address_type,
+                    device_id,
+                    name,
+                ),
+            )
+
+            conn.commit()
+    print(f"Address information updated successfully")
+    print("*" * 80)

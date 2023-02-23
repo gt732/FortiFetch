@@ -70,3 +70,11 @@ def get_fortigate_interface_info() -> List[Dict]:
         Interface data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/system/interface/")
+
+
+def get_fortigate_address_info() -> List[Dict]:
+    """
+    Returns:
+        address data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/firewall/address/")
