@@ -272,3 +272,27 @@ def clean_dnsfilter_data() -> List[Dict]:
                 # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
+
+
+def clean_internetservice_data() -> List[Dict]:
+    """
+    Get the internet service information from the get_fortigate_internetservice_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_internetservice_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for internet_service in value:
+                service_name = internet_service.get("name", "")
+                service_type = internet_service.get("type", "")
+
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "name": service_name,
+                    "type": service_type,
+                }
+                # Append the dictionary to the cleaned_data list
+                cleaned_data.append(cleaned_dict)
+    return cleaned_data

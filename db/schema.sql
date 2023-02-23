@@ -187,7 +187,7 @@ FOREIGN KEY (device_id) REFERENCES device(device_id)
 CREATE TABLE internetservice (
 internet_service_id INTEGER PRIMARY KEY AUTOINCREMENT,
 name TEXT,
-"internet-service-id" TEXT,
+type TEXT,
 device_id INTEGER,
 FOREIGN KEY (device_id) REFERENCES device(device_id)
 );

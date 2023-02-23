@@ -387,3 +387,45 @@ def write_dnsfilter_info():
 
     print("Dnsprofile profile information updated successfully")
     print("*" * 80)
+
+
+def write_internetservice_info():
+    """
+    Get the internet service information from the clean_internetservice_data() function and
+    write internet service information to the `internetservice` table in the database.
+    """
+    print("Updating internet service data in database")
+    cleaned_data = clean_internetservice_data()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        for service in cleaned_data:
+            hostname = service["hostname"]
+            service_name = service["name"]
+            service_type = service["type"]
+
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+
+            cursor.execute(
+                """
+                INSERT OR IGNORE INTO internetservice (device_id, name, type)
+                VALUES (?, ?, ?)
+            """,
+                (device_id, service_name, service_type),
+            )
+
+            cursor.execute(
+                """
+                UPDATE internetservice
+                SET type=?
+                WHERE device_id=? AND name=?
+            """,
+                (service_type, device_id, service_name),
+            )
+
+            conn.commit()
+
+    print("Internet service data updated successfully")
+    print("*" * 80)

@@ -110,3 +110,11 @@ def get_fortigate_dnsfilter_info() -> List[Dict]:
         dnsfilter profile data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/dnsfilter/profile")
+
+
+def get_fortigate_internetservice_info() -> List[Dict]:
+    """
+    Returns:
+        internet service profile data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/firewall/internet-service-name")
