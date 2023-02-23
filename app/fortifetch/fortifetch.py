@@ -14,7 +14,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # imports
 from typing import List, Dict, Optional
-from data_cleaning.clean_fgt_data import *
 from backend import db
 
 
@@ -32,6 +31,8 @@ class FortiFetch:
         db.write_address_info()
 
         db.write_address_group_info()
+
+        db.write_application_info()
 
     @staticmethod
     def create_sql_database():

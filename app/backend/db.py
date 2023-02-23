@@ -206,3 +206,34 @@ def write_address_group_info():
 
     print(f"Address group information updated successfully")
     print("*" * 80)
+
+
+def write_application_info():
+    """
+    Get the application profile information from the clean_application_data() function and
+    write application profile information to the `appprofile` table in the database
+    """
+    print("Updating application profile in database")
+    application_info = clean_application_data()
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        for application in application_info:
+            hostname = application["hostname"]
+            name = application["name"]
+            entries = application["entries"]
+            comment = application["comment"]
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+            cursor.execute(
+                "INSERT OR IGNORE INTO appprofile (device_id, name) VALUES (?, ?)",
+                (device_id, name),
+            )
+            cursor.execute(
+                "UPDATE appprofile SET entries=?, comment=? WHERE device_id=? AND name=?",
+                (entries, comment, device_id, name),
+            )
+
+            conn.commit()
+
+    print("Application profile information updated successfully")
+    print("*" * 80)
