@@ -14,6 +14,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from typing import List, Dict, Optional
 from pprint import pprint
 from tasks.fgt_tasks import *
+import json
 
 
 def clean_device_data() -> List[Dict]:
@@ -102,7 +103,7 @@ def clean_interface_data() -> List[Dict]:
 
 def clean_address_data() -> List[Dict]:
     """
-    Get the interface information from the get_fortigate_interface_info() function
+    Get the address information from the get_fortigate_address_info() function
     and clean the data before it is written to the database.
     """
     device_info = get_fortigate_address_info()
@@ -137,6 +138,33 @@ def clean_address_data() -> List[Dict]:
                     "fqdn": address_fqdn,
                     "country": address_country,
                     "associated_interface": address_associated_interface,
+                }
+                # Append the dictionary to the cleaned_data list
+                cleaned_data.append(cleaned_dict)
+    return cleaned_data
+
+
+def clean_address_group_data() -> List[Dict]:
+    """
+    Get the address group information from the get_fortigate_interface_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_address_group_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for address in value:
+                address_name = address["name"]
+                address_member = address["member"]
+                member_str = ""
+                for member in address_member:
+                    member_str += f"name: {member['name']}, q_origin_key: {member['q_origin_key']}, "
+                member_str = member_str[:-2]
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "name": address_name,
+                    "member": member_str,
                 }
                 # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)

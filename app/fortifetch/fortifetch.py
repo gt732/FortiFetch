@@ -31,6 +31,8 @@ class FortiFetch:
 
         db.write_address_info()
 
+        db.write_address_group_info()
+
     @staticmethod
     def create_sql_database():
         db.create_database()

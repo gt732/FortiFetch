@@ -11,7 +11,6 @@ which are used to perform backend tasks such as:
 import os
 import sys
 import sqlite3
-import time
 
 # Add the parent directory of 'app' to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -137,7 +136,7 @@ def write_interface_info():
 def write_address_info():
     """
     Get the address information from the clean_address_data() function and
-    Write interface information to the `address` table in the database
+    Write address information to the `address` table in the database
     """
     print("Updating addresses in database")
     address_info = clean_address_data()
@@ -176,4 +175,34 @@ def write_address_info():
 
             conn.commit()
     print(f"Address information updated successfully")
+    print("*" * 80)
+
+
+def write_address_group_info():
+    """
+    Get the address group information from the clean_address_group_data() function and
+    write address group information to the `addressgroup` table in the database
+    """
+    print("Updating address group in database")
+    address_info = clean_address_group_data()
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        for address in address_info:
+            hostname = address["hostname"]
+            name = address["name"]
+            member = address["member"]
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+            cursor.execute(
+                "INSERT OR IGNORE INTO addressgroup (device_id, name) VALUES (?, ?)",
+                (device_id, name),
+            )
+            cursor.execute(
+                "UPDATE addressgroup SET member=? WHERE device_id=? AND name=?",
+                (member, device_id, name),
+            )
+
+            conn.commit()
+
+    print(f"Address group information updated successfully")
     print("*" * 80)

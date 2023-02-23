@@ -78,3 +78,11 @@ def get_fortigate_address_info() -> List[Dict]:
         address data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/firewall/address/")
+
+
+def get_fortigate_address_group_info() -> List[Dict]:
+    """
+    Returns:
+        address group data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/firewall/addrgrp/")
