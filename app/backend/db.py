@@ -263,6 +263,8 @@ def write_av_info():
             mapi = av["mapi"]
             ssh = av["ssh"]
             cifs = av["cifs"]
+            profile_nac_quar = av["nac_quar"]
+            profile_content_disarm = av["content_disarm"]
 
             cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
             device_id = cursor.fetchone()[0]
@@ -270,8 +272,8 @@ def write_av_info():
             cursor.execute(
                 """
                 INSERT OR IGNORE INTO avprofile 
-                (device_id, name, comment, http, ftp, imap, pop3, smtp, nntp, mapi, ssh, cifs) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (device_id, name, comment, http, ftp, imap, pop3, smtp, nntp, mapi, ssh, cifs, nac_quar, content_disarm) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
                 (
                     device_id,
@@ -286,13 +288,15 @@ def write_av_info():
                     mapi,
                     ssh,
                     cifs,
+                    profile_nac_quar,
+                    profile_content_disarm,
                 ),
             )
 
             cursor.execute(
                 """
                 UPDATE avprofile 
-                SET comment=?, http=?, ftp=?, imap=?, pop3=?, smtp=?, nntp=?, mapi=?, ssh=?, cifs=? 
+                SET comment=?, http=?, ftp=?, imap=?, pop3=?, smtp=?, nntp=?, mapi=?, ssh=?, cifs=?, nac_quar=?, content_disarm=? 
                 WHERE device_id=? AND name=?
             """,
                 (
@@ -306,6 +310,8 @@ def write_av_info():
                     mapi,
                     ssh,
                     cifs,
+                    profile_nac_quar,
+                    profile_content_disarm,
                     device_id,
                     name,
                 ),
