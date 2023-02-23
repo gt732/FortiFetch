@@ -47,6 +47,7 @@ def create_database():
 
 def write_device_info():
     """
+    Get the device information from the clean_device_data() function and
     Write device information to the `device` table in the database
     """
     print("Updating devices in database")
@@ -89,6 +90,7 @@ def write_device_info():
 
 def write_interface_info():
     """
+    Get the interface information from the clean_interface_data() function and
     Write interface information to the `interface` table in the database
     """
     print("Updating interfaces in database")

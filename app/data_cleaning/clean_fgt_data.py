@@ -18,8 +18,8 @@ from tasks.fgt_tasks import *
 
 def clean_device_data() -> List[Dict]:
     """
-    Returns:
-        Device data in a list of dictionaries
+    Get the device information from the get_fortigate_device_info() function
+    and clean the data before it is written to the database.
     """
     device_info = get_fortigate_device_info()
     cleaned_data = []
@@ -58,9 +58,9 @@ def clean_device_data() -> List[Dict]:
 
 
 def clean_interface_data() -> List[Dict]:
-    """ ""
-    Returns:
-        interface data in a list of dictionaries
+    """
+    Get the interface information from the get_fortigate_interface_info() function
+    and clean the data before it is written to the database.
     """
     device_info = get_fortigate_interface_info()
     cleaned_data = []
