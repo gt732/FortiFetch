@@ -109,7 +109,9 @@ CREATE TABLE ipsprofile (
   ipsprofile_id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT,
   comment TEXT,
-  "scan-botnet-connections" TEXT,
+  block_malicious_url TEXT,
+  scan_botnet_connections TEXT,
+  extended_log TEXT,
   entries TEXT,
   device_id INTEGER,
   FOREIGN KEY (device_id) REFERENCES device(device_id)

@@ -513,3 +513,65 @@ def write_ippool_info():
 
     print("Ippool data updated successfully")
     print("*" * 80)
+
+
+def write_ips_info():
+    """
+    Get the ips profile information from the clean_ips_data() function and
+    write ips profile information to the `ipsprofile` table in the database.
+    """
+    print("Updating IPS profile data in database")
+    cleaned_data = clean_ips_data()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        for profile in cleaned_data:
+            hostname = profile["hostname"]
+            ips_name = profile["name"]
+            ips_comment = profile["comment"]
+            ips_block_malicious_url = profile["block_malicious_url"]
+            ips_scan_botnet_connections = profile["scan_botnet_connections"]
+            ips_extended_log = profile["extended_log"]
+            ips_entries = profile["entries"]
+
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+
+            cursor.execute(
+                """
+                INSERT OR IGNORE INTO ipsprofile (device_id, name, comment, block_malicious_url, scan_botnet_connections, extended_log, entries)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+                (
+                    device_id,
+                    ips_name,
+                    ips_comment,
+                    ips_block_malicious_url,
+                    ips_scan_botnet_connections,
+                    ips_extended_log,
+                    ips_entries,
+                ),
+            )
+
+            cursor.execute(
+                """
+                UPDATE ipsprofile
+                SET comment=?, block_malicious_url=?, scan_botnet_connections=?, extended_log=?, entries=?
+                WHERE device_id=? AND name=?
+            """,
+                (
+                    ips_comment,
+                    ips_block_malicious_url,
+                    ips_scan_botnet_connections,
+                    ips_extended_log,
+                    ips_entries,
+                    device_id,
+                    ips_name,
+                ),
+            )
+
+            conn.commit()
+
+    print("IPS profile data updated successfully")
+    print("*" * 80)

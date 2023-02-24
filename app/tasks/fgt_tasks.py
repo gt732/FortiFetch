@@ -126,3 +126,11 @@ def get_fortigate_ippool_info() -> List[Dict]:
         ippool data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/firewall/ippool/")
+
+
+def get_fortigate_ips_info() -> List[Dict]:
+    """
+    Returns:
+        ips data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/ips/sensor/")

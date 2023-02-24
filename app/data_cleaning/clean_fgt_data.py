@@ -339,6 +339,36 @@ def clean_ippool_data() -> List[Dict]:
                 }
                 # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
+    return cleaned_data
 
+
+def clean_ips_data() -> List[Dict]:
+    """
+    Get the ips information from the get_fortigate_ips_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_ips_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for ips in value:
+                ips_name = ips.get("name", "")
+                ips_comment = ips.get("comment", "")
+                ips_block_malicious_url = ips.get("block-malicious-url", "")
+                ips_scan_botnet_connections = ips.get("scan-botnet-connections", "")
+                ips_extended_log = ips.get("extended-log", "")
+                ips_entries = str(ips.get("entries", ""))
+
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "name": ips_name,
+                    "comment": ips_comment,
+                    "block_malicious_url": ips_block_malicious_url,
+                    "scan_botnet_connections": ips_scan_botnet_connections,
+                    "extended_log": ips_extended_log,
+                    "entries": ips_entries,
+                }
+                # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data

@@ -42,6 +42,8 @@ class FortiFetch:
 
         db.write_ippool_info()
 
+        db.write_ips_info()
+
     @staticmethod
     def create_sql_database():
         db.create_database()
