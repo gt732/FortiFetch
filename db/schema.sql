@@ -304,6 +304,44 @@ CREATE TABLE trafficshapers (
   device_id INTEGER,
   
   FOREIGN KEY (device_id) REFERENCES device(device_id),
-  UNIQUE (name, hostname)
+  UNIQUE (name, device_id)
 );
 
+
+CREATE TABLE trafficpolicy (
+    trafficpolicy_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    policy_id INTEGER,
+    name TEXT,
+    comment TEXT,
+    status TEXT,
+    ip_version TEXT,
+    srcintf TEXT,
+    dstintf TEXT,
+    srcaddr TEXT,
+    dstaddr TEXT,
+    internet_service TEXT,
+    internet_service_name TEXT,
+    internet_service_group TEXT,
+    internet_service_custom TEXT,
+    internet_service_src TEXT,
+    internet_service_src_name TEXT,
+    internet_service_src_group TEXT,
+    internet_service_src_custom TEXT,
+    internet_service_src_custom_group TEXT,
+    service TEXT,
+    schedule TEXT,
+    users TEXT,
+    groups TEXT,
+    application TEXT,
+    app_group TEXT,
+    url_category TEXT,
+    traffic_shaper TEXT,
+    traffic_shaper_reverse TEXT,
+    per_ip_shaper TEXT,
+    class_id INTEGER,
+    diffserv_forward TEXT,
+    diffserv_reverse TEXT,
+    device_id INTEGER,
+    FOREIGN KEY (device_id) REFERENCES device(device_id),
+    UNIQUE (name, device_id)
+);

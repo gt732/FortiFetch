@@ -585,6 +585,116 @@ def clean_trafficshapers_data() -> List[Dict]:
     return cleaned_data
 
 
+def clean_trafficpolicy_data() -> List[Dict]:
+    """
+    Get the traffic shapers policy information from the get_fortigate_trafficpolicy_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_trafficpolicy_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for trafficpolicy in value:
+                policy_id = trafficpolicy.get("policyid", "")
+                trafficpolicy_name = trafficpolicy.get("name", "")
+                trafficpolicy_comment = trafficpolicy.get("comment", "")
+                trafficpolicy_status = trafficpolicy.get("status", "")
+                trafficpolicy_ip_version = trafficpolicy.get("ip-version", "")
+                trafficpolicy_srcintf = str(trafficpolicy.get("srcintf", ""))
+                trafficpolicy_dstintf = str(trafficpolicy.get("dstintf", ""))
+                trafficpolicy_srcaddr = str(trafficpolicy.get("srcaddr", ""))
+                trafficpolicy_dstaddr = str(trafficpolicy.get("dstaddr", ""))
+                trafficpolicy_internet_service = str(
+                    trafficpolicy.get("internet-service", "")
+                )
+                trafficpolicy_internet_service_name = str(
+                    trafficpolicy.get("internet-service-name", "")
+                )
+                trafficpolicy_internet_service_group = str(
+                    trafficpolicy.get("internet-service-group", "")
+                )
+                trafficpolicy_internet_service_custom = str(
+                    trafficpolicy.get("internet-service-custom", "")
+                )
+                trafficpolicy_internet_service_src = str(
+                    trafficpolicy.get("internet-service-src", "")
+                )
+                trafficpolicy_internet_service_src_name = str(
+                    trafficpolicy.get("internet-service-src-name", "")
+                )
+                trafficpolicy_internet_service_src_group = str(
+                    trafficpolicy.get("internet-service-src-group", "")
+                )
+                trafficpolicy_internet_service_src_custom = str(
+                    trafficpolicy.get("internet-service-src-custom", "")
+                )
+                trafficpolicy_internet_service_src_custom_group = str(
+                    trafficpolicy.get("internet-service-src-custom-group", "")
+                )
+                trafficpolicy_service = str(trafficpolicy.get("service", ""))
+                trafficpolicy_schedule = str(trafficpolicy.get("schedule", ""))
+                trafficpolicy_users = str(trafficpolicy.get("users", ""))
+                trafficpolicy_groups = str(trafficpolicy.get("groups", ""))
+                trafficpolicy_application = str(trafficpolicy.get("application", ""))
+                trafficpolicy_app_group = str(trafficpolicy.get("app-group", ""))
+                trafficpolicy_url_category = str(trafficpolicy.get("url-category", ""))
+                trafficpolicy_traffic_shaper = str(
+                    trafficpolicy.get("traffic-shaper", "")
+                )
+                trafficpolicy_traffic_shaper_reverse = str(
+                    trafficpolicy.get("traffic-shaper-reverse", "")
+                )
+                trafficpolicy_per_ip_shaper = str(
+                    trafficpolicy.get("per-ip-shaper", "")
+                )
+                trafficpolicy_class_id = str(trafficpolicy.get("class-id", ""))
+                trafficpolicy_diffserv_forward = str(
+                    trafficpolicy.get("diffserv-forward", "")
+                )
+                trafficpolicy_diffserv_reverse = str(
+                    trafficpolicy.get("diffserv-reverse", "")
+                )
+
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "policy_id": policy_id,
+                    "name": trafficpolicy_name,
+                    "comment": trafficpolicy_comment,
+                    "status": trafficpolicy_status,
+                    "ip_version": trafficpolicy_ip_version,
+                    "srcintf": trafficpolicy_srcintf,
+                    "dstintf": trafficpolicy_dstintf,
+                    "srcaddr": trafficpolicy_srcaddr,
+                    "dstaddr": trafficpolicy_dstaddr,
+                    "internet_service": trafficpolicy_internet_service,
+                    "internet_service_name": trafficpolicy_internet_service_name,
+                    "internet_service_group": trafficpolicy_internet_service_group,
+                    "internet_service_custom": trafficpolicy_internet_service_custom,
+                    "internet_service_src": trafficpolicy_internet_service_src,
+                    "internet_service_src_name": trafficpolicy_internet_service_src_name,
+                    "internet_service_src_group": trafficpolicy_internet_service_src_group,
+                    "internet_service_src_custom": trafficpolicy_internet_service_src_custom,
+                    "internet_service_src_custom_group": trafficpolicy_internet_service_src_custom_group,
+                    "service": trafficpolicy_service,
+                    "schedule": trafficpolicy_schedule,
+                    "users": trafficpolicy_users,
+                    "groups": trafficpolicy_groups,
+                    "application": trafficpolicy_application,
+                    "app_group": trafficpolicy_app_group,
+                    "url_category": trafficpolicy_url_category,
+                    "traffic_shaper": trafficpolicy_traffic_shaper,
+                    "traffic_shaper_reverse": trafficpolicy_traffic_shaper_reverse,
+                    "per_ip_shaper": trafficpolicy_per_ip_shaper,
+                    "class_id": trafficpolicy_class_id,
+                    "diffserv_forward": trafficpolicy_diffserv_forward,
+                    "diffserv_reverse": trafficpolicy_diffserv_reverse,
+                }
+                # Append the dictionary to the cleaned_data list
+                cleaned_data.append(cleaned_dict)
+    return cleaned_data
+
+
 def clean_fwpolicy_data() -> List[Dict]:
     """
     Get the firewall policy information from the get_fortigate_fwpolicy_info() function

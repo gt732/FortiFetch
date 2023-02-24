@@ -729,7 +729,7 @@ def write_webfilter_info():
 
 def write_trafficshapers_info():
     """
-    Get the traffic shapers information from the clean_trafficshapers_data() function and
+    Get the traffic shapers information from the get_fortigate_trafficshapers_info() function and
     write traffic shapers information to the `trafficshapers` table in the database.
     """
     print("Updating traffic shapers data in database")
@@ -788,6 +788,118 @@ def write_trafficshapers_info():
             conn.commit()
 
     print("Traffic shapers data updated successfully")
+    print("*" * 80)
+
+
+def write_trafficpolicy_info():
+    """
+    Get the traffic shaper policy information from the clean_trafficpolicy_data() function and
+    write traffic shaper policy information to the `trafficpolicy` table in the database.
+    """
+    print("Updating traffic shaper policy data in database")
+    cleaned_data = clean_trafficpolicy_data()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        # Delete all existing entries from trafficpolicy table
+        cursor.execute("DELETE FROM trafficpolicy")
+
+        # Insert cleaned traffic policy data into trafficpolicy table
+        for policy in cleaned_data:
+            hostname = policy["hostname"]
+            policy_id = policy["policy_id"]
+            trafficpolicy_name = policy["name"]
+            trafficpolicy_comment = policy["comment"]
+            trafficpolicy_status = policy["status"]
+            trafficpolicy_ip_version = policy["ip_version"]
+            trafficpolicy_srcintf = policy["srcintf"]
+            trafficpolicy_dstintf = policy["dstintf"]
+            trafficpolicy_srcaddr = policy["srcaddr"]
+            trafficpolicy_dstaddr = policy["dstaddr"]
+            trafficpolicy_internet_service = policy["internet_service"]
+            trafficpolicy_internet_service_name = policy["internet_service_name"]
+            trafficpolicy_internet_service_group = policy["internet_service_group"]
+            trafficpolicy_internet_service_custom = policy["internet_service_custom"]
+            trafficpolicy_internet_service_src = policy["internet_service_src"]
+            trafficpolicy_internet_service_src_name = policy[
+                "internet_service_src_name"
+            ]
+            trafficpolicy_internet_service_src_group = policy[
+                "internet_service_src_group"
+            ]
+            trafficpolicy_internet_service_src_custom = policy[
+                "internet_service_src_custom"
+            ]
+            trafficpolicy_internet_service_src_custom_group = policy[
+                "internet_service_src_custom_group"
+            ]
+            trafficpolicy_service = policy["service"]
+            trafficpolicy_schedule = policy["schedule"]
+            trafficpolicy_users = policy["users"]
+            trafficpolicy_groups = policy["groups"]
+            trafficpolicy_application = policy["application"]
+            trafficpolicy_app_group = policy["app_group"]
+            trafficpolicy_url_category = policy["url_category"]
+            trafficpolicy_traffic_shaper = policy["traffic_shaper"]
+            trafficpolicy_traffic_shaper_reverse = policy["traffic_shaper_reverse"]
+            trafficpolicy_per_ip_shaper = policy["per_ip_shaper"]
+            trafficpolicy_class_id = policy["class_id"]
+            trafficpolicy_diffserv_forward = policy["diffserv_forward"]
+            trafficpolicy_diffserv_reverse = policy["diffserv_reverse"]
+
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+
+            cursor.execute(
+                """
+                INSERT INTO trafficpolicy (
+                    device_id, policy_id, name, comment, status, ip_version, srcintf, dstintf, srcaddr, dstaddr, internet_service,
+                    internet_service_name, internet_service_group, internet_service_custom, internet_service_src, internet_service_src_name,
+                    internet_service_src_group, internet_service_src_custom, internet_service_src_custom_group, service, schedule, users,
+                    groups, application, app_group, url_category, traffic_shaper, traffic_shaper_reverse, per_ip_shaper, class_id, diffserv_forward, diffserv_reverse
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    device_id,
+                    policy_id,
+                    trafficpolicy_name,
+                    trafficpolicy_comment,
+                    trafficpolicy_status,
+                    trafficpolicy_ip_version,
+                    trafficpolicy_srcintf,
+                    trafficpolicy_dstintf,
+                    trafficpolicy_srcaddr,
+                    trafficpolicy_dstaddr,
+                    trafficpolicy_internet_service,
+                    trafficpolicy_internet_service_name,
+                    trafficpolicy_internet_service_group,
+                    trafficpolicy_internet_service_custom,
+                    trafficpolicy_internet_service_src,
+                    trafficpolicy_internet_service_src_name,
+                    trafficpolicy_internet_service_src_group,
+                    trafficpolicy_internet_service_src_custom,
+                    trafficpolicy_internet_service_src_custom_group,
+                    trafficpolicy_service,
+                    trafficpolicy_schedule,
+                    trafficpolicy_users,
+                    trafficpolicy_groups,
+                    trafficpolicy_application,
+                    trafficpolicy_app_group,
+                    trafficpolicy_url_category,
+                    trafficpolicy_traffic_shaper,
+                    trafficpolicy_traffic_shaper_reverse,
+                    trafficpolicy_per_ip_shaper,
+                    trafficpolicy_class_id,
+                    trafficpolicy_diffserv_forward,
+                    trafficpolicy_diffserv_reverse,
+                ),
+            )
+
+            conn.commit()
+
+    print("Traffic shaper policy data updated successfully")
     print("*" * 80)
 
 
