@@ -433,3 +433,59 @@ def clean_sslssh_data() -> List[Dict]:
                 # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
+
+
+def clean_vip_data() -> List[Dict]:
+    """
+    Get the vip information from the get_fortigate_vip_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_vip_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for vip in value:
+                vip_name = vip.get("name", "")
+                vip_comment = vip.get("comment", "")
+                vip_type = vip.get("type", "")
+                vip_extip = vip.get("extip", "")
+                vip_extaddr = str(vip.get("extaddr", ""))
+                vip_nat44 = vip.get("nat44", "")
+                vip_mappedip = vip.get("mappedip", "")
+                vip_mappedip = vip_mappedip[0]["range"]
+                vip_mapped_addr = str(vip.get("mapped-addr", ""))
+                vip_extintf = vip.get("extintf", "")
+                vip_arp_reply = vip.get("arp-reply", "")
+                vip_portforward = vip.get("portforward", "")
+                vip_status = vip.get("status", "")
+                vip_protocol = vip.get("protocol", "")
+                vip_extport = vip.get("extport", "")
+                vip_mappedport = vip.get("mappedport", "")
+                vip_src_filter = str(vip.get("src-filter", ""))
+                vip_portmapping_type = vip.get("portmapping-type", "")
+                vip_realservers = str(vip.get("realservers", ""))
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "name": vip_name,
+                    "comment": vip_comment,
+                    "type": vip_type,
+                    "extip": vip_extip,
+                    "extaddr": vip_extaddr,
+                    "nat44": vip_nat44,
+                    "mappedip": vip_mappedip,
+                    "mapped_addr": vip_mapped_addr,
+                    "extintf": vip_extintf,
+                    "arp_reply": vip_arp_reply,
+                    "portforward": vip_portforward,
+                    "status": vip_status,
+                    "protocol": vip_protocol,
+                    "extport": vip_extport,
+                    "mappedport": vip_mappedport,
+                    "src_filter": vip_src_filter,
+                    "portmapping_type": vip_portmapping_type,
+                    "realservers": vip_realservers,
+                }
+
+                cleaned_data.append(cleaned_dict)
+    return cleaned_data

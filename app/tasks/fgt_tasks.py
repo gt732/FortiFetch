@@ -142,3 +142,11 @@ def get_fortigate_sslssh_info() -> List[Dict]:
         ssl/ssh profile data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/firewall/ssl-ssh-profile/")
+
+
+def get_fortigate_vip_info() -> List[Dict]:
+    """
+    Returns:
+        vip data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/firewall/vip/")

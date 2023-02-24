@@ -459,7 +459,7 @@ def write_ips_info():
 
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
-
+        cursor.execute("DELETE FROM ipsprofile")
         for profile in cleaned_data:
             hostname = profile["hostname"]
             ips_name = profile["name"]
@@ -582,4 +582,88 @@ def write_sslssh_info():
             conn.commit()
 
     print("SSL/SSH profile data updated successfully")
+    print("*" * 80)
+
+
+def write_vip_info():
+    """
+    Get the vip profile information from the clean_vip_data() function and
+    write vip profile information to the `vip` table in the database.
+    """
+    print("Updating VIP profile data in database")
+    cleaned_data = clean_vip_data()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        # Delete all existing entries from vip table
+        cursor.execute("DELETE FROM vip")
+
+        # Insert cleaned VIP data into vip table
+        for vip in cleaned_data:
+            hostname = vip["hostname"]
+            name = vip["name"]
+            comment = vip["comment"]
+            vip_type = vip["type"]
+            extip = vip["extip"]
+            extaddr = vip["extaddr"]
+            nat44 = vip["nat44"]
+            mappedip = vip["mappedip"]
+            mapped_addr = vip["mapped_addr"]
+            extintf = vip["extintf"]
+            arp_reply = vip["arp_reply"]
+            portforward = vip["portforward"]
+            status = vip["status"]
+            protocol = vip["protocol"]
+            extport = vip["extport"]
+            mappedport = vip["mappedport"]
+            src_filter = vip["src_filter"]
+            portmapping_type = vip["portmapping_type"]
+            realservers = vip["realservers"]
+
+            # Get the device_id for the current hostname
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            result = cursor.fetchone()
+            if result:
+                device_id = result[0]
+            else:
+                print(f"Device with hostname {hostname} not found.")
+                continue
+
+            # Insert the VIP information for the current device
+            cursor.execute(
+                """
+                INSERT INTO vip (
+                    name, comment, type, ext_ip, ext_addr, nat44, mapped_ip, mapped_addr, ext_intf,
+                    arp_reply, portforward, status, protocol, ext_port, mapped_port, src_filter,
+                    portmapping_type, realservers, device_id
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    name,
+                    comment,
+                    vip_type,
+                    extip,
+                    extaddr,
+                    nat44,
+                    mappedip,
+                    mapped_addr,
+                    extintf,
+                    arp_reply,
+                    portforward,
+                    status,
+                    protocol,
+                    extport,
+                    mappedport,
+                    src_filter,
+                    portmapping_type,
+                    realservers,
+                    device_id,
+                ),
+            )
+
+            conn.commit()
+
+    print("VIP profile data updated successfully")
     print("*" * 80)

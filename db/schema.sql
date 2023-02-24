@@ -233,14 +233,27 @@ UNIQUE (name, device_id)
 
 CREATE TABLE vip (
 vip_id INTEGER PRIMARY KEY AUTOINCREMENT,
+name TEXT,
+comment TEXT,
+type TEXT,
 ext_ip TEXT,
+ext_addr TEXT,
+nat44 TEXT,
 mapped_ip TEXT,
+mapped_addr TEXT,
 ext_intf TEXT,
+arp_reply TEXT,
 portforward TEXT,
+status TEXT,
+protocol TEXT,
 ext_port TEXT,
 mapped_port TEXT,
+src_filter TEXT,
+portmapping_type TEXT,
+realservers TEXT,
 interface_id INTEGER,
 device_id INTEGER,
 FOREIGN KEY (interface_id) REFERENCES interface(interface_id),
 FOREIGN KEY (device_id) REFERENCES device(device_id)
+UNIQUE (name, device_id)
 );
