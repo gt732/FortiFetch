@@ -524,3 +524,211 @@ def clean_webfilter_data() -> List[Dict]:
                 # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
+
+
+def clean_fwpolicy_data() -> List[Dict]:
+    """
+    Get the firewall policy information from the get_fortigate_fwpolicy_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_fwpolicy_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for fwpolicy in value:
+                policy_id = fwpolicy.get("policyid", "")
+                fwpolicy_status = fwpolicy.get("status", "")
+                fwpolicy_name = fwpolicy.get("name", "")
+                fwpolicy_srcintf = str(fwpolicy.get("srcintf", ""))
+                fwpolicy_dstinft = str(fwpolicy.get("dstintf", ""))
+                fwpolicy_action = fwpolicy.get("action", "")
+                fwpolicy_nat64 = fwpolicy.get("nat64", "")
+                fwpolicy_nat46 = fwpolicy.get("nat46", "")
+                fwpolicy_srcaddr = str(fwpolicy.get("srcaddr", ""))
+                fwpolicy_dstaddr = str(fwpolicy.get("dstaddr", ""))
+                fwpolicy_srcaddr6 = str(fwpolicy.get("srcaddr6", ""))
+                fwpolicy_dstaddr6 = str(fwpolicy.get("dstaddr6", ""))
+                fwpolicy_internet_service = str(fwpolicy.get("internet-service", ""))
+                fwpolicy_internet_service_name = str(
+                    fwpolicy.get("internet-service-name", "")
+                )
+                fwpolicy_internet_service_group = str(
+                    fwpolicy.get("internet-service-group", "")
+                )
+                fwpolicy_internet_service_dynamic = str(
+                    fwpolicy.get("internet-service-dynamic", "")
+                )
+                fwpolicy_internet_service_custom_group = str(
+                    fwpolicy.get("internet-service-custom-group", "")
+                )
+                fwpolicy_internet_service_src = str(
+                    fwpolicy.get("internet-service-src", "")
+                )
+                fwpolicy_internet_service_src_name = str(
+                    fwpolicy.get("internet-service-src-name", "")
+                )
+                fwpolicy_internet_service_src_group = str(
+                    fwpolicy.get("internet-service-src-group", "")
+                )
+                fwpolicy_internet_service_src_dynamic = str(
+                    fwpolicy.get("internet-service-src-dynamic", "")
+                )
+                fwpolicy_internet_service_src_custom_group = str(
+                    fwpolicy.get("internet-service-src-custom-group", "")
+                )
+                fwpolicy_schedule = str(fwpolicy.get("schedule", ""))
+                fwpolicy_schedule_timeout = fwpolicy.get("schedule-timeout", "")
+                fwpolicy_service = str(fwpolicy.get("service", ""))
+                fwpolicy_service_utm_status = fwpolicy.get("service-utm-status", "")
+                fwpolicy_inspection_mode = fwpolicy.get("inspection-mode", "")
+                fwpolicy_http_policy_redirect = fwpolicy.get("http-policy-redirect", "")
+                fwpolicy_ssh_policy_redirect = fwpolicy.get("ssh-policy-redirect", "")
+                fwpolicy_profile_type = fwpolicy.get("profile-type", "")
+                fwpolicy_profile_group = str(fwpolicy.get("profile-group", ""))
+                fwpolicy_profile_protocol_options = str(
+                    fwpolicy.get("profile-protocol-options", "")
+                )
+                fwpolicy_ssl_ssh_profile = str(fwpolicy.get("ssl-ssh-profile", ""))
+                fwpolicy_av_profile = str(fwpolicy.get("av-profile", ""))
+                fwpolicy_webfilter_profile = str(fwpolicy.get("webfilter-profile", ""))
+                fwpolicy_dnsfilter_profile = str(fwpolicy.get("dnsfilter-profile", ""))
+                fwpolicy_emailfilter_profile = str(
+                    fwpolicy.get("emailfilter-profile", "")
+                )
+                fwpolicy_dlp_profile = str(fwpolicy.get("dlp-profile", ""))
+                fwpolicy_file_filter = str(fwpolicy.get("file-filter", ""))
+                fwpolicy_ips_sensor = str(fwpolicy.get("ips-sensor", ""))
+                fwpolicy_application_list = str(fwpolicy.get("application-list", ""))
+                fwpolicy_voip_profile = str(fwpolicy.get("voip-profile", ""))
+                fwpolicy_sctp_profile = str(fwpolicy.get("sctp-profile", ""))
+                fwpolicy_icap_profile = str(fwpolicy.get("icap-profile", ""))
+                fwpolicy_cifs_profile = str(fwpolicy.get("cifs-profile", ""))
+                fwpolicy_waf_profile = str(fwpolicy.get("waf-profile", ""))
+                fwpolicy_ssh_filter_profile = str(
+                    fwpolicy.get("ssh-filter-profile", "")
+                )
+                fwpolicy_logtraffic = fwpolicy.get("logtraffic", "")
+                fwpolicy_logtraffic_start = fwpolicy.get("logtraffic-start", "")
+                fwpolicy_capture_packet = fwpolicy.get("capture-packet", "")
+                fwpolicy_traffic_shaper = str(fwpolicy.get("traffic-shaper", ""))
+                fwpolicy_traffic_shaper_reverse = str(
+                    fwpolicy.get("traffic-shaper-reverse", "")
+                )
+                fwpolicy_per_ip_shaper = str(fwpolicy.get("per-ip-shaper", ""))
+                fwpolicy_nat = fwpolicy.get("nat", "")
+                fwpolicy_permit_any_host = fwpolicy.get("permit-any-host", "")
+                fwpolicy_permit_stun_host = fwpolicy.get("permit-stun-host", "")
+                fwpolicy_fixedport = fwpolicy.get("fixedport", "")
+                fwpolicy_ippool = fwpolicy.get("ippool", "")
+                fwpolicy_poolname = str(fwpolicy.get("poolname", ""))
+                fwpolicy_poolname6 = str(fwpolicy.get("poolname6", ""))
+                fwpolicy_inbound = fwpolicy.get("inbound", "")
+                fwpolicy_outbound = fwpolicy.get("outbound", "")
+                fwpolicy_natinbound = fwpolicy.get("natinbound", "")
+                fwpolicy_natoutbound = fwpolicy.get("natoutbound", "")
+                fwpolicy_wccp = fwpolicy.get("wccp", "")
+                fwpolicy_ntlm = fwpolicy.get("ntlm", "")
+                fwpolicy_ntlm_guest = fwpolicy.get("ntlm-guest", "")
+                fwpolicy_ntlm_enabled_browsers = str(
+                    fwpolicy.get("ntlm-enabled-browsers", "")
+                )
+                fwpolicy_groups = str(fwpolicy.get("groups", ""))
+                fwpolicy_users = str(fwpolicy.get("users", ""))
+                fwpolicy_fsso_groups = str(fwpolicy.get("fsso-groups", ""))
+                fwpolicy_vpntunnel = str(fwpolicy.get("vpntunnel", ""))
+                fwpolicy_natip = str(fwpolicy.get("natip", ""))
+                fwpolicy_match_vip = fwpolicy.get("match-vip", "")
+                fwpolicy_match_vip_only = fwpolicy.get("match-vip-only", "")
+                fwpolicy_comments = str(fwpolicy.get("comments", ""))
+                fwpolicy_label = str(fwpolicy.get("label", ""))
+                fwpolicy_global_label = str(fwpolicy.get("global-label", ""))
+                fwpolicy_auth_cert = str(fwpolicy.get("auth-cert", ""))
+                fwpolicy_vlan_filter = str(fwpolicy.get("vlan-filter", ""))
+
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "policy_id": policy_id,
+                    "fwpolicy_name": fwpolicy_name,
+                    "fwpolicy_status": fwpolicy_status,
+                    "srcintf": fwpolicy_srcintf,
+                    "dstintf": fwpolicy_dstinft,
+                    "action": fwpolicy_action,
+                    "nat64": fwpolicy_nat64,
+                    "nat46": fwpolicy_nat46,
+                    "srcaddr6": fwpolicy_srcaddr6,
+                    "dstaddr6": fwpolicy_dstaddr6,
+                    "srcaddr": fwpolicy_srcaddr,
+                    "dstaddr": fwpolicy_dstaddr,
+                    "internet-service-name": fwpolicy_internet_service_name,
+                    "internet-service-src-name": fwpolicy_internet_service_src_name,
+                    "internet-service-dynamic": fwpolicy_internet_service_dynamic,
+                    "internet-service-custom-group": fwpolicy_internet_service_custom_group,
+                    "internet-service": fwpolicy_internet_service,
+                    "internet-service-src": fwpolicy_internet_service_src,
+                    "internet-service-group": fwpolicy_internet_service_group,
+                    "internet-service-src-group": fwpolicy_internet_service_src_group,
+                    "internet-service-src-dynamic": fwpolicy_internet_service_src_dynamic,
+                    "internet-service-src-custom-group": fwpolicy_internet_service_src_custom_group,
+                    "schedule": fwpolicy_schedule,
+                    "schedule-timeout": fwpolicy_schedule_timeout,
+                    "service": fwpolicy_service,
+                    "service-utm-status": fwpolicy_service_utm_status,
+                    "inspection-mode": fwpolicy_inspection_mode,
+                    "http-policy-redirect": fwpolicy_http_policy_redirect,
+                    "ssh-policy-redirect": fwpolicy_ssh_policy_redirect,
+                    "profile-type": fwpolicy_profile_type,
+                    "profile-group": fwpolicy_profile_group,
+                    "profile-protocol-options": fwpolicy_profile_protocol_options,
+                    "ssl-ssh-profile": fwpolicy_ssl_ssh_profile,
+                    "av-profile": fwpolicy_av_profile,
+                    "webfilter-profile": fwpolicy_webfilter_profile,
+                    "dnsfilter-profile": fwpolicy_dnsfilter_profile,
+                    "emailfilter-profile": fwpolicy_emailfilter_profile,
+                    "dlp-profile": fwpolicy_dlp_profile,
+                    "file-filter": fwpolicy_file_filter,
+                    "ips-sensor": fwpolicy_ips_sensor,
+                    "application-list": fwpolicy_application_list,
+                    "voip-profile": fwpolicy_voip_profile,
+                    "sctp-profile": fwpolicy_sctp_profile,
+                    "icap-profile": fwpolicy_icap_profile,
+                    "cifs-profile": fwpolicy_cifs_profile,
+                    "waf-profile": fwpolicy_waf_profile,
+                    "ssh-filter-profile": fwpolicy_ssh_filter_profile,
+                    "logtraffic": fwpolicy_logtraffic,
+                    "logtraffic-start": fwpolicy_logtraffic_start,
+                    "capture-packet": fwpolicy_capture_packet,
+                    "traffic-shaper": fwpolicy_traffic_shaper,
+                    "traffic-shaper-reverse": fwpolicy_traffic_shaper_reverse,
+                    "per-ip-shaper": fwpolicy_per_ip_shaper,
+                    "nat": fwpolicy_nat,
+                    "permit-any-host": fwpolicy_permit_any_host,
+                    "permit-stun-host": fwpolicy_permit_stun_host,
+                    "fixedport": fwpolicy_fixedport,
+                    "ippool": fwpolicy_ippool,
+                    "poolname": fwpolicy_poolname,
+                    "poolname6": fwpolicy_poolname6,
+                    "inbound": fwpolicy_inbound,
+                    "outbound": fwpolicy_outbound,
+                    "natinbound": fwpolicy_natinbound,
+                    "natoutbound": fwpolicy_natoutbound,
+                    "wccp": fwpolicy_wccp,
+                    "ntlm": fwpolicy_ntlm,
+                    "ntlm-guest": fwpolicy_ntlm_guest,
+                    "ntlm-enabled-browsers": fwpolicy_ntlm_enabled_browsers,
+                    "groups": fwpolicy_groups,
+                    "users": fwpolicy_users,
+                    "fsso-groups": fwpolicy_fsso_groups,
+                    "vpntunnel": fwpolicy_vpntunnel,
+                    "natip": fwpolicy_natip,
+                    "match-vip": fwpolicy_match_vip,
+                    "match-vip-only": fwpolicy_match_vip_only,
+                    "comments": fwpolicy_comments,
+                    "label": fwpolicy_label,
+                    "global-label": fwpolicy_global_label,
+                    "auth-cert": fwpolicy_auth_cert,
+                    "vlan-filter": fwpolicy_vlan_filter,
+                }
+                # Append the dictionary to the cleaned_data list
+                cleaned_data.append(cleaned_dict)
+    return cleaned_data

@@ -158,3 +158,19 @@ def get_fortigate_webfilter_info() -> List[Dict]:
         web filter profile data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/webfilter/profile/")
+
+
+def get_fortigate_fwpolicy_info() -> List[Dict]:
+    """
+    Returns:
+        firewall policy data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/firewall/policy/")
+
+
+def get_fortigate_trafficshapers_info() -> List[Dict]:
+    """
+    Returns:
+        traffic shapers data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/firewall.shaper/traffic-shaper/")
