@@ -284,3 +284,26 @@ FOREIGN KEY (interface_id) REFERENCES interface(interface_id),
 FOREIGN KEY (device_id) REFERENCES device(device_id)
 UNIQUE (name, device_id)
 );
+
+CREATE TABLE trafficshapers (
+  trafficshaper_id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT,
+  guaranteed_bandwidth INTEGER,
+  maximum_bandwidth INTEGER,
+  bandwidth_unit TEXT,
+  priority INTEGER,
+  per_policy TEXT,
+  diffserv TEXT,
+  diffservcode TEXT,
+  dscp_marking_method TEXT,
+  exceed_bandwidth INTEGER,
+  exceed_dscp TEXT,
+  maximum_dscp TEXT,
+  overhead INTEGER,
+  exceed_class_id INTEGER,
+  device_id INTEGER,
+  
+  FOREIGN KEY (device_id) REFERENCES device(device_id),
+  UNIQUE (name, hostname)
+);
+

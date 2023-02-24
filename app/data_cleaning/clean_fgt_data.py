@@ -526,6 +526,65 @@ def clean_webfilter_data() -> List[Dict]:
     return cleaned_data
 
 
+def clean_trafficshapers_data() -> List[Dict]:
+    """
+    Get the traffic shapers information from the get_fortigate_trafficshapers_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_trafficshapers_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for trafficshapers in value:
+                trafficshapers_name = trafficshapers.get("name", "")
+                trafficshapers_guaranteed_bandwidth = trafficshapers.get(
+                    "guaranteed-bandwidth", ""
+                )
+                trafficshapers_maximum_bandwidth = trafficshapers.get(
+                    "maximum-bandwidth", ""
+                )
+                trafficshapers_bandwidth_unit = trafficshapers.get("bandwidth-unit", "")
+                trafficshapers_priority = trafficshapers.get("priority", "")
+                trafficshapers_per_policy = trafficshapers.get("per-policy", "")
+                trafficshapers_diffserv = trafficshapers.get("diffserv", "")
+                trafficshapers_diffservcode = trafficshapers.get("diffservcode", "")
+                trafficshapers_dscp_marking_method = trafficshapers.get(
+                    "dscp-marking-method", ""
+                )
+                trafficshapers_exceed_bandwidth = trafficshapers.get(
+                    "exceed-bandwidth", ""
+                )
+                trafficshapers_exceed_dscp = trafficshapers.get("exceed-dscp", "")
+                trafficshapers_maximum_dscp = trafficshapers.get("maximum-dscp", "")
+                trafficshapers_overhead = trafficshapers.get("overhead", "")
+                trafficshapers_exceed_class_id = trafficshapers.get(
+                    "exceed-class-id", ""
+                )
+
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "name": trafficshapers_name,
+                    "guaranteed_bandwidth": trafficshapers_guaranteed_bandwidth,
+                    "maximum_bandwidth": trafficshapers_maximum_bandwidth,
+                    "bandwidth_unit": trafficshapers_bandwidth_unit,
+                    "priority": trafficshapers_priority,
+                    "per_policy": trafficshapers_per_policy,
+                    "diffserv": trafficshapers_diffserv,
+                    "diffservcode": trafficshapers_diffservcode,
+                    "dscp_marking_method": trafficshapers_dscp_marking_method,
+                    "exceed_bandwidth": trafficshapers_exceed_bandwidth,
+                    "exceed_dscp": trafficshapers_exceed_dscp,
+                    "maximum_dscp": trafficshapers_maximum_dscp,
+                    "overhead": trafficshapers_overhead,
+                    "exceed_class_id": trafficshapers_exceed_class_id,
+                }
+
+                # Append the dictionary to the cleaned_data list
+                cleaned_data.append(cleaned_dict)
+    return cleaned_data
+
+
 def clean_fwpolicy_data() -> List[Dict]:
     """
     Get the firewall policy information from the get_fortigate_fwpolicy_info() function

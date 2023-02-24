@@ -727,6 +727,70 @@ def write_webfilter_info():
     print("*" * 80)
 
 
+def write_trafficshapers_info():
+    """
+    Get the traffic shapers information from the clean_trafficshapers_data() function and
+    write traffic shapers information to the `trafficshapers` table in the database.
+    """
+    print("Updating traffic shapers data in database")
+    cleaned_data = clean_trafficshapers_data()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        # Delete all existing entries from trafficshapers table
+        cursor.execute("DELETE FROM trafficshapers")
+
+        # Insert cleaned traffic shapers data into trafficshapers table
+        for trafficshaper in cleaned_data:
+            hostname = trafficshaper["hostname"]
+            name = trafficshaper["name"]
+            guaranteed_bandwidth = trafficshaper["guaranteed_bandwidth"]
+            maximum_bandwidth = trafficshaper["maximum_bandwidth"]
+            bandwidth_unit = trafficshaper["bandwidth_unit"]
+            priority = trafficshaper["priority"]
+            per_policy = trafficshaper["per_policy"]
+            diffserv = trafficshaper["diffserv"]
+            diffservcode = trafficshaper["diffservcode"]
+            dscp_marking_method = trafficshaper["dscp_marking_method"]
+            exceed_bandwidth = trafficshaper["exceed_bandwidth"]
+            exceed_dscp = trafficshaper["exceed_dscp"]
+            maximum_dscp = trafficshaper["maximum_dscp"]
+            overhead = trafficshaper["overhead"]
+            exceed_class_id = trafficshaper["exceed_class_id"]
+
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+
+            cursor.execute(
+                """INSERT INTO trafficshapers (device_id, name, guaranteed_bandwidth, maximum_bandwidth, bandwidth_unit, priority, per_policy, diffserv, 
+                   diffservcode, dscp_marking_method, exceed_bandwidth, exceed_dscp, maximum_dscp, overhead, exceed_class_id) 
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (
+                    device_id,
+                    name,
+                    guaranteed_bandwidth,
+                    maximum_bandwidth,
+                    bandwidth_unit,
+                    priority,
+                    per_policy,
+                    diffserv,
+                    diffservcode,
+                    dscp_marking_method,
+                    exceed_bandwidth,
+                    exceed_dscp,
+                    maximum_dscp,
+                    overhead,
+                    exceed_class_id,
+                ),
+            )
+
+            conn.commit()
+
+    print("Traffic shapers data updated successfully")
+    print("*" * 80)
+
+
 def write_fwpolicy_info():
     """
     Get the firewall policy information from the clean_fwpolicy_data() function and
