@@ -80,7 +80,10 @@ CREATE TABLE webprofile (
   name TEXT,
   comment TEXT,
   options TEXT,
-  "web ftgd-wf" TEXT,
+  https_replacemsg TEXT,
+  override TEXT,
+  web TEXT,
+  ftgd_wf TEXT,
   device_id INTEGER,
   FOREIGN KEY (device_id) REFERENCES device(device_id)
   UNIQUE (name, device_id)

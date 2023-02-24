@@ -37,6 +37,7 @@ class FortiFetch:
         db.write_av_info()
 
         db.write_dnsfilter_info()
+
         # Uncomment the following line to enable the internetservice info, this will take a long time since there is 1000+ entries
         # db.write_internetservice_info()
 
@@ -47,6 +48,8 @@ class FortiFetch:
         db.write_sslssh_info()
 
         db.write_vip_info()
+
+        db.write_webfilter_info()
 
     @staticmethod
     def create_sql_database():

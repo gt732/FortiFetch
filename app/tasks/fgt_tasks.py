@@ -150,3 +150,11 @@ def get_fortigate_vip_info() -> List[Dict]:
         vip data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/firewall/vip/")
+
+
+def get_fortigate_webfilter_info() -> List[Dict]:
+    """
+    Returns:
+        web filter profile data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/webfilter/profile/")

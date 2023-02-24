@@ -489,3 +489,38 @@ def clean_vip_data() -> List[Dict]:
 
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
+
+
+def clean_webfilter_data() -> List[Dict]:
+    """
+    Get the web filter information from the get_fortigate_webfilter_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_webfilter_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for webfilter in value:
+                webfilter_name = webfilter.get("name", "")
+                webfilter_comment = webfilter.get("comment", "")
+                webfilter_options = webfilter.get("options", "")
+                webfilter_https_replacemsg = webfilter.get("https-replacemsg", "")
+                webfilter_override = str(webfilter.get("override", ""))
+                webfilter_web = str(webfilter.get("web", ""))
+                webfilter_ftgd_wf = str(webfilter.get("ftgd-wf", ""))
+
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "name": webfilter_name,
+                    "comment": webfilter_comment,
+                    "options": webfilter_options,
+                    "https_replacemsg": webfilter_https_replacemsg,
+                    "override": webfilter_override,
+                    "web": webfilter_web,
+                    "ftgd_wf": webfilter_ftgd_wf,
+                }
+
+                # Append the dictionary to the cleaned_data list
+                cleaned_data.append(cleaned_dict)
+    return cleaned_data

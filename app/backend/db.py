@@ -667,3 +667,61 @@ def write_vip_info():
 
     print("VIP profile data updated successfully")
     print("*" * 80)
+
+
+def write_webfilter_info():
+    """
+    Get the web filter profile information from the clean_webfilter_data() function and
+    write web filter profile information to the `webprofile` table in the database.
+    """
+    print("Updating web filter profile data in database")
+    cleaned_data = clean_webfilter_data()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        # Delete all existing entries from webprofile table
+        cursor.execute("DELETE FROM webprofile")
+
+        # Insert cleaned webfilter data into webprofile table
+        for profile in cleaned_data:
+            hostname = profile["hostname"]
+            webfilter_name = profile["name"]
+            webfilter_comment = profile["comment"]
+            webfilter_options = profile["options"]
+            webfilter_https_replacemsg = profile["https_replacemsg"]
+            webfilter_override = profile["override"]
+            webfilter_web = profile["web"]
+            webfilter_ftgd_wf = profile["ftgd_wf"]
+
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+
+            cursor.execute(
+                "DELETE FROM webprofile WHERE device_id=? AND name=?",
+                (device_id, webfilter_name),
+            )
+
+            cursor.execute(
+                """
+                INSERT INTO webprofile (
+                    device_id, name, comment, options, https_replacemsg, override, web, ftgd_wf
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    device_id,
+                    webfilter_name,
+                    webfilter_comment,
+                    webfilter_options,
+                    webfilter_https_replacemsg,
+                    webfilter_override,
+                    webfilter_web,
+                    webfilter_ftgd_wf,
+                ),
+            )
+
+            conn.commit()
+
+    print("Web filter profile data updated successfully")
+    print("*" * 80)
