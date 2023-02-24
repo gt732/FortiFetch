@@ -526,6 +526,64 @@ def clean_webfilter_data() -> List[Dict]:
     return cleaned_data
 
 
+def clean_dns_data() -> List[Dict]:
+    """
+    Get the dns information from the get_fortigate_dns_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_dns_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            dns_primary = value.get("primary", "")
+            dns_secondary = value.get("secondary", "")
+            dns_protocol = value.get("protocol", "")
+            dns_ssl_certificate = value.get("ssl-certificate", "")
+            dns_server_hostname = str(value.get("server-hostname", ""))
+            dns_domain = str(value.get("domain", ""))
+            dns_ip6_primary = value.get("ip6-primary", "")
+            dns_ip6_secondary = value.get("ip6-secondary", "")
+            dns_timeout = value.get("timeout", "")
+            dns_retry = value.get("retry", "")
+            dns_cache_limit = value.get("dns-cache-limit", "")
+            dns_cache_ttl = value.get("dns-cache-ttl", "")
+            dns_source_ip = value.get("source-ip", "")
+            dns_interface_select_method = value.get("interface-select-method", "")
+            dns_interface = value.get("interface", "")
+            dns_server_select_method = value.get("server-select-method", "")
+            dns_alt_primary = value.get("alt-primary", "")
+            dns_alt_secondary = value.get("alt-secondary", "")
+            dns_log_fqdn = value.get("log", "")
+
+            # Create a dictionary of the cleaned data
+            cleaned_dict = {
+                "hostname": device,
+                "dns_primary": dns_primary,
+                "dns_secondary": dns_secondary,
+                "protocol": dns_protocol,
+                "ssl_certificate": dns_ssl_certificate,
+                "server_hostname": dns_server_hostname,
+                "domain": dns_domain,
+                "ip6_primary": dns_ip6_primary,
+                "ip6_secondary": dns_ip6_secondary,
+                "timeout": dns_timeout,
+                "retry": dns_retry,
+                "cache_limit": dns_cache_limit,
+                "cache_ttl": dns_cache_ttl,
+                "source_ip": dns_source_ip,
+                "interface_select_method": dns_interface_select_method,
+                "interface": dns_interface,
+                "server_select_method": dns_server_select_method,
+                "alt_primary": dns_alt_primary,
+                "alt_secondary": dns_alt_secondary,
+                "log_fqdn": dns_log_fqdn,
+            }
+
+            # Append the dictionary to the cleaned_data list
+            cleaned_data.append(cleaned_dict)
+    return cleaned_data
+
+
 def clean_trafficshapers_data() -> List[Dict]:
     """
     Get the traffic shapers information from the get_fortigate_trafficshapers_info() function

@@ -299,6 +299,85 @@ def write_av_info():
     print("*" * 80)
 
 
+def write_dns_info():
+    """
+    Get the DNS information from the clean_dns_data() function and
+    write DNS information to the `dns` table in the database.
+    """
+    print("Updating DNS data in database")
+    cleaned_data = clean_dns_data()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        # Delete all existing entries from the dns table
+        cursor.execute("DELETE FROM dns")
+
+        # Insert cleaned DNS data into dns table
+        for dns in cleaned_data:
+            hostname = dns["hostname"]
+            dns_primary = dns["dns_primary"]
+            dns_secondary = dns["dns_secondary"]
+            protocol = dns["protocol"]
+            ssl_certificate = dns["ssl_certificate"]
+            server_hostname = dns["server_hostname"]
+            domain = dns["domain"]
+            ip6_primary = dns["ip6_primary"]
+            ip6_secondary = dns["ip6_secondary"]
+            timeout = dns["timeout"]
+            retry = dns["retry"]
+            cache_limit = dns["cache_limit"]
+            cache_ttl = dns["cache_ttl"]
+            source_ip = dns["source_ip"]
+            interface_select_method = dns["interface_select_method"]
+            interface = dns["interface"]
+            server_select_method = dns["server_select_method"]
+            alt_primary = dns["alt_primary"]
+            alt_secondary = dns["alt_secondary"]
+            log_fqdn = dns["log_fqdn"]
+
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+
+            cursor.execute(
+                """
+                INSERT INTO dns (
+                    device_id, primary_dns, secondary_dns, protocol, ssl_certificate, server_hostname, domain, ip6_primary, ip6_secondary, 
+                    dns_timeout, retry, cache_limit, cache_ttl, source_ip, interface_select_method, interface, server_select_method, 
+                    alt_primary, alt_secondary, log_fqdn
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    device_id,
+                    dns_primary,
+                    dns_secondary,
+                    protocol,
+                    ssl_certificate,
+                    server_hostname,
+                    domain,
+                    ip6_primary,
+                    ip6_secondary,
+                    timeout,
+                    retry,
+                    cache_limit,
+                    cache_ttl,
+                    source_ip,
+                    interface_select_method,
+                    interface,
+                    server_select_method,
+                    alt_primary,
+                    alt_secondary,
+                    log_fqdn,
+                ),
+            )
+
+            conn.commit()
+
+    print("DNS data updated successfully")
+    print("*" * 80)
+
+
 def write_dnsfilter_info():
     """
     Get the dnsfilter profile information from the clean_dnsfilter_data() function and

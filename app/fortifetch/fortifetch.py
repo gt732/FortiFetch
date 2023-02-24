@@ -57,6 +57,8 @@ class FortiFetch:
 
         db.write_trafficpolicy_info()
 
+        db.write_dns_info()
+
     @staticmethod
     def create_sql_database():
         db.create_database()

@@ -345,3 +345,28 @@ CREATE TABLE trafficpolicy (
     FOREIGN KEY (device_id) REFERENCES device(device_id),
     UNIQUE (name, device_id)
 );
+
+CREATE TABLE dns (
+    dns_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    primary_dns TEXT,
+    secondary_dns TEXT,
+    protocol TEXT,
+    ssl_certificate TEXT,
+    server_hostname TEXT,
+    domain TEXT,
+    ip6_primary TEXT,
+    ip6_secondary TEXT,
+    dns_timeout TEXT,
+    retry TEXT,
+    cache_limit TEXT,
+    cache_ttl TEXT,
+    source_ip TEXT,
+    interface_select_method TEXT,
+    interface TEXT,
+    server_select_method TEXT,
+    alt_primary TEXT,
+    alt_secondary TEXT,
+    log_fqdn TEXT,
+    device_id INTEGER,
+    FOREIGN KEY (device_id) REFERENCES device(device_id)
+);

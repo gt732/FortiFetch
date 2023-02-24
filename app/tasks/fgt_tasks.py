@@ -182,3 +182,11 @@ def get_fortigate_trafficpolicy_info() -> List[Dict]:
         traffic shapers policy data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/firewall/shaping-policy/")
+
+
+def get_fortigate_dns_info() -> List[Dict]:
+    """
+    Returns:
+        dns data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/system/dns/")
