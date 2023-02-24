@@ -378,6 +378,84 @@ def write_dns_info():
     print("*" * 80)
 
 
+def write_static_route_info():
+    """
+    Get the static route information from the clean_static_route_data() function and
+    write static route information to the `staticroute` table in the database.
+    """
+    print("Updating static route data in database")
+    cleaned_data = clean_static_route_data()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        # Delete all existing entries from the staticroute table
+        cursor.execute("DELETE FROM staticroute")
+
+        # Insert cleaned static route data into staticroute table
+        for route in cleaned_data:
+            hostname = route["hostname"]
+            seq_num = route["seq_num"]
+            status = route["status"]
+            dst = route["dst"]
+            src = route["src"]
+            gateway = route["gateway"]
+            distance = route["distance"]
+            weight = route["weight"]
+            priority = route["priority"]
+            device = route["device"]
+            comment = route["comment"]
+            blackhole = route["blackhole"]
+            dynamic_gateway = route["dynamic_gateway"]
+            sdwan_zone = route["sdwan_zone"]
+            dstaddr = route["dstaddr"]
+            internet_service = route["internet_service"]
+            internet_service_custom = route["internet_service_custom"]
+            tag = route["tag"]
+            vrf = route["vrf"]
+            bfd = route["bfd"]
+
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+
+            cursor.execute(
+                """
+                INSERT INTO staticroute (
+                    device_id, seq_num, status, dst, src, gateway, distance, weight, priority, device, comment, blackhole, dynamic_gateway, 
+                    sdwan_zone, dstaddr, internet_service, internet_service_custom, tag, vrf, bfd
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    device_id,
+                    seq_num,
+                    status,
+                    dst,
+                    src,
+                    gateway,
+                    distance,
+                    weight,
+                    priority,
+                    device,
+                    comment,
+                    blackhole,
+                    dynamic_gateway,
+                    sdwan_zone,
+                    dstaddr,
+                    internet_service,
+                    internet_service_custom,
+                    tag,
+                    vrf,
+                    bfd,
+                ),
+            )
+
+            conn.commit()
+
+    print("Static route data updated successfully")
+    print("*" * 80)
+
+
 def write_dnsfilter_info():
     """
     Get the dnsfilter profile information from the clean_dnsfilter_data() function and

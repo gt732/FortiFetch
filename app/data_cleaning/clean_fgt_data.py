@@ -584,6 +584,65 @@ def clean_dns_data() -> List[Dict]:
     return cleaned_data
 
 
+def clean_static_route_data() -> List[Dict]:
+    """
+    Get the static route information from the get_fortigate_static_route_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_static_route_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for route in value:
+                route_seq_num = route.get("seq-num", "")
+                route_status = route.get("status", "")
+                route_dst = route.get("dst", "")
+                route_src = route.get("src", "")
+                route_gateway = route.get("gateway", "")
+                route_distance = route.get("distance", "")
+                route_weight = route.get("weight", "")
+                route_priority = route.get("priority", "")
+                route_device = route.get("device", "")
+                route_comment = route.get("comment", "")
+                route_blackhole = route.get("blackhole", "")
+                route_dynamic_gateway = route.get("dynamic-gateway", "")
+                route_sdwan_zone = str(route.get("sdwan-zone", ""))
+                route_dstaddr = str(route.get("dstaddr", ""))
+                route_internet_service = str(route.get("internet-service", ""))
+                route_internet_service_custom = route.get("internet-service-custom", "")
+                route_tag = str(route.get("tag", ""))
+                route_vrf = str(route.get("vrf", ""))
+                route_bfd = route.get("bfd", "")
+
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "seq_num": route_seq_num,
+                    "status": route_status,
+                    "dst": route_dst,
+                    "src": route_src,
+                    "gateway": route_gateway,
+                    "distance": route_distance,
+                    "weight": route_weight,
+                    "priority": route_priority,
+                    "device": route_device,
+                    "comment": route_comment,
+                    "blackhole": route_blackhole,
+                    "dynamic_gateway": route_dynamic_gateway,
+                    "sdwan_zone": route_sdwan_zone,
+                    "dstaddr": route_dstaddr,
+                    "internet_service": route_internet_service,
+                    "internet_service_custom": route_internet_service_custom,
+                    "tag": route_tag,
+                    "vrf": route_vrf,
+                    "bfd": route_bfd,
+                }
+
+            # Append the dictionary to the cleaned_data list
+            cleaned_data.append(cleaned_dict)
+    return cleaned_data
+
+
 def clean_trafficshapers_data() -> List[Dict]:
     """
     Get the traffic shapers information from the get_fortigate_trafficshapers_info() function

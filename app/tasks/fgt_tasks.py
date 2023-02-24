@@ -190,3 +190,11 @@ def get_fortigate_dns_info() -> List[Dict]:
         dns data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/system/dns/")
+
+
+def get_fortigate_static_route_info() -> List[Dict]:
+    """
+    Returns:
+        static route data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/router/static/")

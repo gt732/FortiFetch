@@ -370,3 +370,28 @@ CREATE TABLE dns (
     device_id INTEGER,
     FOREIGN KEY (device_id) REFERENCES device(device_id)
 );
+
+CREATE TABLE staticroute (
+    static_route_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    seq_num INTEGER,
+    status TEXT,
+    dst TEXT,
+    src TEXT,
+    gateway TEXT,
+    distance INTEGER,
+    weight INTEGER,
+    priority INTEGER,
+    device TEXT,
+    comment TEXT,
+    blackhole TEXT,
+    dynamic_gateway TEXT,
+    sdwan_zone TEXT,
+    dstaddr TEXT,
+    internet_service TEXT,
+    internet_service_custom TEXT,
+    tag TEXT,
+    vrf TEXT,
+    bfd TEXT,
+    device_id INTEGER,
+    FOREIGN KEY (device_id) REFERENCES device(device_id)
+);
