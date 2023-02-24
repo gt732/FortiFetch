@@ -118,3 +118,11 @@ def get_fortigate_internetservice_info() -> List[Dict]:
         internet service profile data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/firewall/internet-service-name")
+
+
+def get_fortigate_ippool_info() -> List[Dict]:
+    """
+    Returns:
+        ippool data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/firewall/ippool/")

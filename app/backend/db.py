@@ -429,3 +429,87 @@ def write_internetservice_info():
 
     print("Internet service data updated successfully")
     print("*" * 80)
+
+
+def write_ippool_info():
+    """
+    Get the ippool information from the clean_ippool_data() function and
+    write ippool information to the `ippool` table in the database.
+    """
+    print("Updating ippool data in database")
+    cleaned_data = clean_ippool_data()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        for pool in cleaned_data:
+            hostname = pool["hostname"]
+            pool_name = pool["name"]
+            pool_type = pool["type"]
+            pool_startip = pool["startip"]
+            pool_endip = pool["endip"]
+            pool_startport = pool["startport"]
+            pool_endport = pool["endport"]
+            pool_source_startip = pool["source_startip"]
+            pool_source_endip = pool["source_endip"]
+            pool_arp_reply = pool["arp_reply"]
+            pool_arp_intf = pool["arp_intf"]
+            pool_associated_interface = pool["associated_interface"]
+            pool_comments = pool["comments"]
+
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+
+            cursor.execute(
+                """
+                INSERT OR IGNORE INTO ippool (
+                    device_id, name, type, start_ip, end_ip, startport, endport, source_start_ip, source_end_ip,
+                    arp_reply, arp_intf, associated_interface, comments
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+                (
+                    device_id,
+                    pool_name,
+                    pool_type,
+                    pool_startip,
+                    pool_endip,
+                    pool_startport,
+                    pool_endport,
+                    pool_source_startip,
+                    pool_source_endip,
+                    pool_arp_reply,
+                    pool_arp_intf,
+                    pool_associated_interface,
+                    pool_comments,
+                ),
+            )
+
+            cursor.execute(
+                """
+                UPDATE ippool
+                SET type=?, start_ip=?, end_ip=?, startport=?, endport=?, source_start_ip=?, source_end_ip=?,
+                arp_reply=?, arp_intf=?, associated_interface=?, comments=?
+                WHERE device_id=? AND name=?
+            """,
+                (
+                    pool_type,
+                    pool_startip,
+                    pool_endip,
+                    pool_startport,
+                    pool_endport,
+                    pool_source_startip,
+                    pool_source_endip,
+                    pool_arp_reply,
+                    pool_arp_intf,
+                    pool_associated_interface,
+                    pool_comments,
+                    device_id,
+                    pool_name,
+                ),
+            )
+
+            conn.commit()
+
+    print("Ippool data updated successfully")
+    print("*" * 80)

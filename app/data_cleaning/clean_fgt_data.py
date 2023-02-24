@@ -296,3 +296,49 @@ def clean_internetservice_data() -> List[Dict]:
                 # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
+
+
+def clean_ippool_data() -> List[Dict]:
+    """
+    Get the ippool information from the get_fortigate_ippool_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_ippool_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for ippool in value:
+                pool_name = ippool.get("name", "")
+                pool_type = ippool.get("type", "")
+                pool_startip = ippool.get("startip", "")
+                pool_endip = ippool.get("endip", "")
+                pool_startport = ippool.get("startport", "")
+                pool_endport = ippool.get("endport", "")
+                pool_source_startip = ippool.get("source-startip", "")
+                pool_source_endip = ippool.get("source-endip", "")
+                pool_arp_reply = ippool.get("arp-reply", "")
+                pool_arp_intf = ippool.get("arp-intf", "")
+                pool_associated_interface = ippool.get("associated-interface", "")
+                pool_comments = ippool.get("comments", "")
+
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "name": pool_name,
+                    "type": pool_type,
+                    "startip": pool_startip,
+                    "endip": pool_endip,
+                    "source_startip": pool_source_startip,
+                    "source_endip": pool_source_endip,
+                    "arp_reply": pool_arp_reply,
+                    "arp_intf": pool_arp_intf,
+                    "associated_interface": pool_associated_interface,
+                    "comments": pool_comments,
+                    "startport": pool_startport,
+                    "endport": pool_endport,
+                }
+                # Append the dictionary to the cleaned_data list
+                cleaned_data.append(cleaned_dict)
+
+                cleaned_data.append(cleaned_dict)
+    return cleaned_data
