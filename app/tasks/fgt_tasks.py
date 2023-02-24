@@ -134,3 +134,11 @@ def get_fortigate_ips_info() -> List[Dict]:
         ips data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/ips/sensor/")
+
+
+def get_fortigate_sslssh_info() -> List[Dict]:
+    """
+    Returns:
+        ssl/ssh profile data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/firewall/ssl-ssh-profile/")

@@ -25,8 +25,10 @@ def update_all_devices():
 
 
 @app.command()
-def delete():
-    print("Deleting user: Hiro Hamada")
+def clear_sql_database():
+    print("Clearing database: FortiFetch.db")
+    FortiFetch.clear_sql_database()
+    print("Database cleared: FortiFetch.db")
 
 
 if __name__ == "__main__":

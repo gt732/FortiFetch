@@ -18,6 +18,7 @@ CREATE TABLE interface (
   allowaccess TEXT,
   device_id INTEGER,
   FOREIGN KEY (device_id) REFERENCES device(device_id)
+  UNIQUE (name, device_id)
 );
 
 CREATE TABLE firewallpolicy (
@@ -41,7 +42,7 @@ CREATE TABLE firewallpolicy (
   dst_vip TEXT,
   schedule TEXT,
   service TEXT,
-  "utm-status" TEXT,
+  utm_status TEXT,
   nat TEXT,
   ippool TEXT,
   poolname TEXT,
@@ -71,6 +72,7 @@ CREATE TABLE firewallpolicy (
   FOREIGN KEY (internet_service_id) REFERENCES internetservice(internet_service_id),
   FOREIGN KEY (ippool_id) REFERENCES ippool(ippool_id),
   FOREIGN KEY (vip_id) REFERENCES vip(vip_id)
+  UNIQUE (name, device_id)
 );
 
 CREATE TABLE webprofile (
@@ -81,6 +83,7 @@ CREATE TABLE webprofile (
   "web ftgd-wf" TEXT,
   device_id INTEGER,
   FOREIGN KEY (device_id) REFERENCES device(device_id)
+  UNIQUE (name, device_id)
 );
 
 CREATE TABLE dnsprofile (
@@ -94,6 +97,7 @@ CREATE TABLE dnsprofile (
   youtube_restrict TEXT,
   device_id INTEGER,
   FOREIGN KEY (device_id) REFERENCES device(device_id)
+  UNIQUE (name, device_id)
 );
 
 CREATE TABLE appprofile (
@@ -103,6 +107,7 @@ CREATE TABLE appprofile (
   entries TEXT,
   device_id INTEGER,
   FOREIGN KEY (device_id) REFERENCES device(device_id)
+  UNIQUE (name, device_id)
 );
 
 CREATE TABLE ipsprofile (
@@ -115,24 +120,33 @@ CREATE TABLE ipsprofile (
   entries TEXT,
   device_id INTEGER,
   FOREIGN KEY (device_id) REFERENCES device(device_id)
+  UNIQUE (name, device_id)
 );
 
 CREATE TABLE sslsshprofile (
-sslsshprofile_id INTEGER PRIMARY KEY AUTOINCREMENT,
-name TEXT,
+allowlist TEXT,
+block_blocklisted_certificates TEXT,
+caname TEXT,
 comment TEXT,
-https TEXT,
-ftps TEXT,
-imaps TEXT,
-pop3s TEXT,
-smtps TEXT,
-ssh TEXT,
-"dot allowlist" TEXT,
-"ssl-exempt" TEXT,
-"rpc-over-https" TEXT,
-"ssl-exemption-log" TEXT,
 device_id INTEGER,
+dot TEXT,
+ftps TEXT,
+https TEXT,
+imaps TEXT,
+mapi_over_https TEXT,
+name TEXT,
+pop3s TEXT,
+rpc_over_https TEXT,
+smtps TEXT,
+ssl TEXT,
+ssl_exempt TEXT,
+ssl_exemption_ip_rating TEXT,
+ssl_server TEXT,
+ssh TEXT,
+untrusted_caname TEXT,
+sslsshprofile_id INTEGER PRIMARY KEY AUTOINCREMENT,
 FOREIGN KEY (device_id) REFERENCES device(device_id)
+UNIQUE (name, device_id)
 );
 
 CREATE TABLE avprofile (
@@ -151,7 +165,8 @@ ssh TEXT,
 nac_quar TEXT,
 content_disarm TEXT,
 device_id INTEGER,
-FOREIGN KEY (device_id) REFERENCES device(device_id)
+FOREIGN KEY (device_id) REFERENCES device(device_id),
+UNIQUE (name, device_id)
 );
 
 CREATE TABLE address (
@@ -165,7 +180,8 @@ fqdn TEXT,
 country TEXT,
 associated_interface TEXT,
 device_id INTEGER,
-FOREIGN KEY (device_id) REFERENCES device(device_id)
+FOREIGN KEY (device_id) REFERENCES device(device_id),
+UNIQUE (name, device_id)
 );
 
 CREATE TABLE addressgroup (
@@ -174,6 +190,7 @@ name TEXT,
 member TEXT,
 device_id INTEGER,
 FOREIGN KEY (device_id) REFERENCES device(device_id)
+UNIQUE (name, device_id)
 );
 
 CREATE TABLE address_group_member (
@@ -192,6 +209,7 @@ name TEXT,
 type TEXT,
 device_id INTEGER,
 FOREIGN KEY (device_id) REFERENCES device(device_id)
+UNIQUE (name, device_id)
 );
 
 CREATE TABLE ippool (
@@ -210,6 +228,7 @@ associated_interface TEXT,
 comments TEXT,
 device_id INTEGER,
 FOREIGN KEY (device_id) REFERENCES device(device_id)
+UNIQUE (name, device_id)
 );
 
 CREATE TABLE vip (

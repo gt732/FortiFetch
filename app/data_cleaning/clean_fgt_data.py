@@ -372,3 +372,64 @@ def clean_ips_data() -> List[Dict]:
                 # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
+
+
+def clean_sslssh_data() -> List[Dict]:
+    """
+    Get the ssl/ssh profile information from the get_fortigate_sslssh_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_sslssh_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for sslssh in value:
+                sslssh_name = sslssh.get("name", "")
+                sslssh_comment = sslssh.get("comment", "")
+                sslssh_ssl = str(sslssh.get("ssl", ""))
+                sslssh_https = str(sslssh.get("https", ""))
+                sslssh_ftps = str(sslssh.get("ftps", ""))
+                sslssh_imaps = str(sslssh.get("imaps", ""))
+                sslssh_pop3s = str(sslssh.get("pop3s", ""))
+                sslssh_smtps = str(sslssh.get("smtps", ""))
+                sslssh_ssh = str(sslssh.get("ssh", ""))
+                sslssh_dot = str(sslssh.get("dot", ""))
+                sslssh_allowlist = sslssh.get("allowlist", "")
+                sslssh_block_blocklisted_certificates = sslssh.get(
+                    "block-blocklisted-certificates", ""
+                )
+                sslssh_exempt = str(sslssh.get("ssl-exempt", ""))
+                sslssh_exemption_ip_rating = sslssh.get("ssl-exemption-ip-rating", "")
+                sslssh_ssl_server = str(sslssh.get("ssl-server", ""))
+                sshssh_caname = sslssh.get("caname", "")
+                sslssh_mapi_over_https = sslssh.get("mapi-over-https", "")
+                sslssh_rpc_over_https = sslssh.get("rpc-over-https", "")
+                sslssh_untrusted_caname = sslssh.get("untrusted-caname", "")
+
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "name": sslssh_name,
+                    "comment": sslssh_comment,
+                    "ssl": sslssh_ssl,
+                    "https": sslssh_https,
+                    "ftps": sslssh_ftps,
+                    "imaps": sslssh_imaps,
+                    "pop3s": sslssh_pop3s,
+                    "smtps": sslssh_smtps,
+                    "ssh": sslssh_ssh,
+                    "dot": sslssh_dot,
+                    "allowlist": sslssh_allowlist,
+                    "block_blocklisted_certificates": sslssh_block_blocklisted_certificates,
+                    "ssl_exempt": sslssh_exempt,
+                    "ssl_exemption_ip_rating": sslssh_exemption_ip_rating,
+                    "ssl_server": sslssh_ssl_server,
+                    "caname": sshssh_caname,
+                    "mapi_over_https": sslssh_mapi_over_https,
+                    "rpc_over_https": sslssh_rpc_over_https,
+                    "untrusted_caname": sslssh_untrusted_caname,
+                }
+
+                # Append the dictionary to the cleaned_data list
+                cleaned_data.append(cleaned_dict)
+    return cleaned_data

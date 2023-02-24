@@ -44,6 +44,12 @@ class FortiFetch:
 
         db.write_ips_info()
 
+        db.write_sslssh_info()
+
     @staticmethod
     def create_sql_database():
         db.create_database()
+
+    @staticmethod
+    def clear_sql_database():
+        db.clear_database()
