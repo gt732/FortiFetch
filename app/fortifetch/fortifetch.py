@@ -69,6 +69,8 @@ class FortiFetch:
 
         db.write_fortiguard_info()
 
+        db.write_admin_info()
+
     @staticmethod
     def create_sql_database():
         db.create_database()

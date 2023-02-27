@@ -529,3 +529,42 @@ CREATE TABLE fortiguard (
     device_id INTEGER,
     FOREIGN KEY (device_id) REFERENCES device(device_id)
 );
+
+
+CREATE TABLE admin (
+admin_id INTEGER PRIMARY KEY AUTOINCREMENT,
+name TEXT,
+wildcard TEXT,
+remote_auth TEXT,
+remote_group TEXT,
+trusthost1 TEXT,
+trusthost2 TEXT,
+trusthost3 TEXT,
+trusthost4 TEXT,
+trusthost5 TEXT,
+trusthost6 TEXT,
+trusthost7 TEXT,
+trusthost8 TEXT,
+trusthost9 TEXT,
+trusthost10 TEXT,
+ip6_trusthost1 TEXT,
+ip6_trusthost2 TEXT,
+ip6_trusthost3 TEXT,
+ip6_trusthost4 TEXT,
+ip6_trusthost5 TEXT,
+ip6_trusthost6 TEXT,
+ip6_trusthost7 TEXT,
+ip6_trusthost8 TEXT,
+ip6_trusthost9 TEXT,
+ip6_trusthost10 TEXT,
+accprofile TEXT,
+allow_remove_admin_session TEXT,
+comments TEXT,
+vdoms TEXT,
+force_password_change TEXT,
+two_factor TEXT,
+two_factor_authentication TEXT,
+two_factor_notification TEXT,
+device_id INTEGER,
+FOREIGN KEY (device_id) REFERENCES device(device_id)
+);

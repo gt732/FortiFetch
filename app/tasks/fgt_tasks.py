@@ -230,3 +230,11 @@ def get_fortigate_fortiguard_info() -> List[Dict]:
         fortiguard data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/system/fortiguard/")
+
+
+def get_fortigate_admin_info() -> List[Dict]:
+    """
+    Returns:
+        admin data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/system/admin/")

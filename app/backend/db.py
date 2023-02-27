@@ -97,6 +97,107 @@ def write_device_info():
     print("*" * 80)
 
 
+def write_admin_info():
+    """
+    Get the admin information from the clean_admin_data() function and
+    Write admin information to the `admin` table in the database
+    """
+    print("Updating admin in database")
+    admin_info = clean_admin_data()
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM admin")
+        for admin in admin_info:
+            device = admin["hostname"]
+            admin_name = admin["name"]
+            admin_wildcard = admin["wildcard"]
+            admin_remote_auth = admin["remote-auth"]
+            admin_remote_group = admin["remote-group"]
+            admin_trusthost1 = admin["trusthost1"]
+            admin_trusthost2 = admin["trusthost2"]
+            admin_trusthost3 = admin["trusthost3"]
+            admin_trusthost4 = admin["trusthost4"]
+            admin_trusthost5 = admin["trusthost5"]
+            admin_trusthost6 = admin["trusthost6"]
+            admin_trusthost7 = admin["trusthost7"]
+            admin_trusthost8 = admin["trusthost8"]
+            admin_trusthost9 = admin["trusthost9"]
+            admin_trusthost10 = admin["trusthost10"]
+            admin_ip6_trusthost1 = admin["ip6-trusthost1"]
+            admin_ip6_trusthost2 = admin["ip6-trusthost2"]
+            admin_ip6_trusthost3 = admin["ip6-trusthost3"]
+            admin_ip6_trusthost4 = admin["ip6-trusthost4"]
+            admin_ip6_trusthost5 = admin["ip6-trusthost5"]
+            admin_ip6_trusthost6 = admin["ip6-trusthost6"]
+            admin_ip6_trusthost7 = admin["ip6-trusthost7"]
+            admin_ip6_trusthost8 = admin["ip6-trusthost8"]
+            admin_ip6_trusthost9 = admin["ip6-trusthost9"]
+            admin_ip6_trusthost10 = admin["ip6-trusthost10"]
+            admin_accprofile = admin["accprofile"]
+            admin_allow_remove_admin_session = admin["allow-remove-admin-session"]
+            admin_comments = admin["comments"]
+            admin_vdoms = admin["vdoms"]
+            admin_force_password_change = admin["force-password-change"]
+            admin_two_factor = admin["two-factor"]
+            admin_two_factor_authentication = admin["two-factor-authentication"]
+            admin_two_factor_notification = admin["two-factor-notification"]
+
+            # Get device ID
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (device,))
+            device_id = cursor.fetchone()[0]
+
+            # Insert admin information into the database
+            cursor.execute(
+                """
+            INSERT INTO admin (
+            device_id,name,wildcard,remote_auth,remote_group,trusthost1,trusthost2,trusthost3,trusthost4,trusthost5,trusthost6,
+            trusthost7,trusthost8,trusthost9,trusthost10,ip6_trusthost1,ip6_trusthost2,ip6_trusthost3,ip6_trusthost4,ip6_trusthost5,ip6_trusthost6,ip6_trusthost7,
+            ip6_trusthost8,ip6_trusthost9,ip6_trusthost10,accprofile,allow_remove_admin_session,comments,vdoms,force_password_change,two_factor,two_factor_authentication,two_factor_notification
+            ) 
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+            )
+            """,
+                (
+                    device_id,
+                    admin_name,
+                    admin_wildcard,
+                    admin_remote_auth,
+                    admin_remote_group,
+                    admin_trusthost1,
+                    admin_trusthost2,
+                    admin_trusthost3,
+                    admin_trusthost4,
+                    admin_trusthost5,
+                    admin_trusthost6,
+                    admin_trusthost7,
+                    admin_trusthost8,
+                    admin_trusthost9,
+                    admin_trusthost10,
+                    admin_ip6_trusthost1,
+                    admin_ip6_trusthost2,
+                    admin_ip6_trusthost3,
+                    admin_ip6_trusthost4,
+                    admin_ip6_trusthost5,
+                    admin_ip6_trusthost6,
+                    admin_ip6_trusthost7,
+                    admin_ip6_trusthost8,
+                    admin_ip6_trusthost9,
+                    admin_ip6_trusthost10,
+                    admin_accprofile,
+                    admin_allow_remove_admin_session,
+                    admin_comments,
+                    admin_vdoms,
+                    admin_force_password_change,
+                    admin_two_factor,
+                    admin_two_factor_authentication,
+                    admin_two_factor_notification,
+                ),
+            )
+            conn.commit()
+    print("Admin information updated successfully")
+    print("*" * 80)
+
+
 def write_fortiguard_info():
     """
     Get the fortiguard information from the clean_fortiguard_data() function and
@@ -1099,7 +1200,6 @@ def write_sslssh_info():
             rpc_over_https = profile["rpc_over_https"]
             untrusted_caname = profile["untrusted_caname"]
 
-            # Get the device_id for the current hostname
             cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
             result = cursor.fetchone()
             if result:
@@ -1108,7 +1208,6 @@ def write_sslssh_info():
                 print(f"Device with hostname {hostname} not found.")
                 continue
 
-            # Insert the SSL/SSH profile information for the current device and profile name
             cursor.execute(
                 """
                 INSERT INTO sslsshprofile (
@@ -1160,10 +1259,8 @@ def write_vip_info():
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
 
-        # Delete all existing entries from vip table
         cursor.execute("DELETE FROM vip")
 
-        # Insert cleaned VIP data into vip table
         for vip in cleaned_data:
             hostname = vip["hostname"]
             name = vip["name"]
@@ -1185,7 +1282,6 @@ def write_vip_info():
             portmapping_type = vip["portmapping_type"]
             realservers = vip["realservers"]
 
-            # Get the device_id for the current hostname
             cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
             result = cursor.fetchone()
             if result:
@@ -1194,7 +1290,6 @@ def write_vip_info():
                 print(f"Device with hostname {hostname} not found.")
                 continue
 
-            # Insert the VIP information for the current device
             cursor.execute(
                 """
                 INSERT INTO vip (
@@ -1244,10 +1339,8 @@ def write_webfilter_info():
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
 
-        # Delete all existing entries from webprofile table
         cursor.execute("DELETE FROM webprofile")
 
-        # Insert cleaned webfilter data into webprofile table
         for profile in cleaned_data:
             hostname = profile["hostname"]
             webfilter_name = profile["name"]
