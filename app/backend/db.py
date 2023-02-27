@@ -97,6 +97,186 @@ def write_device_info():
     print("*" * 80)
 
 
+def write_fortiguard_info():
+    """
+    Get the fortiguard information from the clean_fortiguard_data() function and
+    Write fortiguard information to the `fortiguard` table in the database
+    """
+    print("Updating device fortiguard in database")
+    fortiguard_info = clean_fortiguard_data()
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM fortiguard")
+        for device in fortiguard_info:
+            hostname = device["hostname"]
+            forti_fortiguard_anycast = device["fortiguard_anycast"]
+            forti_fortiguard_anycast_source = device["fortiguard_anycast_source"]
+            forti_protocol = device["protocol"]
+            forti_port = device["port"]
+            forti_forti_service_account_id = device["forti_forti_service_account_id"]
+            forti_forti_load_balace_servers = device["forti_forti_load_balace_servers"]
+            forti_forti_auto_join_forticloud = device[
+                "forti_forti_auto_join_forticloud"
+            ]
+            forti_forti_update_server_location = device[
+                "forti_forti_update_server_location"
+            ]
+            forti_sandbox_inline_scan = device["forti_sandbox_inline_scan"]
+            forti_update_ffdb = device["forti_update_ffdb"]
+            forti_update_uwdb = device["forti_update_uwdb"]
+            forti_update_extdb = device["forti_update_extdb"]
+            forti_update_build_proxy = device["forti_update_build_proxy"]
+            forti_persistent_connection = device["forti_persistent_connection"]
+            forti_vdom = device["forti_vdom"]
+            forti_auto_firmware_upgrade = device["forti_auto_firmware_upgrade"]
+            forti_auto_firmware_upgrade_day = device["forti_auto_firmware_upgrade_day"]
+            forti_auto_firmware_upgrade_start_hour = device[
+                "forti_auto_firmware_upgrade_start_hour"
+            ]
+            forti_auto_firmware_upgrade_end_hour = device[
+                "forti_auto_firmware_upgrade_end_hour"
+            ]
+            forti_antispam_force_off = device["forti_antispam_force_off"]
+            forti_antispam_cache = device["forti_antispam_cache"]
+            forti_antispam_cache_ttl = device["forti_antispam_cache_ttl"]
+            forti_antispam_cache_mpercent = device["forti_antispam_cache_mpercent"]
+            forti_antispam_license = device["forti_antispam_license"]
+            forti_antispam_expiration = device["forti_antispam_expiration"]
+            forti_antispam_timeout = device["forti_antispam_timeout"]
+            forti_outbreak_prevention_force_off = device[
+                "forti_outbreak_prevention_force_off"
+            ]
+            forti_outbreak_prevention_cache = device["forti_outbreak_prevention_cache"]
+            forti_outbreak_prevention_cache_ttl = device[
+                "forti_outbreak_prevention_cache_ttl"
+            ]
+            forti_outbreak_prevention_cache_mpercent = device[
+                "forti_outbreak_prevention_cache_mpercent"
+            ]
+            forti_outbreak_prevention_license = device[
+                "forti_outbreak_prevention_license"
+            ]
+            forti_outbreak_prevention_expiration = device[
+                "forti_outbreak_prevention_expiration"
+            ]
+            forti_outbreak_prevention_timeout = device[
+                "forti_outbreak_prevention_timeout"
+            ]
+            forti_webfilter_force_off = device["forti_webfilter_force_off"]
+            forti_webfilter_cache = device["forti_webfilter_cache"]
+            forti_webfilter_cache_ttl = device["forti_webfilter_cache_ttl"]
+            forti_webfilter_license = device["forti_webfilter_license"]
+            forti_webfilter_expiration = device["forti_webfilter_expiration"]
+            forti_webfilter_timeout = device["forti_webfilter_timeout"]
+            forti_sdns_server_ip = device["forti_sdns_server_ip"]
+            forti_sdns_server_port = device["forti_sdns_server_port"]
+            forti_anycast_sdns_server_ip = device["forti_anycast_sdns_server_ip"]
+            forti_anycast_sdns_server_port = device["forti_anycast_sdns_server_port"]
+            forti_sdns_options = device["forti_sdns_options"]
+            forti_source_ip = device["forti_source_ip"]
+            forti_source_ip6 = device["forti_source_ip6"]
+            forti_proxy_server_ip = device["forti_proxy_server_ip"]
+            forti_proxy_server_port = device["forti_proxy_server_port"]
+            forti_proxy_username = device["forti_proxy_username"]
+            forti_proxy_password = device["forti_proxy_password"]
+            forti_ddns_server_ip = device["forti_ddns_server_ip"]
+            forti_ddns_server_ip6 = device["forti_ddns_server_ip6"]
+            forti_ddns_server_port = device["forti_ddns_server_port"]
+            forti_interface_select_method = device["forti_interface_select_method"]
+            forti_interface = device["forti_interface"]
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+            cursor.execute(
+                """
+                INSERT INTO fortiguard (
+                device_id, fortiguard_anycast, fortiguard_anycast_source, protocol, port, load_balace_servers,
+                auto_join_forticloud, update_server_location,
+                sandbox_region, sandbox_inline_scan, update_ffdb,
+                update_uwdb, update_extdb, update_build_proxy,
+                persistent_connection, vdom, auto_firmware_upgrade,
+                auto_firmware_upgrade_day, auto_firmware_upgrade_start_hour,
+                auto_firmware_upgrade_end_hour, antispam_force_off,
+                antispam_cache, antispam_cache_ttl,
+                antispam_cache_mpercent, antispam_license,
+                antispam_expiration, antispam_timeout,
+                outbreak_prevention_force_off, outbreak_prevention_cache,
+                outbreak_prevention_cache_ttl, outbreak_prevention_cache_mpercent,
+                outbreak_prevention_license, outbreak_prevention_expiration,
+                outbreak_prevention_timeout, webfilter_force_off,
+                webfilter_cache, webfilter_cache_ttl, webfilter_license,
+                webfilter_expiration, webfilter_timeout, sdns_server_ip,
+                sdns_server_port, anycast_sdns_server_ip, anycast_sdns_server_port,
+                sdns_options, source_ip, source_ip6, proxy_server_ip,
+                proxy_server_port, proxy_username, proxy_password,
+                ddns_server_ip, ddns_server_ip6, ddns_server_port,
+                interface_select_method, interface
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    device_id,
+                    forti_fortiguard_anycast,
+                    forti_fortiguard_anycast_source,
+                    forti_protocol,
+                    forti_port,
+                    forti_forti_service_account_id,
+                    forti_forti_load_balace_servers,
+                    forti_forti_auto_join_forticloud,
+                    forti_forti_update_server_location,
+                    forti_sandbox_inline_scan,
+                    forti_update_ffdb,
+                    forti_update_uwdb,
+                    forti_update_extdb,
+                    forti_update_build_proxy,
+                    forti_persistent_connection,
+                    forti_vdom,
+                    forti_auto_firmware_upgrade,
+                    forti_auto_firmware_upgrade_day,
+                    forti_auto_firmware_upgrade_start_hour,
+                    forti_auto_firmware_upgrade_end_hour,
+                    forti_antispam_force_off,
+                    forti_antispam_cache,
+                    forti_antispam_cache_ttl,
+                    forti_antispam_cache_mpercent,
+                    forti_antispam_license,
+                    forti_antispam_expiration,
+                    forti_antispam_timeout,
+                    forti_outbreak_prevention_force_off,
+                    forti_outbreak_prevention_cache,
+                    forti_outbreak_prevention_cache_ttl,
+                    forti_outbreak_prevention_cache_mpercent,
+                    forti_outbreak_prevention_license,
+                    forti_outbreak_prevention_expiration,
+                    forti_outbreak_prevention_timeout,
+                    forti_webfilter_force_off,
+                    forti_webfilter_cache,
+                    forti_webfilter_cache_ttl,
+                    forti_webfilter_license,
+                    forti_webfilter_expiration,
+                    forti_webfilter_timeout,
+                    forti_sdns_server_ip,
+                    forti_sdns_server_port,
+                    forti_anycast_sdns_server_ip,
+                    forti_anycast_sdns_server_port,
+                    forti_sdns_options,
+                    forti_source_ip,
+                    forti_source_ip6,
+                    forti_proxy_server_ip,
+                    forti_proxy_server_port,
+                    forti_proxy_username,
+                    forti_proxy_password,
+                    forti_ddns_server_ip,
+                    forti_ddns_server_ip6,
+                    forti_ddns_server_port,
+                    forti_interface_select_method,
+                    forti_interface,
+                ),
+            )
+            conn.commit()
+    print(f"Interface information updated successfully")
+    print("*" * 80)
+
+
 def write_interface_info():
     """
     Get the interface information from the clean_interface_data() function and

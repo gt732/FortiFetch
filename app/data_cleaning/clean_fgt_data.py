@@ -750,6 +750,153 @@ def clean_snmpv3_data() -> List[Dict]:
     return cleaned_data
 
 
+def clean_fortiguard_data() -> List[Dict]:
+    """
+    Get the fortiguard information from the get_fortigate_fortiguard_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_fortiguard_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            forti_fortiguard_anycast = value.get("fortiguard-anycast", "")
+            forti_fortiguard_anycast_source = value.get("fortiguard-anycast-source", "")
+            forti_protocol = value.get("protocol", "")
+            forti_port = value.get("port", "")
+            forti_forti_service_account_id = value.get("service-account-id", "")
+            forti_forti_load_balace_servers = str(value.get("load-balance-servers", ""))
+            forti_forti_auto_join_forticloud = value.get("auto-join-forticloud", "")
+            forti_forti_update_server_location = value.get("update-server-location", "")
+            forti_sandbox_region = value.get("sandbox-region", "")
+            forti_sandbox_inline_scan = value.get("sandbox-inline-scan", "")
+            forti_update_ffdb = value.get("update-ffdb", "")
+            forti_update_uwdb = value.get("update-uwdb", "")
+            forti_update_extdb = value.get("update-extdb", "")
+            forti_update_build_proxy = value.get("update-build-proxy", "")
+            forti_persistent_connection = value.get("persistent-connection", "")
+            forti_vdom = value.get("vdom", "")
+            forti_auto_firmware_upgrade = value.get("auto-firmware-upgrade", "")
+            forti_auto_firmware_upgrade_day = value.get("auto-firmware-upgrade-day", "")
+            forti_auto_firmware_upgrade_start_hour = value.get(
+                "auto-firmware-upgrade-start-hour", ""
+            )
+            forti_auto_firmware_upgrade_end_hour = value.get(
+                "auto-firmware-upgrade-end-hour", ""
+            )
+            forti_antispam_force_off = value.get("antispam-force-off", "")
+            forti_antispam_cache = value.get("antispam-cache", "")
+            forti_antispam_cache_ttl = value.get("antispam-cache-ttl", "")
+            forti_antispam_cache_mpercent = value.get("antispam-cache-mpercent", "")
+            forti_antispam_license = value.get("antispam-license", "")
+            forti_antispam_expiration = value.get("antispam-expiration", "")
+            forti_antispam_timeout = value.get("antispam-timeout", "")
+            forti_outbreak_prevention_force_off = value.get(
+                "outbreak-prevention-force-off", ""
+            )
+            forti_outbreak_prevention_cache = value.get("outbreak-prevention-cache", "")
+            forti_outbreak_prevention_cache_ttl = value.get(
+                "outbreak-prevention-cache-ttl", ""
+            )
+            forti_outbreak_prevention_cache_mpercent = value.get(
+                "outbreak-prevention-cache-mpercent", ""
+            )
+            forti_outbreak_prevention_license = value.get(
+                "outbreak-prevention-license", ""
+            )
+            forti_outbreak_prevention_expiration = value.get(
+                "outbreak-prevention-expiration", ""
+            )
+            forti_outbreak_prevention_timeout = value.get(
+                "outbreak-prevention-timeout", ""
+            )
+            forti_webfilter_force_off = value.get("webfilter-force-off", "")
+            forti_webfilter_cache = value.get("webfilter-cache", "")
+            forti_webfilter_cache_ttl = value.get("webfilter-cache-ttl", "")
+            forti_webfilter_license = value.get("webfilter-license", "")
+            forti_webfilter_expiration = value.get("webfilter-expiration", "")
+            forti_webfilter_timeout = value.get("webfilter-timeout", "")
+            forti_sdns_server_ip = value.get("sdns-server-ip", "")
+            forti_sdns_server_port = value.get("sdns-server-port", "")
+            forti_anycast_sdns_server_ip = value.get("anycast-sdns-server-ip", "")
+            forti_anycast_sdns_server_port = value.get("anycast-sdns-server-port", "")
+            forti_sdns_options = value.get("sdns-options", "")
+            forti_source_ip = value.get("source-ip", "")
+            forti_source_ip6 = value.get("source-ip6", "")
+            forti_proxy_server_ip = value.get("proxy-server-ip", "")
+            forti_proxy_server_port = value.get("proxy-server-port", "")
+            forti_proxy_username = value.get("proxy-username", "")
+            forti_proxy_password = value.get("proxy-password", "")
+            forti_ddns_server_ip = value.get("ddns-server-ip", "")
+            forti_ddns_server_ip6 = value.get("ddns-server-ip6", "")
+            forti_ddns_server_port = value.get("ddns-server-port", "")
+            forti_interface_select_method = value.get("interface-select-method", "")
+            forti_interface = value.get("interface", "")
+
+            # Create a dictionary of the cleaned data
+            cleaned_dict = {
+                "hostname": device,
+                "fortiguard_anycast": forti_fortiguard_anycast,
+                "fortiguard_anycast_source": forti_fortiguard_anycast_source,
+                "protocol": forti_protocol,
+                "port": forti_port,
+                "forti_forti_service_account_id": forti_forti_service_account_id,
+                "forti_forti_load_balace_servers": forti_forti_load_balace_servers,
+                "forti_forti_auto_join_forticloud": forti_forti_auto_join_forticloud,
+                "forti_forti_update_server_location": forti_forti_update_server_location,
+                "forti_sandbox_region": forti_sandbox_region,
+                "forti_sandbox_inline_scan": forti_sandbox_inline_scan,
+                "forti_update_ffdb": forti_update_ffdb,
+                "forti_update_uwdb": forti_update_uwdb,
+                "forti_update_extdb": forti_update_extdb,
+                "forti_update_build_proxy": forti_update_build_proxy,
+                "forti_persistent_connection": forti_persistent_connection,
+                "forti_vdom": forti_vdom,
+                "forti_auto_firmware_upgrade": forti_auto_firmware_upgrade,
+                "forti_auto_firmware_upgrade_day": forti_auto_firmware_upgrade_day,
+                "forti_auto_firmware_upgrade_start_hour": forti_auto_firmware_upgrade_start_hour,
+                "forti_auto_firmware_upgrade_end_hour": forti_auto_firmware_upgrade_end_hour,
+                "forti_antispam_force_off": forti_antispam_force_off,
+                "forti_antispam_cache": forti_antispam_cache,
+                "forti_antispam_cache_ttl": forti_antispam_cache_ttl,
+                "forti_antispam_cache_mpercent": forti_antispam_cache_mpercent,
+                "forti_antispam_license": forti_antispam_license,
+                "forti_antispam_expiration": forti_antispam_expiration,
+                "forti_antispam_timeout": forti_antispam_timeout,
+                "forti_outbreak_prevention_force_off": forti_outbreak_prevention_force_off,
+                "forti_outbreak_prevention_cache": forti_outbreak_prevention_cache,
+                "forti_outbreak_prevention_cache_ttl": forti_outbreak_prevention_cache_ttl,
+                "forti_outbreak_prevention_cache_mpercent": forti_outbreak_prevention_cache_mpercent,
+                "forti_outbreak_prevention_license": forti_outbreak_prevention_license,
+                "forti_outbreak_prevention_expiration": forti_outbreak_prevention_expiration,
+                "forti_outbreak_prevention_timeout": forti_outbreak_prevention_timeout,
+                "forti_webfilter_force_off": forti_webfilter_force_off,
+                "forti_webfilter_cache": forti_webfilter_cache,
+                "forti_webfilter_cache_ttl": forti_webfilter_cache_ttl,
+                "forti_webfilter_license": forti_webfilter_license,
+                "forti_webfilter_expiration": forti_webfilter_expiration,
+                "forti_webfilter_timeout": forti_webfilter_timeout,
+                "forti_sdns_server_ip": forti_sdns_server_ip,
+                "forti_sdns_server_port": forti_sdns_server_port,
+                "forti_anycast_sdns_server_ip": forti_anycast_sdns_server_ip,
+                "forti_anycast_sdns_server_port": forti_anycast_sdns_server_port,
+                "forti_sdns_options": forti_sdns_options,
+                "forti_source_ip": forti_source_ip,
+                "forti_source_ip6": forti_source_ip6,
+                "forti_proxy_server_ip": forti_proxy_server_ip,
+                "forti_proxy_server_port": forti_proxy_server_port,
+                "forti_proxy_username": forti_proxy_username,
+                "forti_proxy_password": forti_proxy_password,
+                "forti_ddns_server_ip": forti_ddns_server_ip,
+                "forti_ddns_server_ip6": forti_ddns_server_ip6,
+                "forti_ddns_server_port": forti_ddns_server_port,
+                "forti_interface_select_method": forti_interface_select_method,
+                "forti_interface": forti_interface,
+            }
+            # Append the dictionary to the cleaned_data list
+            cleaned_data.append(cleaned_dict)
+    return cleaned_data
+
+
 def clean_policy_route_data() -> List[Dict]:
     """
     Get the policy route information from the get_fortigate_policy_route_info() function

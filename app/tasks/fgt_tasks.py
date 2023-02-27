@@ -222,3 +222,11 @@ def get_fortigate_snmpv3_info() -> List[Dict]:
         snmpv3 data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/system.snmp/user/")
+
+
+def get_fortigate_fortiguard_info() -> List[Dict]:
+    """
+    Returns:
+        fortiguard data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/system/fortiguard/")

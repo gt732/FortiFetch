@@ -67,6 +67,8 @@ class FortiFetch:
 
         db.write_snmpv3_info()
 
+        db.write_fortiguard_info()
+
     @staticmethod
     def create_sql_database():
         db.create_database()
