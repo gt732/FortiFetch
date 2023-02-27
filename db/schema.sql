@@ -568,3 +568,32 @@ two_factor_notification TEXT,
 device_id INTEGER,
 FOREIGN KEY (device_id) REFERENCES device(device_id)
 );
+
+CREATE TABLE adminprofile (
+    adminprofile_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    scope TEXT,
+    comments TEXT,
+    ftviewgrp TEXT,
+    authgrp TEXT,
+    sysgrp TEXT,
+    netgrp TEXT,
+    loggrp TEXT,
+    fwgrp TEXT,
+    vpngrp TEXT,
+    utmgrp TEXT,
+    wanoptgrp TEXT,
+    wifi TEXT,
+    netgrp_permission TEXT,
+    sysgrp_permission TEXT,
+    fwgrp_permission TEXT,
+    loggrp_permission TEXT,
+    utmgrp_permission TEXT,
+    admintimeout_override TEXT,
+    admintimeout INTEGER,
+    systemdiagnostics TEXT,
+    system_execute_ssh TEXT,
+    system_execute_telnet TEXT,
+    device_id INTEGER,
+    FOREIGN KEY (device_id) REFERENCES device(device_id)
+);

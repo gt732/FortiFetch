@@ -71,6 +71,8 @@ class FortiFetch:
 
         db.write_admin_info()
 
+        db.write_adminprofile_info()
+
     @staticmethod
     def create_sql_database():
         db.create_database()

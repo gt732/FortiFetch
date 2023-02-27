@@ -216,6 +216,72 @@ def clean_address_data() -> List[Dict]:
     return cleaned_data
 
 
+def clean_admin_profile_data() -> List[Dict]:
+    """
+    Get the admin profile information from the get_fortigate_admin_profile_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_admin_profile_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for admin in value:
+                admin_name = admin.get("name", "")
+                admin_scope = admin.get("scope", "")
+                admin_comments = admin.get("comments", "")
+                admin_ftviewgrp = admin.get("ftviewgrp", "")
+                admin_authgrp = admin.get("authgrp", "")
+                admin_sysgrp = admin.get("sysgrp", "")
+                admin_netgrp = admin.get("netgrp", "")
+                admin_loggrp = admin.get("loggrp", "")
+                admin_fwgrp = admin.get("fwgrp", "")
+                admin_vpngrp = admin.get("vpngrp", "")
+                admin_utmgrp = admin.get("utmgrp", "")
+                admin_wanoptgrp = admin.get("wanoptgrp", "")
+                admin_wifi = admin.get("wifi", "")
+                admin_netgrp_permission = str(admin.get("netgrp-permission", ""))
+                admin_sysgrp_permission = str(admin.get("sysgrp-permission", ""))
+                admin_fwgrp_permission = str(admin.get("fwgrp-permission", ""))
+                admin_loggrp_permission = str(admin.get("loggrp-permission", ""))
+                admin_utmgrpu_permission = str(admin.get("utmgrp-permission", ""))
+                admin_admintimeout_override = admin.get("admintimeout-override", "")
+                admin_admintimeout = admin.get("admintimeout", "")
+                admin_systemdiagnostics = admin.get("systemdiagnostics", "")
+                admin_system_execute_ssh = admin.get("system_execute_ssh", "")
+                admin_system_execute_telnet = admin.get("system_execute_telnet", "")
+
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "name": admin_name,
+                    "scope": admin_scope,
+                    "comments": admin_comments,
+                    "ftviewgrp": admin_ftviewgrp,
+                    "authgrp": admin_authgrp,
+                    "sysgrp": admin_sysgrp,
+                    "netgrp": admin_netgrp,
+                    "loggrp": admin_loggrp,
+                    "fwgrp": admin_fwgrp,
+                    "vpngrp": admin_vpngrp,
+                    "utmgrp": admin_utmgrp,
+                    "wanoptgrp": admin_wanoptgrp,
+                    "wifi": admin_wifi,
+                    "netgrp_permission": admin_netgrp_permission,
+                    "sysgrp_permission": admin_sysgrp_permission,
+                    "fwgrp_permission": admin_fwgrp_permission,
+                    "loggrp_permission": admin_loggrp_permission,
+                    "utmgrp_permission": admin_utmgrpu_permission,
+                    "admintimeout_override": admin_admintimeout_override,
+                    "admintimeout": admin_admintimeout,
+                    "systemdiagnostics": admin_systemdiagnostics,
+                    "system_execute_ssh": admin_system_execute_ssh,
+                    "system_execute_telnet": admin_system_execute_telnet,
+                }
+                # Append the dictionary to the cleaned_data list
+                cleaned_data.append(cleaned_dict)
+    return cleaned_data
+
+
 def clean_address_group_data() -> List[Dict]:
     """
     Get the address group information from the get_fortigate_interface_info() function

@@ -238,3 +238,11 @@ def get_fortigate_admin_info() -> List[Dict]:
         admin data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/system/admin/")
+
+
+def get_fortigate_admin_profile_info() -> List[Dict]:
+    """
+    Returns:
+        admin profile data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/system/accprofile/")

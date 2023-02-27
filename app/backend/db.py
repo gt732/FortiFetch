@@ -97,6 +97,106 @@ def write_device_info():
     print("*" * 80)
 
 
+def write_adminprofile_info():
+    """
+    Get the admin profile information from the clean_admin_profile_data() function and
+    Write admin profile information to the `adminprofile` table in the database
+    """
+    print("Updating admin profile in database")
+    admin_profile_info = clean_admin_profile_data()
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM adminprofile")
+        for admin_profile in admin_profile_info:
+            hostname = admin_profile["hostname"]
+            name = admin_profile["name"]
+            scope = admin_profile["scope"]
+            comments = admin_profile["comments"]
+            ftviewgrp = admin_profile["ftviewgrp"]
+            authgrp = admin_profile["authgrp"]
+            sysgrp = admin_profile["sysgrp"]
+            netgrp = admin_profile["netgrp"]
+            loggrp = admin_profile["loggrp"]
+            fwgrp = admin_profile["fwgrp"]
+            vpngrp = admin_profile["vpngrp"]
+            utmgrp = admin_profile["utmgrp"]
+            wanoptgrp = admin_profile["wanoptgrp"]
+            wifi = admin_profile["wifi"]
+            netgrp_permission = admin_profile["netgrp_permission"]
+            sysgrp_permission = admin_profile["sysgrp_permission"]
+            fwgrp_permission = admin_profile["fwgrp_permission"]
+            loggrp_permission = admin_profile["loggrp_permission"]
+            utmgrp_permission = admin_profile["utmgrp_permission"]
+            admintimeout_override = admin_profile["admintimeout_override"]
+            admintimeout = admin_profile["admintimeout"]
+            systemdiagnostics = admin_profile["systemdiagnostics"]
+            system_execute_ssh = admin_profile["system_execute_ssh"]
+            system_execute_telnet = admin_profile["system_execute_telnet"]
+
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+            insert_query = """
+            INSERT INTO adminprofile (
+                device_id,
+                name,
+                scope,
+                comments,
+                ftviewgrp,
+                authgrp,
+                sysgrp,
+                netgrp,
+                loggrp,
+                fwgrp,
+                vpngrp,
+                utmgrp,
+                wanoptgrp,
+                wifi,
+                netgrp_permission,
+                sysgrp_permission,
+                fwgrp_permission,
+                loggrp_permission,
+                utmgrp_permission,
+                admintimeout_override,
+                admintimeout,
+                systemdiagnostics,
+                system_execute_ssh,
+                system_execute_telnet
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """
+            cursor.execute(
+                insert_query,
+                (
+                    device_id,
+                    name,
+                    scope,
+                    comments,
+                    ftviewgrp,
+                    authgrp,
+                    sysgrp,
+                    netgrp,
+                    loggrp,
+                    fwgrp,
+                    vpngrp,
+                    utmgrp,
+                    wanoptgrp,
+                    wifi,
+                    netgrp_permission,
+                    sysgrp_permission,
+                    fwgrp_permission,
+                    loggrp_permission,
+                    utmgrp_permission,
+                    admintimeout_override,
+                    admintimeout,
+                    systemdiagnostics,
+                    system_execute_ssh,
+                    system_execute_telnet,
+                ),
+            )
+            conn.commit()
+    print("Admin profile information updated successfully")
+    print("*" * 80)
+
+
 def write_admin_info():
     """
     Get the admin information from the clean_admin_data() function and
