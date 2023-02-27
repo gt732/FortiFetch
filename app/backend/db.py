@@ -610,6 +610,79 @@ def write_snmpv2_info():
     print("*" * 80)
 
 
+def write_snmpv3_info():
+    """
+    Get the snmpv3 information from the clean_snmpv3_data() function and
+    write snmpv3 information to the `snmpv3` table in the database.
+    """
+    print("SNMPv3 data in database")
+    cleaned_data = clean_snmpv3_data()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        # Delete all existing entries from the policyroute table
+        cursor.execute("DELETE FROM snmpv3")
+
+        # Insert cleaned policy route data into policyroute table
+        for snmp in cleaned_data:
+            hostname = snmp["hostname"]
+            name = snmp["name"]
+            status = snmp["status"]
+            trap_status = snmp["trap_status"]
+            trap_lport = snmp["trap_lport"]
+            trap_rport = snmp["trap_rport"]
+            queries = snmp["queries"]
+            query_port = snmp["query_port"]
+            notify_hosts = snmp["notify_hosts"]
+            notify_hosts6 = snmp["notify_hosts6"]
+            source_ip = snmp["source_ip"]
+            source_ipv6 = snmp["source_ipv6"]
+            events = snmp["events"]
+            vdoms = snmp["vdoms"]
+            security_level = snmp["security_level"]
+            auth_proto = snmp["auth_proto"]
+            priv_proto = snmp["priv_proto"]
+            priv_pwd = snmp["priv_pwd"]
+
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+
+            cursor.execute(
+                """
+                INSERT INTO snmpv3 (
+                    device_id, name, status, trap_status, trap_lport, trap_rport, queries, query_port, notify_hosts, notify_hosts6, source_ip, 
+                    source_ipv6, events, vdoms, security_level, auth_proto, priv_proto, priv_pwd
+                )
+                VALUES (?, ?, ?, ? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?)
+                """,
+                (
+                    device_id,
+                    name,
+                    status,
+                    trap_status,
+                    trap_lport,
+                    trap_rport,
+                    queries,
+                    query_port,
+                    notify_hosts,
+                    notify_hosts6,
+                    source_ip,
+                    source_ipv6,
+                    events,
+                    vdoms,
+                    security_level,
+                    auth_proto,
+                    priv_proto,
+                    priv_pwd,
+                ),
+            )
+            conn.commit()
+
+    print("SNMPv3 data updated successfully")
+    print("*" * 80)
+
+
 def write_dnsfilter_info():
     """
     Get the dnsfilter profile information from the clean_dnsfilter_data() function and

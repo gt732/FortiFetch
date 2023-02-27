@@ -696,6 +696,60 @@ def clean_snmpv2_data() -> List[Dict]:
     return cleaned_data
 
 
+def clean_snmpv3_data() -> List[Dict]:
+    """
+    Get the snmpv3 information from the get_fortigate_snmpv3_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_snmpv3_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for snmp in value:
+                snmpv3_name = snmp.get("name", "")
+                snmpv3_status = snmp.get("status", "")
+                snmpv3_trap_status = snmp.get("trap-status", "")
+                snmpv3_trap_lport = snmp.get("trap-lport", "")
+                snmpv3_trap_rport = snmp.get("trap-rport", "")
+                snmpv3_queries = str(snmp.get("queries", ""))
+                snmpv3_query_port = snmp.get("query-port", "")
+                snmpv3_notify_hosts = str(snmp.get("notify-hosts", ""))
+                snmpv3_notify_hosts6 = str(snmp.get("notify-hosts6", ""))
+                snmpv3_source_ip = snmp.get("source-ip", "")
+                snmpv3_source_ipv6 = snmp.get("source-ipv6", "")
+                snmpv3_events = str(snmp.get("events", ""))
+                snmpv3_vdoms = str(snmp.get("vdoms", ""))
+                snmpv3_security_level = snmp.get("security-level", "")
+                snmpv3_auth_proto = snmp.get("auth-proto", "")
+                snmpv3_priv_proto = snmp.get("priv-proto", "")
+                snmpv3_priv_pwd = snmp.get("priv-pwd", "")
+
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "name": snmpv3_name,
+                    "status": snmpv3_status,
+                    "trap_status": snmpv3_trap_status,
+                    "trap_lport": snmpv3_trap_lport,
+                    "trap_rport": snmpv3_trap_rport,
+                    "queries": snmpv3_queries,
+                    "query_port": snmpv3_query_port,
+                    "notify_hosts": snmpv3_notify_hosts,
+                    "notify_hosts6": snmpv3_notify_hosts6,
+                    "source_ip": snmpv3_source_ip,
+                    "source_ipv6": snmpv3_source_ipv6,
+                    "events": snmpv3_events,
+                    "vdoms": snmpv3_vdoms,
+                    "security_level": snmpv3_security_level,
+                    "auth_proto": snmpv3_auth_proto,
+                    "priv_proto": snmpv3_priv_proto,
+                    "priv_pwd": snmpv3_priv_pwd,
+                }
+                # Append the dictionary to the cleaned_data list
+                cleaned_data.append(cleaned_dict)
+    return cleaned_data
+
+
 def clean_policy_route_data() -> List[Dict]:
     """
     Get the policy route information from the get_fortigate_policy_route_info() function

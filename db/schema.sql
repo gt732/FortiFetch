@@ -444,3 +444,26 @@ CREATE TABLE snmpv2 (
     device_id INTEGER,
     FOREIGN KEY (device_id) REFERENCES device(device_id)
 );
+
+CREATE TABLE snmpv3 (
+    snmpv3_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    status TEXT,
+    trap_status TEXT,
+    trap_lport INTEGER,
+    trap_rport INTEGER,
+    queries TEXT,
+    query_port INTEGER,
+    notify_hosts TEXT,
+    notify_hosts6 TEXT,
+    source_ip TEXT,
+    source_ipv6 TEXT,
+    events TEXT,
+    vdoms TEXT,
+    security_level TEXT,
+    auth_proto TEXT,
+    priv_proto TEXT,
+    priv_pwd TEXT,
+    device_id INTEGER,
+    FOREIGN KEY (device_id) REFERENCES device(device_id)
+);
