@@ -643,6 +643,59 @@ def clean_static_route_data() -> List[Dict]:
     return cleaned_data
 
 
+def clean_snmpv2_data() -> List[Dict]:
+    """
+    Get the snmpv2 information from the get_fortigate_snmpv2_info() function
+    and clean the data before it is written to the database.
+    """
+    device_info = get_fortigate_snmpv2_info()
+    cleaned_data = []
+    for firewall in device_info:
+        for device, value in firewall.items():
+            for snmp in value:
+                snmpv2_id = snmp.get("id", "")
+                snmpv2_name = snmp.get("name", "")
+                snmpv2_status = snmp.get("status", "")
+                snmpv2_host = str(snmp.get("host", ""))
+                snmpv2_host6 = str(snmp.get("host6", ""))
+                snmpv2_query_v1_status = snmp.get("query-v1-status", "")
+                snmpv2_query_v1_port = snmp.get("query-v1-port", "")
+                snmpv2_query_v2c_status = snmp.get("query-v2c-status", "")
+                snmpv2_query_v2c_port = snmp.get("query-v2c-port", "")
+                snmpv2_query_trap_v1_status = snmp.get("query-trap-v1-status", "")
+                snmpv2_query_trap_v1_rport = snmp.get("query-trap-v1-rport", "")
+                snmpv2_query_trap_v2c_status = snmp.get("query-trap-v2c-status", "")
+                snmpv2_query_trap_v2c_lport = snmp.get("query-trap-v2c-lport", "")
+                snmpv2_query_trap_v2c_rport = snmp.get("query-trap-v2c-rport", "")
+                snmpv2_events = str(snmp.get("events", ""))
+                snmpv2_vdoms = str(snmp.get("vdoms", ""))
+
+                # Create a dictionary of the cleaned data
+                cleaned_dict = {
+                    "hostname": device,
+                    "id": snmpv2_id,
+                    "name": snmpv2_name,
+                    "status": snmpv2_status,
+                    "host": snmpv2_host,
+                    "host6": snmpv2_host6,
+                    "query_v1_status": snmpv2_query_v1_status,
+                    "query_v1_port": snmpv2_query_v1_port,
+                    "query_v2c_status": snmpv2_query_v2c_status,
+                    "query_v2c_port": snmpv2_query_v2c_port,
+                    "query_trap_v1_status": snmpv2_query_trap_v1_status,
+                    "query_trap_v1_rport": snmpv2_query_trap_v1_rport,
+                    "query_trap_v2c_status": snmpv2_query_trap_v2c_status,
+                    "query_trap_v2c_lport": snmpv2_query_trap_v2c_lport,
+                    "query_trap_v2c_rport": snmpv2_query_trap_v2c_rport,
+                    "events": snmpv2_events,
+                    "vdoms": snmpv2_vdoms,
+                }
+
+                # Append the dictionary to the cleaned_data list
+                cleaned_data.append(cleaned_dict)
+    return cleaned_data
+
+
 def clean_policy_route_data() -> List[Dict]:
     """
     Get the policy route information from the get_fortigate_policy_route_info() function

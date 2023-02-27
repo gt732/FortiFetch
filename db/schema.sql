@@ -423,3 +423,24 @@ CREATE TABLE policyroute (
     FOREIGN KEY (device_id) REFERENCES device(device_id)
 );
 
+CREATE TABLE snmpv2 (
+    snmpv2_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id INTEGER,
+    name TEXT,
+    status TEXT,
+    host TEXT,
+    host6 TEXT,
+    query_v1_status TEXT,
+    query_v1_port INTEGER,
+    query_v2c_status TEXT,
+    query_v2c_port INTEGER,
+    query_trap_v1_status TEXT,
+    query_trap_v1_rport INTEGER,
+    query_trap_v2c_status TEXT,
+    query_trap_v2c_lport INTEGER,
+    query_trap_v2c_rport INTEGER,
+    events TEXT,
+    vdoms TEXT,
+    device_id INTEGER,
+    FOREIGN KEY (device_id) REFERENCES device(device_id)
+);

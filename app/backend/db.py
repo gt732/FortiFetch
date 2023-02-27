@@ -539,6 +539,77 @@ def write_policy_route_info():
     print("*" * 80)
 
 
+def write_snmpv2_info():
+    """
+    Get the snmpv2 information from the clean_snmpv2_data() function and
+    write snmpv2 information to the `snmpv2` table in the database.
+    """
+    print("SNMPv2 data in database")
+    cleaned_data = clean_snmpv2_data()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        # Delete all existing entries from the policyroute table
+        cursor.execute("DELETE FROM snmpv2")
+
+        # Insert cleaned policy route data into policyroute table
+        for snmp in cleaned_data:
+            hostname = snmp["hostname"]
+            id = snmp["id"]
+            name = snmp["name"]
+            status = snmp["status"]
+            host = snmp["host"]
+            host6 = snmp["host6"]
+            query_v1_status = snmp["query_v1_status"]
+            query_v1_port = snmp["query_v1_port"]
+            query_v2c_status = snmp["query_v2c_status"]
+            query_v2c_port = snmp["query_v2c_port"]
+            query_trap_v1_status = snmp["query_trap_v1_status"]
+            query_trap_v1_rport = snmp["query_trap_v1_rport"]
+            query_trap_v2c_status = snmp["query_trap_v2c_status"]
+            query_trap_v2c_lport = snmp["query_trap_v2c_lport"]
+            query_trap_v2c_rport = snmp["query_trap_v2c_rport"]
+            events = snmp["events"]
+            vdoms = snmp["vdoms"]
+
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+
+            cursor.execute(
+                """
+                INSERT INTO snmpv2 (
+                    device_id, id, name, status, host, host6, query_v1_status, query_v1_port, query_v2c_status, query_v2c_port, query_trap_v1_status, 
+                    query_trap_v1_rport, query_trap_v2c_status, query_trap_v2c_lport, query_trap_v2c_rport, events, vdoms
+                )
+                VALUES (?, ?, ?, ? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?)
+                """,
+                (
+                    device_id,
+                    id,
+                    name,
+                    status,
+                    host,
+                    host6,
+                    query_v1_status,
+                    query_v1_port,
+                    query_v2c_status,
+                    query_v2c_port,
+                    query_trap_v1_status,
+                    query_trap_v1_rport,
+                    query_trap_v2c_status,
+                    query_trap_v2c_lport,
+                    query_trap_v2c_rport,
+                    events,
+                    vdoms,
+                ),
+            )
+            conn.commit()
+
+    print("SNMPv2 data updated successfully")
+    print("*" * 80)
+
+
 def write_dnsfilter_info():
     """
     Get the dnsfilter profile information from the clean_dnsfilter_data() function and

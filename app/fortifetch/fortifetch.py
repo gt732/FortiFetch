@@ -63,6 +63,8 @@ class FortiFetch:
 
         db.write_policy_route_info()
 
+        db.write_snmpv2_info()
+
     @staticmethod
     def create_sql_database():
         db.create_database()

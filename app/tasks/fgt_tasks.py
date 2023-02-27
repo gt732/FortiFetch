@@ -206,3 +206,11 @@ def get_fortigate_policy_route_info() -> List[Dict]:
         policy route data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/router/policy/")
+
+
+def get_fortigate_snmpv2_info() -> List[Dict]:
+    """
+    Returns:
+        snmpv2 data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/system.snmp/community/")
