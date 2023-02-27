@@ -198,3 +198,11 @@ def get_fortigate_static_route_info() -> List[Dict]:
         static route data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/router/static/")
+
+
+def get_fortigate_policy_route_info() -> List[Dict]:
+    """
+    Returns:
+        policy route data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/cmdb/router/policy/")

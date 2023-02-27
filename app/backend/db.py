@@ -456,6 +456,89 @@ def write_static_route_info():
     print("*" * 80)
 
 
+def write_policy_route_info():
+    """
+    Get the policy route information from the clean_policy_route_data() function and
+    write policy route information to the `policyroute` table in the database.
+    """
+    print("Updating policy route data in database")
+    cleaned_data = clean_policy_route_data()
+
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+
+        # Delete all existing entries from the policyroute table
+        cursor.execute("DELETE FROM policyroute")
+
+        # Insert cleaned policy route data into policyroute table
+        for route in cleaned_data:
+            hostname = route["hostname"]
+            seq_num = route["seq_num"]
+            input_device = route["input_device"]
+            input_device_negate = route["input_device_negate"]
+            src = route["src"]
+            srcaddr = route["srcaddr"]
+            src_negate = route["src_negate"]
+            dst = route["dst"]
+            dstaddr = route["dstaddr"]
+            dst_negate = route["dst_negate"]
+            action = route["action"]
+            protocol = route["protocol"]
+            start_port = route["start_port"]
+            end_port = route["end_port"]
+            start_source_port = route["start_source_port"]
+            end_source_port = route["end_source_port"]
+            gateway = route["gateway"]
+            output_device = route["output_device"]
+            status = route["status"]
+            comments = route["comments"]
+            internet_service_id = route["internet_service_id"]
+            internet_service_custom = route["internet_service_custom"]
+
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+
+            cursor.execute(
+                """
+                INSERT INTO policyroute (
+                    device_id, seq_num, input_device, input_device_negate, src, srcaddr, src_negate, dst, dstaddr, dst_negate, action, protocol, 
+                    start_port, end_port, start_source_port, end_source_port, gateway, output_device, status, comments, internet_service_id, 
+                    internet_service_custom
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    device_id,
+                    seq_num,
+                    input_device,
+                    input_device_negate,
+                    src,
+                    srcaddr,
+                    src_negate,
+                    dst,
+                    dstaddr,
+                    dst_negate,
+                    action,
+                    protocol,
+                    start_port,
+                    end_port,
+                    start_source_port,
+                    end_source_port,
+                    gateway,
+                    output_device,
+                    status,
+                    comments,
+                    internet_service_id,
+                    internet_service_custom,
+                ),
+            )
+
+            conn.commit()
+
+    print("Policy route data updated successfully")
+    print("*" * 80)
+
+
 def write_dnsfilter_info():
     """
     Get the dnsfilter profile information from the clean_dnsfilter_data() function and

@@ -395,3 +395,31 @@ CREATE TABLE staticroute (
     device_id INTEGER,
     FOREIGN KEY (device_id) REFERENCES device(device_id)
 );
+
+CREATE TABLE policyroute (
+    policy_route_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    seq_num INTEGER,
+    input_device TEXT,
+    input_device_negate TEXT,
+    src TEXT,
+    srcaddr TEXT,
+    src_negate TEXT,
+    dst TEXT,
+    dstaddr TEXT,
+    dst_negate TEXT,
+    action TEXT,
+    protocol TEXT,
+    start_port INTEGER,
+    end_port INTEGER,
+    start_source_port INTEGER,
+    end_source_port INTEGER,
+    gateway TEXT,
+    output_device TEXT,
+    status TEXT,
+    comments TEXT,
+    internet_service_id INTEGER,
+    internet_service_custom TEXT,
+    device_id INTEGER,
+    FOREIGN KEY (device_id) REFERENCES device(device_id)
+);
+
