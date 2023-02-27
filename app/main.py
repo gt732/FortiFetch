@@ -24,12 +24,5 @@ def update_all_devices():
     FortiFetch.update_all_devices()
 
 
-@app.command()
-def clear_sql_database():
-    print("Clearing database: FortiFetch.db")
-    FortiFetch.clear_sql_database()
-    print("Database cleared: FortiFetch.db")
-
-
 if __name__ == "__main__":
     app()

@@ -1,10 +1,6 @@
 """
-This module contains all the "backend" functions
-which are used to perform backend tasks such as:
-- Retrieve data from databases
-- Store data in databases
-- Delete data from databases
-- Transform backend data for frontend usage
+This module contains all the backend functions to write
+firewall data to each table in the database.
 """
 
 # import modules
@@ -28,50 +24,6 @@ DATABASE_NAME = "FortiFetch.db"
 DB_DIRECTORY = os.path.join(os.path.dirname(__file__), "../../db")
 SCHEMA_FILE = os.path.join(DB_DIRECTORY, "schema.sql")
 DB_PATH = os.path.join(DB_DIRECTORY, DATABASE_NAME)
-
-
-def create_database():
-    """
-    Create the database and tables if they do not already exist. The database and
-    table schemas are defined in `schema.sql`. This function should be called once
-    when the application is first run.
-    """
-    with sqlite3.connect(DB_PATH) as conn:
-        try:
-            with open(SCHEMA_FILE) as f:
-                schema_sql = f.read()
-                conn.executescript(schema_sql)
-            print("Database created at", DB_PATH)
-        except sqlite3.OperationalError as e:
-            if str(e) == f"table device already exists":
-                print("Database already exists")
-            else:
-                print(f"An error occurred while executing SQL script: {e}")
-
-
-def clear_database():
-    """
-    Clear all the values in the database but keep the tables.
-    """
-    with sqlite3.connect(DB_PATH) as conn:
-        c = conn.cursor()
-        c.execute("DELETE FROM device;")
-        c.execute("DELETE FROM interface;")
-        c.execute("DELETE FROM firewallpolicy;")
-        c.execute("DELETE FROM webprofile;")
-        c.execute("DELETE FROM dnsprofile;")
-        c.execute("DELETE FROM appprofile;")
-        c.execute("DELETE FROM ipsprofile;")
-        c.execute("DELETE FROM sslsshprofile;")
-        c.execute("DELETE FROM avprofile;")
-        c.execute("DELETE FROM address;")
-        c.execute("DELETE FROM addressgroup;")
-        c.execute("DELETE FROM address_group_member;")
-        c.execute("DELETE FROM internetservice;")
-        c.execute("DELETE FROM ippool;")
-        c.execute("DELETE FROM vip;")
-
-        conn.commit()
 
 
 def write_device_info():
