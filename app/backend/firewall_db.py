@@ -1720,6 +1720,7 @@ def write_fwpolicy_info():
             fwpolicy_global_label = policy["global-label"]
             fwpolicy_auth_cert = policy["auth-cert"]
             fwpolicy_vlan_filter = policy["vlan-filter"]
+
             cursor.execute(
                 "SELECT device_id FROM device WHERE hostname=?", (policy["hostname"],)
             )

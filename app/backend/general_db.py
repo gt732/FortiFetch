@@ -5,6 +5,7 @@ This module contains all the general backend functions to interact with the data
 import os
 import sys
 import sqlite3
+from typing import Union, Dict, Optional, List
 
 # Add the parent directory of 'app' to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -33,3 +34,24 @@ def create_database():
                 print("Database already exists")
             else:
                 print(f"An error occurred while executing SQL script: {e}")
+
+
+def execute_sql(sql: str, params: Optional[tuple] = None) -> List[Dict]:
+    """
+    Execute an SQL query and return the results.
+
+    Args:
+        sql: The SQL query to execute.
+        params: The parameters to pass to the SQL query.
+
+    Returns:
+        A list of dictionaries containing the results of the query.
+    """
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        if params:
+            cursor.execute(sql, params)
+        else:
+            cursor.execute(sql)
+        return [dict(row) for row in cursor.fetchall()]

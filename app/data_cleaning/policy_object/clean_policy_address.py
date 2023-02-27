@@ -390,46 +390,124 @@ def clean_fwpolicy_data() -> List[Dict]:
                 policy_id = fwpolicy.get("policyid", "")
                 fwpolicy_status = fwpolicy.get("status", "")
                 fwpolicy_name = fwpolicy.get("name", "")
-                fwpolicy_srcintf = str(fwpolicy.get("srcintf", ""))
-                fwpolicy_dstinft = str(fwpolicy.get("dstintf", ""))
+
+                fwpolicy_srcintf = fwpolicy.get("srcintf", "")
+                fwpolicy_srcintf = ",".join([intf["name"] for intf in fwpolicy_srcintf])
+
+                fwpolicy_dstinft = fwpolicy.get("dstintf", "")
+                fwpolicy_dstinft = ",".join([intf["name"] for intf in fwpolicy_dstinft])
+
                 fwpolicy_action = fwpolicy.get("action", "")
                 fwpolicy_nat64 = fwpolicy.get("nat64", "")
                 fwpolicy_nat46 = fwpolicy.get("nat46", "")
-                fwpolicy_srcaddr = str(fwpolicy.get("srcaddr", ""))
-                fwpolicy_dstaddr = str(fwpolicy.get("dstaddr", ""))
+
+                fwpolicy_srcaddr = fwpolicy.get("srcaddr", "")
+                fwpolicy_srcaddr = ",".join([addr["name"] for addr in fwpolicy_srcaddr])
+
+                fwpolicy_dstaddr = fwpolicy.get("dstaddr", "")
+                fwpolicy_dstaddr = ",".join([addr["name"] for addr in fwpolicy_dstaddr])
+
                 fwpolicy_srcaddr6 = str(fwpolicy.get("srcaddr6", ""))
                 fwpolicy_dstaddr6 = str(fwpolicy.get("dstaddr6", ""))
                 fwpolicy_internet_service = str(fwpolicy.get("internet-service", ""))
-                fwpolicy_internet_service_name = str(
-                    fwpolicy.get("internet-service-name", "")
+
+                fwpolicy_srcintf = fwpolicy.get("srcintf", "")
+                fwpolicy_srcintf = ",".join([intf["name"] for intf in fwpolicy_srcintf])
+
+                fwpolicy_dstintf = fwpolicy.get("dstintf", "")
+                fwpolicy_dstintf = ",".join([intf["name"] for intf in fwpolicy_dstintf])
+
+                fwpolicy_srcaddr = fwpolicy.get("srcaddr", "")
+                fwpolicy_srcaddr = ",".join([addr["name"] for addr in fwpolicy_srcaddr])
+
+                fwpolicy_dstaddr = fwpolicy.get("dstaddr", "")
+                fwpolicy_dstaddr = ",".join([addr["name"] for addr in fwpolicy_dstaddr])
+
+                fwpolicy_service = fwpolicy.get("service", "")
+                fwpolicy_service = ",".join(
+                    [service["name"] for service in fwpolicy_service]
                 )
-                fwpolicy_internet_service_group = str(
-                    fwpolicy.get("internet-service-group", "")
+
+                fwpolicy_poolname = fwpolicy.get("poolname", "")
+                fwpolicy_poolname = ",".join(
+                    [poolname["name"] for poolname in fwpolicy_poolname]
                 )
-                fwpolicy_internet_service_dynamic = str(
-                    fwpolicy.get("internet-service-dynamic", "")
+
+                fwpolicy_internet_service_name = fwpolicy.get(
+                    "internet-service-name", ""
                 )
-                fwpolicy_internet_service_custom_group = str(
-                    fwpolicy.get("internet-service-custom-group", "")
+                fwpolicy_internet_service_name = ",".join(
+                    [service["name"] for service in fwpolicy_internet_service_name]
                 )
-                fwpolicy_internet_service_src = str(
-                    fwpolicy.get("internet-service-src", "")
+
+                fwpolicy_internet_service_group = fwpolicy.get(
+                    "internet-service-group", ""
                 )
-                fwpolicy_internet_service_src_name = str(
-                    fwpolicy.get("internet-service-src-name", "")
+                fwpolicy_internet_service_group = ",".join(
+                    [service["name"] for service in fwpolicy_internet_service_group]
                 )
-                fwpolicy_internet_service_src_group = str(
-                    fwpolicy.get("internet-service-src-group", "")
+
+                fwpolicy_internet_service_dynamic = fwpolicy.get(
+                    "internet-service-dynamic", ""
                 )
-                fwpolicy_internet_service_src_dynamic = str(
-                    fwpolicy.get("internet-service-src-dynamic", "")
+                fwpolicy_internet_service_dynamic = ",".join(
+                    [service["name"] for service in fwpolicy_internet_service_dynamic]
                 )
-                fwpolicy_internet_service_src_custom_group = str(
-                    fwpolicy.get("internet-service-src-custom-group", "")
+
+                fwpolicy_internet_service_custom_group = fwpolicy.get(
+                    "internet-service-custom-group", ""
                 )
+                fwpolicy_internet_service_custom_group = ",".join(
+                    [
+                        service["name"]
+                        for service in fwpolicy_internet_service_custom_group
+                    ]
+                )
+
+                fwpolicy_internet_service_src = fwpolicy.get("internet-service-src", "")
+
+                fwpolicy_internet_service_src_name = fwpolicy.get(
+                    "internet-service-src-name", ""
+                )
+                fwpolicy_internet_service_src_name = ",".join(
+                    [service["name"] for service in fwpolicy_internet_service_src_name]
+                )
+
+                fwpolicy_internet_service_src_group = fwpolicy.get(
+                    "internet-service-src-group", ""
+                )
+                fwpolicy_internet_service_src_group = ",".join(
+                    [service["name"] for service in fwpolicy_internet_service_src_group]
+                )
+
+                fwpolicy_internet_service_src_dynamic = fwpolicy.get(
+                    "internet-service-src-dynamic", ""
+                )
+                fwpolicy_internet_service_src_dynamic = ",".join(
+                    [
+                        service["name"]
+                        for service in fwpolicy_internet_service_src_dynamic
+                    ]
+                )
+
+                fwpolicy_internet_service_src_custom_group = fwpolicy.get(
+                    "internet-service-src-custom-group", ""
+                )
+                fwpolicy_internet_service_src_custom_group = ",".join(
+                    [
+                        service["name"]
+                        for service in fwpolicy_internet_service_src_custom_group
+                    ]
+                )
+
                 fwpolicy_schedule = str(fwpolicy.get("schedule", ""))
                 fwpolicy_schedule_timeout = fwpolicy.get("schedule-timeout", "")
-                fwpolicy_service = str(fwpolicy.get("service", ""))
+
+                fwpolicy_service = fwpolicy.get("service", "")
+                fwpolicy_service = ",".join(
+                    [service["name"] for service in fwpolicy_service]
+                )
+
                 fwpolicy_service_utm_status = fwpolicy.get("service-utm-status", "")
                 fwpolicy_inspection_mode = fwpolicy.get("inspection-mode", "")
                 fwpolicy_http_policy_redirect = fwpolicy.get("http-policy-redirect", "")
@@ -471,7 +549,12 @@ def clean_fwpolicy_data() -> List[Dict]:
                 fwpolicy_permit_stun_host = fwpolicy.get("permit-stun-host", "")
                 fwpolicy_fixedport = fwpolicy.get("fixedport", "")
                 fwpolicy_ippool = fwpolicy.get("ippool", "")
-                fwpolicy_poolname = str(fwpolicy.get("poolname", ""))
+
+                fwpolicy_poolname = fwpolicy.get("poolname", "")
+                fwpolicy_poolname = ",".join(
+                    [poolname["name"] for poolname in fwpolicy_poolname]
+                )
+
                 fwpolicy_poolname6 = str(fwpolicy.get("poolname6", ""))
                 fwpolicy_inbound = fwpolicy.get("inbound", "")
                 fwpolicy_outbound = fwpolicy.get("outbound", "")
