@@ -56,58 +56,110 @@ def show_devices():
 
 
 @app.command("show-dns")
-def show_devices():
-    devices = FortiFetch.execute_sql(
-        """
-        SELECT device.hostname, dns.primary_dns, dns.secondary_dns
-        FROM device
-        JOIN dns ON device.device_id = dns.device_id;                                         
-        """
-    )
-    table = Table(
-        show_header=True, header_style="bold blue", box=box.HEAVY, show_lines=True
-    )
-    table.add_column("Hostname", style="bold")
-    table.add_column("Primary DNS", style="bold")
-    table.add_column("Secondary DNS", style="bold")
-    for device in devices:
-        table.add_row(
-            device["hostname"],
-            device["primary_dns"],
-            device["secondary_dns"],
-            style="white",
+def show_dns(hostname: Optional[str] = None):
+    if hostname:
+        devices = FortiFetch.execute_sql(
+            f"""
+            SELECT device.hostname, dns.primary_dns, dns.secondary_dns
+            FROM device
+            JOIN dns ON device.device_id = dns.device_id
+            WHERE device.hostname = '{hostname}';                                        
+            """
         )
-    console = Console()
-    console.print(table)
+        table = Table(
+            show_header=True, header_style="bold blue", box=box.HEAVY, show_lines=True
+        )
+        table.add_column("Hostname", style="bold")
+        table.add_column("Primary DNS", style="bold")
+        table.add_column("Secondary DNS", style="bold")
+        for device in devices:
+            table.add_row(
+                device["hostname"],
+                device["primary_dns"],
+                device["secondary_dns"],
+                style="white",
+            )
+        console = Console()
+        console.print(table)
+    else:
+        devices = FortiFetch.execute_sql(
+            f"""
+            SELECT device.hostname, dns.primary_dns, dns.secondary_dns
+            FROM device
+            JOIN dns ON device.device_id = dns.device_id;                                         
+            """
+        )
+        table = Table(
+            show_header=True, header_style="bold blue", box=box.HEAVY, show_lines=True
+        )
+        table.add_column("Hostname", style="bold")
+        table.add_column("Primary DNS", style="bold")
+        table.add_column("Secondary DNS", style="bold")
+        for device in devices:
+            table.add_row(
+                device["hostname"],
+                device["primary_dns"],
+                device["secondary_dns"],
+                style="white",
+            )
+        console = Console()
+        console.print(table)
 
 
 @app.command("show-vpn-status")
-def show_devices():
-    devices = FortiFetch.execute_sql(
-        """
-        SELECT d.hostname , v.phase1_name , v.phase2_name , v.phase2_status 
-        FROM device d 
-        JOIN vpnmonitor v 
-        ON d.device_id = v.device_id                                
-        """
-    )
-    table = Table(
-        show_header=True, header_style="bold blue", box=box.HEAVY, show_lines=True
-    )
-    table.add_column("Hostname", style="bold")
-    table.add_column("VPN Tunnel", style="bold")
-    table.add_column("VPN Phase2", style="bold")
-    table.add_column("VPN Status", style="bold")
-    for device in devices:
-        table.add_row(
-            device["hostname"],
-            device["phase1_name"],
-            device["phase2_name"],
-            device["phase2_status"],
-            style="white",
+def show_vpn_status(hostname: Optional[str] = None):
+    if hostname:
+        devices = FortiFetch.execute_sql(
+            f"""
+            SELECT d.hostname , v.phase1_name , v.phase2_name , v.phase2_status 
+            FROM device d 
+            JOIN vpnmonitor v ON d.device_id = v.device_id
+            WHERE d.hostname = '{hostname}';                            
+            """
         )
-    console = Console()
-    console.print(table)
+        table = Table(
+            show_header=True, header_style="bold blue", box=box.HEAVY, show_lines=True
+        )
+        table.add_column("Hostname", style="bold")
+        table.add_column("VPN Tunnel", style="bold")
+        table.add_column("VPN Phase2", style="bold")
+        table.add_column("VPN Status", style="bold")
+        for device in devices:
+            table.add_row(
+                device["hostname"],
+                device["phase1_name"],
+                device["phase2_name"],
+                device["phase2_status"],
+                style="white",
+            )
+        console = Console()
+        console.print(table)
+    else:
+        devices = FortiFetch.execute_sql(
+            """
+            SELECT d.hostname , v.phase1_name , v.phase2_name , v.phase2_status 
+            FROM device d 
+            JOIN vpnmonitor v 
+            ON d.device_id = v.device_id                                
+            """
+        )
+        table = Table(
+            show_header=True, header_style="bold blue", box=box.HEAVY, show_lines=True
+        )
+        table.add_column("Hostname", style="bold")
+        table.add_column("VPN Tunnel", style="bold")
+        table.add_column("VPN Phase2", style="bold")
+        table.add_column("VPN Status", style="bold")
+        for device in devices:
+            table.add_row(
+                device["hostname"],
+                device["phase1_name"],
+                device["phase2_name"],
+                device["phase2_status"],
+                style="white",
+            )
+        console = Console()
+        console.print(table)
 
 
 if __name__ == "__main__":
