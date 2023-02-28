@@ -13,7 +13,6 @@ from rich import box
 from fortifetch.fortifetch import FortiFetch
 from typing import List, Dict, Optional
 
-
 app = typer.Typer()
 
 
