@@ -17,6 +17,7 @@ from data_cleaning.policy_object.clean_policy_address import *
 from data_cleaning.security_profiles.clean_security_profile import *
 from data_cleaning.system.clean_device_data import *
 from data_cleaning.user_authentication.clean_user_data import *
+from data_cleaning.vpn.clean_vpn_data import *
 
 
 # Define constants
@@ -1835,4 +1836,33 @@ def write_fwpolicy_info():
 
             conn.commit()
     print("Firewallpolicy data updated successfully")
+    print("*" * 80)
+
+
+def write_vpn_monitor_info():
+    """
+    Get the vpn monitor information from the clean_vpn_monitor_data() function and
+    write vpn monitor information to the `vpnmonitor` table in the database
+    """
+    print("Updating vpn monitor in database")
+    vpn_info = clean_vpn_monitor_data()
+    with sqlite3.connect(DB_PATH) as conn:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM vpnmonitor")
+        for vpn in vpn_info:
+            hostname = vpn["hostname"]
+            phase1_name = vpn["phase1_name"]
+            phase2_names = vpn["phase2_name"]
+            phase2_statuses = vpn["phase2_status"]
+            cursor.execute("SELECT device_id FROM device WHERE hostname=?", (hostname,))
+            device_id = cursor.fetchone()[0]
+            for i in range(len(phase2_names)):
+                cursor.execute(
+                    "INSERT INTO vpnmonitor (device_id, phase1_name, phase2_name, phase2_status) VALUES (?, ?, ?, ?)",
+                    (device_id, phase1_name, phase2_names[i], phase2_statuses[i]),
+                )
+
+        conn.commit()
+
+    print("Vpn monitor profile information updated successfully")
     print("*" * 80)

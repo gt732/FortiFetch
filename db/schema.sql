@@ -597,3 +597,12 @@ CREATE TABLE adminprofile (
     device_id INTEGER,
     FOREIGN KEY (device_id) REFERENCES device(device_id)
 );
+
+CREATE TABLE vpnmonitor (
+    vpnmonitor_id INTEGER PRIMARY KEY,
+    device_id INTEGER NOT NULL,
+    phase1_name TEXT NOT NULL,
+    phase2_name TEXT NOT NULL,
+    phase2_status TEXT NOT NULL,
+    FOREIGN KEY (device_id) REFERENCES device(id)
+);

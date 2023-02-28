@@ -246,3 +246,11 @@ def get_fortigate_admin_profile_info() -> List[Dict]:
         admin profile data in a list of dictionaries
     """
     return get_fortigate_data("/api/v2/cmdb/system/accprofile/")
+
+
+def get_fortigate_vpn_monitor_info() -> List[Dict]:
+    """
+    Returns:
+        vpn monitor data in a list of dictionaries
+    """
+    return get_fortigate_data("/api/v2/monitor/vpn/ipsec/")
