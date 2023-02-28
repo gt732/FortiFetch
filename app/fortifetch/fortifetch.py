@@ -19,9 +19,6 @@ from backend import general_db
 
 
 class FortiFetch:
-    def __init__(self, **kwargs):
-        pass
-
     @staticmethod
     def update_all_devices():
 
