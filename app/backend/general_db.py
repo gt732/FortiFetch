@@ -1,5 +1,5 @@
 """
-This module contains all the general backend functions to interact with the database.
+This module contains all the general backend functions to create and interact with the database.
 """
 # import modules
 import os

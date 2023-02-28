@@ -11,7 +11,7 @@ import sqlite3
 # Add the parent directory of 'app' to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-# import modules
+# import functions
 from data_cleaning.network.clean_network_data import *
 from data_cleaning.policy_object.clean_policy_address import *
 from data_cleaning.security_profiles.clean_security_profile import *

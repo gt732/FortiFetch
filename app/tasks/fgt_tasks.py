@@ -15,7 +15,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from typing import Union, Dict, Optional, List
 from fortigate_api import Fortigate
-from pprint import pprint
 import yaml
 
 SCHEME = os.getenv("FORTIFETCH_SCHEME")

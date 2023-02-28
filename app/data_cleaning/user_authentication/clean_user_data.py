@@ -12,9 +12,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # import modules
 from typing import List, Dict, Optional
-from pprint import pprint
 from tasks.fgt_tasks import *
-import json
 
 
 def clean_admin_data() -> List[Dict]:
