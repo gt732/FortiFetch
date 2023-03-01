@@ -84,7 +84,6 @@ You can also use the --help flag with any command to see more detailed usage ins
 ![alt text](https://i.imgur.com/JVypaDs.png)
 ![alt text](https://i.imgur.com/xsTtiSB.png)
 ![alt text](https://i.imgur.com/dVbVoTD.png)
-## Database Entity Relationship Diagram
 
 ## Contributing
 If you'd like to contribute to FortiFetch, please follow these steps:
