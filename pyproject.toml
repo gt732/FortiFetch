@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "fortifetch"
+version = "0.1.0"
+description = "FortiFetch is a Python application that gathers information from FortiGate firewalls using the API and saves the information to a SQLite3 database. FortiFetch is built using Typer Python and the rich library for console output, and is designed to be easy to install, configure, and use."
+authors = ["GT <geuryt@yahoo.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.scripts]
+fortifetch = "fortifetch.main:app"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+typer = {extras = ["all"], version = "^0.1.0"}
+fortigate-api = "^1.0.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
