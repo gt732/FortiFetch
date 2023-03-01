@@ -35,7 +35,53 @@ Tables in SQL database, check the db schema file for complete column list.
 
 To install FortiFetch, follow these steps:
 
-### Create a folder and a new virtual environment using venv.
+## Docker
+
+Create a base folder
+
+```
+mkdir your_folder
+```
+cd into your_folder
+
+```
+cd your_folder
+```
+
+Create another folder called fortifetch and place your inventory.yaml file inside the folder
+
+```
+mkdir fortifetch
+```
+
+Example
+
+```
+your_folder
+└── fortifetch
+    └── inventory.yaml
+```
+
+From the root dir of your_folder pull the docker image, update the environmental variables
+
+```
+docker run -d \
+  --name fortifetch \
+  -v $(pwd)/fortifetch:/app/fortifetch \
+  -e FORTIFETCH_USERNAME=username \
+  -e FORTIFETCH_PASSWORD=password \
+  -e FORTIFETCH_SCHEME=http \
+  -e FORTIFETCH_INVENTORY=/app/fortifetch/inventory.yaml \
+  gt732/fortifetch \
+  tail -f /dev/null
+```
+Attach to the container and you are all set
+
+```
+docker exec -it fortifetch /bin/bash
+```
+![alt text](https://i.imgur.com/GTbWaAv.png)
+## Using pip - Create a folder and a new virtual environment using venv.
 
 Create a new folder for fortifetch
 
