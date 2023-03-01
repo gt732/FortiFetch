@@ -20,13 +20,13 @@ cd FortiFetch
 ### Create a new virtual environment using venv.
 
 ```
-python -m venv fortifetch-env
+python -m venv .
 ```
 
 Activate the virtual environment
 
 ```
-source fortifetch-env/bin/activate
+source /bin/activate
 ```
 
 Install FortiFetch using pip
