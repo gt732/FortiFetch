@@ -73,6 +73,10 @@ fortifetch show-interface: Displays a table of interface information for all dev
 You can also use the --help flag with any command to see more detailed usage instructions.
 ```
 
+## Examples
+
+## Database Entity Relationship Diagram
+
 ## Contributing
 If you'd like to contribute to FortiFetch, please follow these steps:
 
@@ -87,4 +91,4 @@ Create a pull request on the main FortiFetch repository.
 FortiFetch is licensed under the MIT license. See the LICENSE file for more information.
 
 ## Contact
-If you have any questions or comments about FortiFetch, please feel free to contact us at our Github repository.
+If you have any questions or comments about FortiFetch, please feel free to contact me.
