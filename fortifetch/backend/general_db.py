@@ -36,6 +36,17 @@ def create_database():
                 print(f"An error occurred while executing SQL script: {e}")
 
 
+def delete_database():
+    """
+    Delete the FortiFetch database from the file system.
+    """
+    try:
+        os.remove(DB_PATH)
+        print("Database deleted at", DB_PATH)
+    except FileNotFoundError:
+        print("Database does not exist")
+
+
 def execute_sql(sql: str, params: Optional[tuple] = None) -> List[Dict]:
     """
     Execute an SQL query and return the results.

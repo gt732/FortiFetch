@@ -28,7 +28,7 @@ python -m venv .
 Activate the virtual environment
 
 ```
-source /bin/activate
+source bin/activate
 ```
 
 Install FortiFetch using pip
@@ -66,6 +66,7 @@ To use FortiFetch, you can run the following commands in your terminal:
 
 ```
 fortifetch create-database: Creates a new SQLite3 database for FortiFetch.
+fortifetch delete-database: Deletes the SQLite3 database for FortiFetch.
 fortifetch execute-sql: Executes a SQL command on the FortiFetch database.
 fortifetch update-all-devices: Retrieves information about all FortiGate devices and saves it to the FortiFetch database.
 fortifetch show-devices: Displays a table of all devices in the FortiFetch database.
@@ -75,7 +76,7 @@ fortifetch show-interface: Displays a table of interface information for all dev
 You can also use the --help flag with any command to see more detailed usage instructions.
 ```
 
-## Examples
+## Example
 
 ## Database Entity Relationship Diagram
 

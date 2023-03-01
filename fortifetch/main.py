@@ -32,6 +32,19 @@ def create_sql_database():
     FortiFetch.create_sql_database()
 
 
+@app.command("delete-database")
+def delete_sql_database():
+    """
+    Deletes the SQL database named 'FortiFetch.db' using the FortiFetch library.
+
+    Usage: delete-database
+
+    This command deletes the SQL database named 'FortiFetch.db' from the db directory.
+    """
+    print("Deleting database: FortiFetch.db")
+    FortiFetch.delete_database()
+
+
 @app.command("execute-sql")
 def execute_sql(sql: str, params: Optional[str] = None):
     """

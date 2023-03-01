@@ -77,5 +77,9 @@ class FortiFetch:
         general_db.create_database()
 
     @staticmethod
+    def delete_sql_database():
+        general_db.delete_database()
+
+    @staticmethod
     def execute_sql(sql: str, params: Optional[tuple] = None) -> List[Dict]:
         return general_db.execute_sql(sql, params)
