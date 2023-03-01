@@ -18,22 +18,67 @@ app = typer.Typer()
 
 @app.command("create-database")
 def create_sql_database():
+    """
+    Creates a new SQL database named 'FortiFetch.db' using the FortiFetch library.
+
+    Usage: create-database
+
+    This command creates a new SQL database named
+    'FortiFetch.db' in the db directory. This database is used to store the
+    fortigate device information.
+
+    """
     print("Creating database: FortiFetch.db")
     FortiFetch.create_sql_database()
 
 
 @app.command("execute-sql")
 def execute_sql(sql: str, params: Optional[str] = None):
+    """
+    Executes an SQL query on the 'FortiFetch' database.
+
+    Usage: execute-sql SQL [PARAMS]
+
+    This command takes an SQL query string and optional query parameters as input,
+    and then executes the query on the 'FortiFetch' SQL database.
+
+    Arguments:
+    - sql: A string representing an SQL query to be executed.
+    - params: An optional string representing query parameters to be used in the query.
+
+    Example:
+    execute-sql "SELECT * FROM device"
+
+    """
     print(FortiFetch.execute_sql(sql, params))
 
 
 @app.command("update-all-devices")
 def update_all_devices():
+    """
+    Updates information for all devices/endpoints in the 'FortiFetch' database.
+
+    Usage: update-all-devices
+
+    This command calls all of the update methods in the FortiFetch library to
+    update information for all devices/API endpoints in the 'FortiFetch' database.
+
+    """
     FortiFetch.update_all_devices()
 
 
 @app.command("show-devices")
 def show_devices():
+    """
+    Displays a table of devices stored in the 'FortiFetch' database.
+
+    Usage: show-devices
+
+    This function retrieves information for all devices stored in the 'FortiFetch'
+    SQL database and displays it in a table using the rich library. The table
+    includes columns for hostname, serial number, firmware version, and device model.
+
+    """
     devices = FortiFetch.execute_sql("SELECT * FROM device")
     table = Table(
         show_header=True, header_style="bold blue", box=box.HEAVY, show_lines=True
@@ -56,6 +101,21 @@ def show_devices():
 
 @app.command("show-dns")
 def show_dns(hostname: Optional[str] = None):
+    """
+    Displays a table of DNS information for devices stored in the 'FortiFetch' database.
+
+    Usage: show-dns [HOSTNAME]
+
+    This function retrieves DNS information for all devices stored in the 'FortiFetch'
+    SQL database, or for a specific device if the 'hostname' argument is provided.
+    The function then displays the DNS information in a table using the rich library.
+    The table includes columns for hostname, primary DNS, and secondary DNS.
+
+    Arguments:
+    - hostname (optional): A string representing the hostname of the device to show
+      DNS information for. If provided, only the DNS information for that device will be displayed.
+
+    """
     if hostname:
         devices = FortiFetch.execute_sql(
             f"""
@@ -82,7 +142,7 @@ def show_dns(hostname: Optional[str] = None):
         console.print(table)
     else:
         devices = FortiFetch.execute_sql(
-            f"""
+            """
             SELECT device.hostname, dns.primary_dns, dns.secondary_dns
             FROM device
             JOIN dns ON device.device_id = dns.device_id                                        
@@ -107,6 +167,21 @@ def show_dns(hostname: Optional[str] = None):
 
 @app.command("show-vpn-status")
 def show_vpn_status(hostname: Optional[str] = None):
+    """
+    Displays a table of VPN information for devices stored in the 'FortiFetch' database.
+
+    Usage: show-vpn-status [HOSTNAME]
+
+    This function retrieves VPN information for all devices stored in the 'FortiFetch'
+    SQL database, or for a specific device if the 'hostname' argument is provided.
+    The function then displays the VPN information in a table using the rich library.
+    The table includes columns for hostname, VPN tunnel name, VPN phase 2 name, and VPN status.
+
+    Arguments:
+    - hostname (optional): A string representing the hostname of the device to show
+      VPN information for. If provided, only the VPN information for that device will be displayed.
+
+    """
     if hostname:
         devices = FortiFetch.execute_sql(
             f"""
@@ -163,6 +238,21 @@ def show_vpn_status(hostname: Optional[str] = None):
 
 @app.command("show-interface")
 def show_interface(hostname: Optional[str] = None):
+    """
+    Displays a table of interface information for devices stored in the 'FortiFetch' database.
+
+    Usage: show-interface [HOSTNAME]
+
+    This function retrieves interface information for all devices stored in the 'FortiFetch'
+    SQL database, or for a specific device if the 'hostname' argument is provided.
+    The function then displays the interface information in a table using the rich library.
+    The table includes columns for hostname, interface name, interface type, interface IP, and interface status.
+
+    Arguments:
+    - hostname (optional): A string representing the hostname of the device to show
+      interface information for. If provided, only the interface information for that device will be displayed.
+
+    """
     if hostname:
         devices = FortiFetch.execute_sql(
             f"""

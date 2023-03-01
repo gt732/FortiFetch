@@ -7,6 +7,7 @@ firewall data to each table in the database.
 import os
 import sys
 import sqlite3
+from rich import print
 
 # Add the parent directory of 'app' to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -32,7 +33,7 @@ def write_device_info():
     Get the device information from the clean_device_data() function and
     Write device information to the `device` table in the database
     """
-    print("Updating devices in database")
+    print("[bold blue]Updating devices in database[/bold blue] :wrench:")
     device_info = clean_device_data()
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
@@ -51,7 +52,9 @@ def write_device_info():
             cursor.execute(insert_query, (hostname, serial_number, version, model))
 
             conn.commit()
-    print("Device information updated successfully")
+    print(
+        "[bold green]Device information updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -60,7 +63,7 @@ def write_adminprofile_info():
     Get the admin profile information from the clean_admin_profile_data() function and
     Write admin profile information to the `adminprofile` table in the database
     """
-    print("Updating admin profile in database")
+    print("[bold blue]Updating admin profile in database[/bold blue] :wrench:")
     admin_profile_info = clean_admin_profile_data()
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
@@ -151,7 +154,9 @@ def write_adminprofile_info():
                 ),
             )
             conn.commit()
-    print("Admin profile information updated successfully")
+    print(
+        "[bold green]Admin profile information updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -160,7 +165,7 @@ def write_admin_info():
     Get the admin information from the clean_admin_data() function and
     Write admin information to the `admin` table in the database
     """
-    print("Updating admin in database")
+    print("[bold blue]Updating admin in database[/bold blue] :wrench:")
     admin_info = clean_admin_data()
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
@@ -252,7 +257,9 @@ def write_admin_info():
                 ),
             )
             conn.commit()
-    print("Admin information updated successfully")
+    print(
+        "[bold green]Admin information updated successfully[bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -261,7 +268,7 @@ def write_fortiguard_info():
     Get the fortiguard information from the clean_fortiguard_data() function and
     Write fortiguard information to the `fortiguard` table in the database
     """
-    print("Updating device fortiguard in database")
+    print("[bold blue]Updating fortiguard in database[/bold blue] :wrench:")
     fortiguard_info = clean_fortiguard_data()
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
@@ -432,7 +439,9 @@ def write_fortiguard_info():
                 ),
             )
             conn.commit()
-    print(f"Interface information updated successfully")
+    print(
+        "[bold green]Fortiguard information updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -441,7 +450,7 @@ def write_interface_info():
     Get the interface information from the clean_interface_data() function and
     write interface information to the `interface` table in the database
     """
-    print("Updating interfaces in database")
+    print("[bold blue]Updating interfaces in database[/bold blue] :wrench:")
     interface_info = clean_interface_data()
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
@@ -474,7 +483,9 @@ def write_interface_info():
             )
 
             conn.commit()
-    print(f"Interface information updated successfully")
+    print(
+        "[bold green]Interface information updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -483,7 +494,7 @@ def write_address_info():
     Get the address information from the clean_address_data() function and
     Write address information to the `address` table in the database
     """
-    print("Updating addresses in database")
+    print("[bold blue]Updating addresses in database[/bold blue] :wrench:")
     address_info = clean_address_data()
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
@@ -516,7 +527,9 @@ def write_address_info():
             )
             conn.commit()
 
-    print(f"Address information updated successfully")
+    print(
+        "[bold green]Address information updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -525,7 +538,7 @@ def write_address_group_info():
     Get the address group information from the clean_address_group_data() function and
     write address group information to the `addressgroup` table in the database
     """
-    print("Updating address group in database")
+    print("[bold blue]Updating address group in database[/bold blue] :wrench:")
     address_info = clean_address_group_data()
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
@@ -543,7 +556,9 @@ def write_address_group_info():
 
             conn.commit()
 
-    print(f"Address group information updated successfully")
+    print(
+        "[bold green]Address group information updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -552,7 +567,7 @@ def write_application_info():
     Get the application profile information from the clean_application_data() function and
     write application profile information to the `appprofile` table in the database
     """
-    print("Updating application profile in database")
+    print("[bold blue]Updating application profile in database[/bold blue] :wrench:")
     application_info = clean_application_data()
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
@@ -571,7 +586,9 @@ def write_application_info():
 
         conn.commit()
 
-    print("Application profile information updated successfully")
+    print(
+        "[bold green]Application profile information updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -580,7 +597,7 @@ def write_av_info():
     Get the antivirus profile information from the clean_av_data() function and
     write antivirus profile information to the `avprofile` table in the database.
     """
-    print("Updating antivirus profile in database")
+    print("[bold blue]Updating antivirus profile in database[/bold blue] :wrench:")
     av_info = clean_av_data()
 
     with sqlite3.connect(DB_PATH) as conn:
@@ -634,7 +651,9 @@ def write_av_info():
 
             conn.commit()
 
-    print("Antivirus profile information updated successfully")
+    print(
+        "[bold green]Antivirus profile information updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -643,7 +662,7 @@ def write_dns_info():
     Get the DNS information from the clean_dns_data() function and
     write DNS information to the `dns` table in the database.
     """
-    print("Updating DNS data in database")
+    print("[bold blue]Updating DNS data in database[/bold blue] :wrench:")
     cleaned_data = clean_dns_data()
 
     with sqlite3.connect(DB_PATH) as conn:
@@ -713,7 +732,7 @@ def write_dns_info():
 
             conn.commit()
 
-    print("DNS data updated successfully")
+    print("[bold green]DNS data updated successfully[/bold green] :white_check_mark:")
     print("*" * 80)
 
 
@@ -722,7 +741,7 @@ def write_static_route_info():
     Get the static route information from the clean_static_route_data() function and
     write static route information to the `staticroute` table in the database.
     """
-    print("Updating static route data in database")
+    print("[bold blue]Updating static route data in database[/bold blue] :wrench:")
     cleaned_data = clean_static_route_data()
 
     with sqlite3.connect(DB_PATH) as conn:
@@ -791,7 +810,9 @@ def write_static_route_info():
 
             conn.commit()
 
-    print("Static route data updated successfully")
+    print(
+        "[bold green]Static route data updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -800,7 +821,7 @@ def write_policy_route_info():
     Get the policy route information from the clean_policy_route_data() function and
     write policy route information to the `policyroute` table in the database.
     """
-    print("Updating policy route data in database")
+    print("[bold blue]Updating policy route data in database[/bold blue] :wrench:")
     cleaned_data = clean_policy_route_data()
 
     with sqlite3.connect(DB_PATH) as conn:
@@ -874,7 +895,9 @@ def write_policy_route_info():
 
             conn.commit()
 
-    print("Policy route data updated successfully")
+    print(
+        "[bold green]Policy route data updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -883,7 +906,7 @@ def write_snmpv2_info():
     Get the snmpv2 information from the clean_snmpv2_data() function and
     write snmpv2 information to the `snmpv2` table in the database.
     """
-    print("SNMPv2 data in database")
+    print("[bold blue]SNMPv2 data in database[/bold blue] :wrench:")
     cleaned_data = clean_snmpv2_data()
 
     with sqlite3.connect(DB_PATH) as conn:
@@ -945,7 +968,9 @@ def write_snmpv2_info():
             )
             conn.commit()
 
-    print("SNMPv2 data updated successfully")
+    print(
+        "[bold green]SNMPv2 data updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -954,7 +979,7 @@ def write_snmpv3_info():
     Get the snmpv3 information from the clean_snmpv3_data() function and
     write snmpv3 information to the `snmpv3` table in the database.
     """
-    print("SNMPv3 data in database")
+    print("[bold blue]SNMPv3 data in database[/bold blue] :wrench:")
     cleaned_data = clean_snmpv3_data()
 
     with sqlite3.connect(DB_PATH) as conn:
@@ -1018,7 +1043,9 @@ def write_snmpv3_info():
             )
             conn.commit()
 
-    print("SNMPv3 data updated successfully")
+    print(
+        "[bold green]SNMPv3 data updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -1027,7 +1054,7 @@ def write_dnsfilter_info():
     Get the dnsfilter profile information from the clean_dnsfilter_data() function and
     write dnsfilter profile information to the `dnsprofile` table in the database.
     """
-    print("Updating dnsprofile profile in database")
+    print("[bold blue]Updating dnsprofile profile in database[/bold blue] :wrench:")
     cleaned_data = clean_dnsfilter_data()
 
     with sqlite3.connect(DB_PATH) as conn:
@@ -1067,7 +1094,9 @@ def write_dnsfilter_info():
 
             conn.commit()
 
-    print("Dnsprofile profile information updated successfully")
+    print(
+        "[bold green]Dnsprofile profile information updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -1076,7 +1105,7 @@ def write_internetservice_info():
     Get the internet service information from the clean_internetservice_data() function and
     write internet service information to the `internetservice` table in the database.
     """
-    print("Updating internet service data in database")
+    print("[bold blue]Updating internet service data in database[bold blue] :wrench:")
     cleaned_data = clean_internetservice_data()
 
     with sqlite3.connect(DB_PATH) as conn:
@@ -1104,7 +1133,9 @@ def write_internetservice_info():
 
             conn.commit()
 
-    print("Internet service data updated successfully")
+    print(
+        "[bold green]Internet service data updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -1113,7 +1144,7 @@ def write_ippool_info():
     Get the ippool information from the clean_ippool_data() function and
     write ippool information to the `ippool` table in the database.
     """
-    print("Updating ippool data in database")
+    print("[bold blue]Updating ippool data in database[/bold blue] :wrench:")
     cleaned_data = clean_ippool_data()
 
     with sqlite3.connect(DB_PATH) as conn:
@@ -1168,7 +1199,9 @@ def write_ippool_info():
 
             conn.commit()
 
-    print("Ippool data updated successfully")
+    print(
+        "[bold green]Ippool data updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -1177,7 +1210,7 @@ def write_ips_info():
     Get the ips profile information from the clean_ips_data() function and
     write ips profile information to the `ipsprofile` table in the database.
     """
-    print("Updating IPS profile data in database")
+    print("[bold blue]Updating IPS profile data in database[/bold blue] :wrench:")
     cleaned_data = clean_ips_data()
 
     with sqlite3.connect(DB_PATH) as conn:
@@ -1218,7 +1251,9 @@ def write_ips_info():
 
             conn.commit()
 
-    print("IPS profile data updated successfully")
+    print(
+        "[bold green]IPS profile data updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -1227,7 +1262,7 @@ def write_sslssh_info():
     Get the ssl/ssh profile information from the clean_sslssh_data() function and
     write ssl/ssh profile information to the `sslsshprofile` table in the database.
     """
-    print("Updating SSL/SSH profile data in database")
+    print("[bold blue]Updating SSL/SSH profile data in database[/bold blue] :wrench:")
     cleaned_data = clean_sslssh_data()
 
     with sqlite3.connect(DB_PATH) as conn:
@@ -1302,7 +1337,9 @@ def write_sslssh_info():
 
             conn.commit()
 
-    print("SSL/SSH profile data updated successfully")
+    print(
+        "[bold green]SSL/SSH profile data updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -1311,7 +1348,7 @@ def write_vip_info():
     Get the vip profile information from the clean_vip_data() function and
     write vip profile information to the `vip` table in the database.
     """
-    print("Updating VIP profile data in database")
+    print("[bold blue]Updating VIP profile data in database[/bold blue] :wrench:")
     cleaned_data = clean_vip_data()
 
     with sqlite3.connect(DB_PATH) as conn:
@@ -1382,7 +1419,9 @@ def write_vip_info():
 
             conn.commit()
 
-    print("VIP profile data updated successfully")
+    print(
+        "[bold green]VIP profile data updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -1391,7 +1430,9 @@ def write_webfilter_info():
     Get the web filter profile information from the clean_webfilter_data() function and
     write web filter profile information to the `webprofile` table in the database.
     """
-    print("Updating web filter profile data in database")
+    print(
+        "[bold blue]Updating web filter profile data in database[/bold blue] :wrench:"
+    )
     cleaned_data = clean_webfilter_data()
 
     with sqlite3.connect(DB_PATH) as conn:
@@ -1438,7 +1479,9 @@ def write_webfilter_info():
 
             conn.commit()
 
-    print("Web filter profile data updated successfully")
+    print(
+        "[bold green]Web filter profile data updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -1447,7 +1490,7 @@ def write_trafficshapers_info():
     Get the traffic shapers information from the get_fortigate_trafficshapers_info() function and
     write traffic shapers information to the `trafficshapers` table in the database.
     """
-    print("Updating traffic shapers data in database")
+    print("[bold blue]Updating traffic shapers data in database[/bold blue] :wrench:")
     cleaned_data = clean_trafficshapers_data()
 
     with sqlite3.connect(DB_PATH) as conn:
@@ -1502,7 +1545,9 @@ def write_trafficshapers_info():
 
             conn.commit()
 
-    print("Traffic shapers data updated successfully")
+    print(
+        "[bold green]Traffic shapers data updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -1511,7 +1556,9 @@ def write_trafficpolicy_info():
     Get the traffic shaper policy information from the clean_trafficpolicy_data() function and
     write traffic shaper policy information to the `trafficpolicy` table in the database.
     """
-    print("Updating traffic shaper policy data in database")
+    print(
+        "[bold blue]Updating traffic shaper policy data in database[/bold blue] :wrench:"
+    )
     cleaned_data = clean_trafficpolicy_data()
 
     with sqlite3.connect(DB_PATH) as conn:
@@ -1614,7 +1661,9 @@ def write_trafficpolicy_info():
 
             conn.commit()
 
-    print("Traffic shaper policy data updated successfully")
+    print(
+        "[bold green]Traffic shaper policy data updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -1623,7 +1672,7 @@ def write_fwpolicy_info():
     Get the firewall policy information from the clean_fwpolicy_data() function and
     write firewall policy information to the `firewallpolicy` table in the database.
     """
-    print("Updating firewallpolicy data in database")
+    print("[bold blue]Updating firewallpolicy data in database[/bold blue] :wrench:")
     cleaned_data = clean_fwpolicy_data()
 
     with sqlite3.connect(DB_PATH) as conn:
@@ -1835,7 +1884,9 @@ def write_fwpolicy_info():
             )
 
             conn.commit()
-    print("Firewallpolicy data updated successfully")
+    print(
+        "[bold green]Firewallpolicy data updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
 
 
@@ -1844,7 +1895,7 @@ def write_vpn_monitor_info():
     Get the vpn monitor information from the clean_vpn_monitor_data() function and
     write vpn monitor information to the `vpnmonitor` table in the database
     """
-    print("Updating vpn monitor in database")
+    print("[bold blue]Updating VPN monitor in database[/bold blue] :wrench:")
     vpn_info = clean_vpn_monitor_data()
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
@@ -1864,5 +1915,7 @@ def write_vpn_monitor_info():
 
         conn.commit()
 
-    print("Vpn monitor profile information updated successfully")
+    print(
+        "[bold green]VPN monitor profile information updated successfully[/bold green] :white_check_mark:"
+    )
     print("*" * 80)
