@@ -1,0 +1,1 @@
+from .fortifetch import FortiFetch
