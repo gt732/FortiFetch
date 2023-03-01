@@ -23,7 +23,7 @@ from data_cleaning.vpn.clean_vpn_data import *
 
 # Define constants
 DATABASE_NAME = "FortiFetch.db"
-DB_DIRECTORY = os.path.join(os.path.dirname(__file__), "../../db")
+DB_DIRECTORY = os.path.join(os.path.dirname(__file__), "../db")
 SCHEMA_FILE = os.path.join(DB_DIRECTORY, "schema.sql")
 DB_PATH = os.path.join(DB_DIRECTORY, DATABASE_NAME)
 
