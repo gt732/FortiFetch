@@ -7,9 +7,16 @@ To install FortiFetch, follow these steps:
 
 ### Clone the FortiFetch repository from GitHub using the command 
 
+```
 git clone https://github.com/gt732/FortiFetch.git
+```
 
-Change into the FortiFetch directory using the command cd FortiFetch
+Change into the FortiFetch directory using the command 
+
+```
+cd FortiFetch
+```
+
 ### Create a new virtual environment using venv.
 
 python -m venv fortifetch-env
