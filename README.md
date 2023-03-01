@@ -1,7 +1,7 @@
 # FortiFetch
 FortiFetch is a Python application that gathers information from FortiGate firewalls' API and saves the information to a SQLite3 database. FortiFetch is built using Python and the rich library for console output, and is designed to be easy to install, configure, and use.
 
-# Tested on Fortigate VM version 7.2.4
+## Tested on Fortigate VM version 7.2.4
 ## Installation
 
 To install FortiFetch, follow these steps:
