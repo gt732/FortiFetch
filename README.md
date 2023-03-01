@@ -9,15 +9,15 @@ To install FortiFetch, follow these steps:
 
 Create a new folder for fortifetch
 
-'''
+```
 mkdir fortifetch
-'''
+```
 
 Change into the new folder
 
-'''
+```
 cd fortifetch
-'''
+```
 
 Create a virtualenv
 
