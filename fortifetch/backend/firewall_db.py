@@ -9,7 +9,7 @@ import sys
 import sqlite3
 from rich import print
 
-# Add the parent directory of 'app' to sys.path
+# Add the parent directory of 'fortifetch' to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # import functions
@@ -44,7 +44,6 @@ def write_device_info():
             version = device["version"]
             model = device["model"]
 
-            # Insert device information into the database
             insert_query = """
             INSERT INTO device (hostname, serial_number, version, model)
             VALUES (?, ?, ?, ?)
@@ -205,11 +204,9 @@ def write_admin_info():
             admin_two_factor_authentication = admin["two-factor-authentication"]
             admin_two_factor_notification = admin["two-factor-notification"]
 
-            # Get device ID
             cursor.execute("SELECT device_id FROM device WHERE hostname=?", (device,))
             device_id = cursor.fetchone()[0]
 
-            # Insert admin information into the database
             cursor.execute(
                 """
             INSERT INTO admin (
@@ -603,7 +600,6 @@ def write_av_info():
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
 
-        # Clear the avprofile table
         cursor.execute("DELETE FROM avprofile")
 
         for av in av_info:
@@ -668,10 +664,8 @@ def write_dns_info():
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
 
-        # Delete all existing entries from the dns table
         cursor.execute("DELETE FROM dns")
 
-        # Insert cleaned DNS data into dns table
         for dns in cleaned_data:
             hostname = dns["hostname"]
             dns_primary = dns["dns_primary"]
@@ -747,10 +741,8 @@ def write_static_route_info():
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
 
-        # Delete all existing entries from the staticroute table
         cursor.execute("DELETE FROM staticroute")
 
-        # Insert cleaned static route data into staticroute table
         for route in cleaned_data:
             hostname = route["hostname"]
             seq_num = route["seq_num"]
@@ -827,10 +819,8 @@ def write_policy_route_info():
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
 
-        # Delete all existing entries from the policyroute table
         cursor.execute("DELETE FROM policyroute")
 
-        # Insert cleaned policy route data into policyroute table
         for route in cleaned_data:
             hostname = route["hostname"]
             seq_num = route["seq_num"]
@@ -912,10 +902,8 @@ def write_snmpv2_info():
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
 
-        # Delete all existing entries from the policyroute table
         cursor.execute("DELETE FROM snmpv2")
 
-        # Insert cleaned policy route data into policyroute table
         for snmp in cleaned_data:
             hostname = snmp["hostname"]
             id = snmp["id"]
@@ -985,10 +973,8 @@ def write_snmpv3_info():
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
 
-        # Delete all existing entries from the policyroute table
         cursor.execute("DELETE FROM snmpv3")
 
-        # Insert cleaned policy route data into policyroute table
         for snmp in cleaned_data:
             hostname = snmp["hostname"]
             name = snmp["name"]
@@ -1111,7 +1097,6 @@ def write_internetservice_info():
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
 
-        # Clear internetservice table
         cursor.execute("DELETE FROM internetservice")
         conn.commit()
 
@@ -1150,7 +1135,6 @@ def write_ippool_info():
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
 
-        # Clear ippool table
         cursor.execute("DELETE FROM ippool")
         conn.commit()
 
@@ -1268,7 +1252,6 @@ def write_sslssh_info():
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
 
-        # Delete all existing entries from sslsshprofile table
         cursor.execute("DELETE FROM sslsshprofile")
 
         for profile in cleaned_data:
@@ -1496,10 +1479,8 @@ def write_trafficshapers_info():
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
 
-        # Delete all existing entries from trafficshapers table
         cursor.execute("DELETE FROM trafficshapers")
 
-        # Insert cleaned traffic shapers data into trafficshapers table
         for trafficshaper in cleaned_data:
             hostname = trafficshaper["hostname"]
             name = trafficshaper["name"]
@@ -1564,10 +1545,8 @@ def write_trafficpolicy_info():
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
 
-        # Delete all existing entries from trafficpolicy table
         cursor.execute("DELETE FROM trafficpolicy")
 
-        # Insert cleaned traffic policy data into trafficpolicy table
         for policy in cleaned_data:
             hostname = policy["hostname"]
             policy_id = policy["policy_id"]
@@ -1678,11 +1657,9 @@ def write_fwpolicy_info():
     with sqlite3.connect(DB_PATH) as conn:
         cursor = conn.cursor()
 
-        # Delete all existing entries from firewallpolicy table
         cursor.execute("DELETE FROM firewallpolicy")
         conn.commit()
 
-        # Insert cleaned data into firewallpolicy table
         for policy in cleaned_data:
             policy_id = policy["policy_id"]
             fwpolicy_name = policy["fwpolicy_name"]

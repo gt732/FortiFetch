@@ -33,7 +33,6 @@ def clean_interface_data() -> List[Dict]:
                 intf_ip = interface.get("ip", "")
                 intf_type = interface.get("type", "")
                 intf_allowaccess = interface.get("allowaccess", "")
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "name": intf_name,
@@ -45,7 +44,6 @@ def clean_interface_data() -> List[Dict]:
                     "type": intf_type,
                     "allowaccess": intf_allowaccess,
                 }
-                # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -80,7 +78,6 @@ def clean_static_route_data() -> List[Dict]:
                 route_vrf = str(route.get("vrf", ""))
                 route_bfd = route.get("bfd", "")
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "seq_num": route_seq_num,
@@ -104,7 +101,6 @@ def clean_static_route_data() -> List[Dict]:
                     "bfd": route_bfd,
                 }
 
-            # Append the dictionary to the cleaned_data list
             cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -143,7 +139,6 @@ def clean_policy_route_data() -> List[Dict]:
                     route.get("internet-service-custom", "")
                 )
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "seq_num": route_seq_num,
@@ -169,6 +164,5 @@ def clean_policy_route_data() -> List[Dict]:
                     "internet_service_custom": route_internet_service_custom,
                 }
 
-            # Append the dictionary to the cleaned_data list
             cleaned_data.append(cleaned_dict)
     return cleaned_data

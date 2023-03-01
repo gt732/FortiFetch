@@ -7,7 +7,7 @@ before it is written to the database.
 import os
 import sys
 
-# Add the parent directory of 'app' to sys.path
+# Add the parent directory of 'fortifetch' to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # import modules
@@ -40,7 +40,6 @@ def clean_av_data() -> List[Dict]:
                 profile_nac_quar = str(profile.get("nac-quar", ""))
                 profile_content_disarm = str(profile.get("content-disarm", ""))
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "name": profile_name,
@@ -57,7 +56,7 @@ def clean_av_data() -> List[Dict]:
                     "nac_quar": profile_nac_quar,
                     "content_disarm": profile_content_disarm,
                 }
-                # Append the dictionary to the cleaned_data list
+
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -80,7 +79,6 @@ def clean_dnsfilter_data() -> List[Dict]:
                 profile_safe_search = profile.get("safe-search", "")
                 profile_youtube_restrict = profile.get("youtube-restrict", "")
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "name": profile_name,
@@ -91,7 +89,7 @@ def clean_dnsfilter_data() -> List[Dict]:
                     "safe_search": profile_safe_search,
                     "youtube_restrict": profile_youtube_restrict,
                 }
-                # Append the dictionary to the cleaned_data list
+
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -113,7 +111,6 @@ def clean_ips_data() -> List[Dict]:
                 ips_extended_log = ips.get("extended-log", "")
                 ips_entries = str(ips.get("entries", ""))
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "name": ips_name,
@@ -123,7 +120,7 @@ def clean_ips_data() -> List[Dict]:
                     "extended_log": ips_extended_log,
                     "entries": ips_entries,
                 }
-                # Append the dictionary to the cleaned_data list
+
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -160,7 +157,6 @@ def clean_sslssh_data() -> List[Dict]:
                 sslssh_rpc_over_https = sslssh.get("rpc-over-https", "")
                 sslssh_untrusted_caname = sslssh.get("untrusted-caname", "")
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "name": sslssh_name,
@@ -184,7 +180,6 @@ def clean_sslssh_data() -> List[Dict]:
                     "untrusted_caname": sslssh_untrusted_caname,
                 }
 
-                # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -207,7 +202,6 @@ def clean_webfilter_data() -> List[Dict]:
                 webfilter_web = str(webfilter.get("web", ""))
                 webfilter_ftgd_wf = str(webfilter.get("ftgd-wf", ""))
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "name": webfilter_name,
@@ -219,7 +213,6 @@ def clean_webfilter_data() -> List[Dict]:
                     "ftgd_wf": webfilter_ftgd_wf,
                 }
 
-                # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -238,21 +231,19 @@ def clean_application_data() -> List[Dict]:
                 profile_entries = profile.get("entries", "")
                 profile_comment = profile.get("comment", "")
 
-                # Extract the entries values as a string
                 entries_string = ""
                 for entry in profile_entries:
                     entry_json = json.dumps(entry)
                     entry_values = entry_json[1:-1].replace('"', "").replace(":", ",")
                     entries_string += entry_values + ";"
-                entries_string = entries_string[:-1]  # Remove the last semicolon
+                entries_string = entries_string[:-1]
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "name": profile_name,
                     "entries": entries_string,
                     "comment": profile_comment,
                 }
-                # Append the dictionary to the cleaned_data list
+
                 cleaned_data.append(cleaned_dict)
     return cleaned_data

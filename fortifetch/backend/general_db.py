@@ -7,7 +7,7 @@ import sys
 import sqlite3
 from typing import Union, Dict, Optional, List
 
-# Add the parent directory of 'app' to sys.path
+# Add the parent directory of 'fortifetch' to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # Define constants

@@ -7,12 +7,11 @@ before it is written to the database.
 import os
 import sys
 
-# Add the parent directory of 'app' to sys.path
+# Add the parent directory of 'fortifetch' to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # import modules
 from typing import List, Dict, Optional
-from pprint import pprint
 from tasks.fgt_tasks import *
 import json
 
@@ -35,7 +34,7 @@ def clean_address_data() -> List[Dict]:
                 address_fqdn = address.get("fqdn", "")
                 address_country = address["country"]
                 address_associated_interface = address["associated-interface"]
-                # Create a dictionary of the cleaned data
+
                 cleaned_dict = {
                     "hostname": device,
                     "name": address_name,
@@ -47,7 +46,7 @@ def clean_address_data() -> List[Dict]:
                     "country": address_country,
                     "associated_interface": address_associated_interface,
                 }
-                # Append the dictionary to the cleaned_data list
+
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -65,21 +64,18 @@ def clean_address_group_data() -> List[Dict]:
                 address_name = address.get("name", "")
                 address_member = address.get("member", "")
 
-                # Extract the member values as a string
                 member_string = ""
                 for member in address_member:
                     member_json = json.dumps(member)
                     member_values = member_json[1:-1].replace('"', "").replace(":", ",")
                     member_string += member_values + ";"
-                member_string = member_string[:-1]  # Remove the last semicolon
+                member_string = member_string[:-1]
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "name": address_name,
                     "member": member_string,
                 }
-                # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -97,13 +93,11 @@ def clean_internetservice_data() -> List[Dict]:
                 service_name = internet_service.get("name", "")
                 service_type = internet_service.get("type", "")
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "name": service_name,
                     "type": service_type,
                 }
-                # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -131,7 +125,6 @@ def clean_ippool_data() -> List[Dict]:
                 pool_associated_interface = ippool.get("associated-interface", "")
                 pool_comments = ippool.get("comments", "")
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "name": pool_name,
@@ -147,7 +140,6 @@ def clean_ippool_data() -> List[Dict]:
                     "startport": pool_startport,
                     "endport": pool_endport,
                 }
-                # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -181,7 +173,7 @@ def clean_vip_data() -> List[Dict]:
                 vip_src_filter = str(vip.get("src-filter", ""))
                 vip_portmapping_type = vip.get("portmapping-type", "")
                 vip_realservers = str(vip.get("realservers", ""))
-                # Create a dictionary of the cleaned data
+
                 cleaned_dict = {
                     "hostname": device,
                     "name": vip_name,
@@ -243,7 +235,6 @@ def clean_trafficshapers_data() -> List[Dict]:
                     "exceed-class-id", ""
                 )
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "name": trafficshapers_name,
@@ -262,7 +253,6 @@ def clean_trafficshapers_data() -> List[Dict]:
                     "exceed_class_id": trafficshapers_exceed_class_id,
                 }
 
-                # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -337,7 +327,6 @@ def clean_trafficpolicy_data() -> List[Dict]:
                     trafficpolicy.get("diffserv-reverse", "")
                 )
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "policy_id": policy_id,
@@ -372,7 +361,6 @@ def clean_trafficpolicy_data() -> List[Dict]:
                     "diffserv_forward": trafficpolicy_diffserv_forward,
                     "diffserv_reverse": trafficpolicy_diffserv_reverse,
                 }
-                # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -579,7 +567,6 @@ def clean_fwpolicy_data() -> List[Dict]:
                 fwpolicy_auth_cert = str(fwpolicy.get("auth-cert", ""))
                 fwpolicy_vlan_filter = str(fwpolicy.get("vlan-filter", ""))
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "policy_id": policy_id,
@@ -663,6 +650,5 @@ def clean_fwpolicy_data() -> List[Dict]:
                     "auth-cert": fwpolicy_auth_cert,
                     "vlan-filter": fwpolicy_vlan_filter,
                 }
-                # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data

@@ -7,7 +7,7 @@ before it is written to the database.
 import os
 import sys
 
-# Add the parent directory of 'app' to sys.path
+# Add the parent directory of 'fortifetch' to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # import modules
@@ -62,7 +62,6 @@ def clean_admin_data() -> List[Dict]:
                 )
                 admin_two_factor_notification = admin.get("two-factor-notification", "")
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "name": admin_name,
@@ -98,7 +97,7 @@ def clean_admin_data() -> List[Dict]:
                     "two-factor-authentication": admin_two_factor_authentication,
                     "two-factor-notification": admin_two_factor_notification,
                 }
-                # Append the dictionary to the cleaned_data list
+
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -137,7 +136,6 @@ def clean_admin_profile_data() -> List[Dict]:
                 admin_system_execute_ssh = admin.get("system_execute_ssh", "")
                 admin_system_execute_telnet = admin.get("system_execute_telnet", "")
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "name": admin_name,
@@ -164,6 +162,6 @@ def clean_admin_profile_data() -> List[Dict]:
                     "system_execute_ssh": admin_system_execute_ssh,
                     "system_execute_telnet": admin_system_execute_telnet,
                 }
-                # Append the dictionary to the cleaned_data list
+
                 cleaned_data.append(cleaned_dict)
     return cleaned_data

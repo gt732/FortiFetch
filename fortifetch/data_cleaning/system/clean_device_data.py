@@ -7,7 +7,7 @@ before it is written to the database.
 import os
 import sys
 
-# Add the parent directory of 'app' to sys.path
+# Add the parent directory of 'fortifetch' to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # import modules
@@ -38,12 +38,11 @@ def clean_device_data() -> List[Dict]:
             ]
             version = f"{firmware_version_major}.{firmware_version_minor}.{firmware_version_patch}"
 
-            # Clean the data as necessary (e.g. remove leading/trailing whitespace)
             hostname = hostname.strip()
             serial_number = serial_number.strip()
             model = model.strip()
             version = version.strip()
-            # Create a dictionary of the cleaned data
+
             cleaned_dict = {
                 "hostname": hostname,
                 "serial_number": serial_number,
@@ -51,7 +50,6 @@ def clean_device_data() -> List[Dict]:
                 "version": version,
             }
 
-            # Append the dictionary to the cleaned_data list
             cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -138,7 +136,6 @@ def clean_fortiguard_data() -> List[Dict]:
             forti_interface_select_method = value.get("interface-select-method", "")
             forti_interface = value.get("interface", "")
 
-            # Create a dictionary of the cleaned data
             cleaned_dict = {
                 "hostname": device,
                 "fortiguard_anycast": forti_fortiguard_anycast,
@@ -198,7 +195,7 @@ def clean_fortiguard_data() -> List[Dict]:
                 "forti_interface_select_method": forti_interface_select_method,
                 "forti_interface": forti_interface,
             }
-            # Append the dictionary to the cleaned_data list
+
             cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -232,7 +229,6 @@ def clean_dns_data() -> List[Dict]:
             dns_alt_secondary = value.get("alt-secondary", "")
             dns_log_fqdn = value.get("log", "")
 
-            # Create a dictionary of the cleaned data
             cleaned_dict = {
                 "hostname": device,
                 "dns_primary": dns_primary,
@@ -256,7 +252,6 @@ def clean_dns_data() -> List[Dict]:
                 "log_fqdn": dns_log_fqdn,
             }
 
-            # Append the dictionary to the cleaned_data list
             cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -288,7 +283,6 @@ def clean_snmpv2_data() -> List[Dict]:
                 snmpv2_events = str(snmp.get("events", ""))
                 snmpv2_vdoms = str(snmp.get("vdoms", ""))
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "id": snmpv2_id,
@@ -309,7 +303,6 @@ def clean_snmpv2_data() -> List[Dict]:
                     "vdoms": snmpv2_vdoms,
                 }
 
-                # Append the dictionary to the cleaned_data list
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
 
@@ -342,7 +335,6 @@ def clean_snmpv3_data() -> List[Dict]:
                 snmpv3_priv_proto = snmp.get("priv-proto", "")
                 snmpv3_priv_pwd = snmp.get("priv-pwd", "")
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "name": snmpv3_name,
@@ -363,6 +355,6 @@ def clean_snmpv3_data() -> List[Dict]:
                     "priv_proto": snmpv3_priv_proto,
                     "priv_pwd": snmpv3_priv_pwd,
                 }
-                # Append the dictionary to the cleaned_data list
+
                 cleaned_data.append(cleaned_dict)
     return cleaned_data

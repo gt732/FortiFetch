@@ -8,7 +8,7 @@ which are used to retreive information from the fortigate.
 import os
 import sys
 
-# Add the parent directory of 'app' to sys.path
+# Add the parent directory of 'fortifetch' to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # import modules

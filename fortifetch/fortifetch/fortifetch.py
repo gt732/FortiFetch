@@ -7,9 +7,8 @@ logic of the application.
 # import os sys
 import os
 import sys
-import time
 
-# Add the parent directory of 'app' to sys.path
+# Add the parent directory of 'fortifetch' to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # imports

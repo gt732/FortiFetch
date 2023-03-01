@@ -7,7 +7,7 @@ before it is written to the database.
 import os
 import sys
 
-# Add the parent directory of 'app' to sys.path
+# Add the parent directory of 'fortifetch' to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # import modules
@@ -25,19 +25,18 @@ def clean_vpn_monitor_data() -> List[Dict]:
     for firewall in device_info:
         for device, value in firewall.items():
             for vpn in value:
-                # Get the vpn phase1 data
+
                 vpn_p1_name = vpn["name"]
                 vpn_p2_data = [(p2["p2name"], p2["status"]) for p2 in vpn["proxyid"]]
                 vpn_p2_name = [p2[0] for p2 in vpn_p2_data]
                 vpn_p2_status = [p2[1] for p2 in vpn_p2_data]
 
-                # Create a dictionary of the cleaned data
                 cleaned_dict = {
                     "hostname": device,
                     "phase1_name": vpn_p1_name,
                     "phase2_name": vpn_p2_name,
                     "phase2_status": vpn_p2_status,
                 }
-                # Append the dictionary to the cleaned_data list
+
                 cleaned_data.append(cleaned_dict)
     return cleaned_data
