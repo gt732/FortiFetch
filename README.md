@@ -5,7 +5,7 @@ FortiFetch is a Python application that gathers information from FortiGate firew
 
 ## Tested on Fortigate VM version 7.2.4
 
-Tables in SQL database:
+Tables in SQL database, check the db schema file for complete column list.
 
 - device
 - interface
