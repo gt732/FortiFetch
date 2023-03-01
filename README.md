@@ -5,19 +5,21 @@ FortiFetch is a Python application that gathers information from FortiGate firew
 
 To install FortiFetch, follow these steps:
 
-### Clone the FortiFetch repository from GitHub using the command 
+### Create a folder and a new virtual environment using venv.
 
-```
-git clone https://github.com/gt732/FortiFetch.git
-```
+Create a new folder for fortifetch
 
-Change into the FortiFetch directory using the command 
+'''
+mkdir fortifetch
+'''
 
-```
-cd FortiFetch
-```
+Change into the new folder
 
-### Create a new virtual environment using venv.
+'''
+cd fortifetch
+'''
+
+Create a virtualenv
 
 ```
 python -m venv .
