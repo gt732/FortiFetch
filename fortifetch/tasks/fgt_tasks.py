@@ -3,23 +3,11 @@ This module contains all the fortigate api functions
 which are used to retreive information from the fortigate.
 """
 
-
-# import os sys
-import os
-import sys
-
-# Add the parent directory of 'fortifetch' to sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-# import modules
-
 from typing import Union, Dict, Optional, List
 from fortigate_api import Fortigate
+from shared.config import settings
 import yaml
-
-SCHEME = os.getenv("FORTIFETCH_SCHEME")
-USERNAME = os.getenv("FORTIFETCH_USERNAME")
-PASSWORD = os.getenv("FORTIFETCH_PASSWORD")
+import os
 
 
 def get_fortigate_data(url: str) -> List[Dict]:
@@ -44,9 +32,9 @@ def get_fortigate_data(url: str) -> List[Dict]:
         device_dict = {}
         fgt = Fortigate(
             host=host["host"],
-            scheme=SCHEME,
-            username=USERNAME,
-            password=PASSWORD,
+            scheme=settings.FORTIFETCH_SCHEME,
+            username=settings.FORTIFETCH_USERNAME,
+            password=settings.FORTIFETCH_PASSWORD,
         )
         fgt.login()
         device_dict[host["hostname"]] = fgt.get(url=url)

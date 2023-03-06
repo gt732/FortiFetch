@@ -1,11 +1,5 @@
-import sys
-import os
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from rich import print
 from shared.config import settings
 from db.models import Base
 from sqlalchemy.orm import Session

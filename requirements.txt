@@ -1,5 +1,6 @@
 typer[all]
 rich
 fortigate-api
-pip install SQLAlchemy==1.4.46
-pip install psycopg2-binary
+SQLAlchemy==1.4.46
+psycopg2-binary
+pydantic

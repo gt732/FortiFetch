@@ -4,14 +4,6 @@ logic of the application.
 
 """
 
-# import os sys
-import os
-import sys
-
-# Add the parent directory of 'fortifetch' to sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-# imports
 from typing import List, Dict, Optional
 from db import firewall_db
 from db import general_db
@@ -71,14 +63,6 @@ class FortiFetch:
         firewall_db.write_fwpolicy_info()
 
         firewall_db.write_vpn_monitor_info()
-
-    @staticmethod
-    def create_sql_database():
-        general_db.create_database()
-
-    @staticmethod
-    def delete_sql_database():
-        general_db.delete_database()
 
     @staticmethod
     def execute_sql(sql: str, params: Optional[tuple] = None) -> List[Dict]:

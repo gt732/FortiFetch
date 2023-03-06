@@ -18,35 +18,6 @@ from db.models import *
 app = typer.Typer()
 
 
-@app.command("create-database")
-def create_sql_database():
-    """
-    Creates a new SQL database named 'FortiFetch.db' using the FortiFetch library.
-
-    Usage: create-database
-
-    This command creates a new SQL database named
-    'FortiFetch.db' in the db directory. This database is used to store the
-    fortigate device information.
-
-    """
-    print("Creating database: FortiFetch.db")
-    FortiFetch.create_sql_database()
-
-
-@app.command("delete-database")
-def delete_sql_database():
-    """
-    Deletes the SQL database named 'FortiFetch.db' using the FortiFetch library.
-
-    Usage: delete-database
-
-    This command deletes the SQL database named 'FortiFetch.db' from the db directory.
-    """
-    print("Deleting database: FortiFetch.db")
-    FortiFetch.delete_sql_database()
-
-
 @app.command("execute-sql")
 def execute_sql(sql: str, params: Optional[str] = None):
     """

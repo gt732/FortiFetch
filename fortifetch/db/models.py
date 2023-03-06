@@ -1,3 +1,7 @@
+"""
+This module contains all the sqlalchemy models/tables for the database.
+"""
+
 from sqlalchemy import (
     Column,
     Integer,
@@ -6,8 +10,6 @@ from sqlalchemy import (
     UniqueConstraint,
     Text,
 )
-from sqlalchemy.sql.sqltypes import TIMESTAMP
-from sqlalchemy.sql.expression import text
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 

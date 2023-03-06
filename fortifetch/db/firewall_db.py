@@ -4,30 +4,15 @@ firewall data to each table in the database.
 """
 
 # import modules
-import os
-import sys
-import sqlite3
 from rich import print
-
-# Add the parent directory of 'fortifetch' to sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-# import functions
 from data_cleaning.network.clean_network_data import *
 from data_cleaning.policy_object.clean_policy_address import *
 from data_cleaning.security_profiles.clean_security_profile import *
 from data_cleaning.system.clean_device_data import *
 from data_cleaning.user_authentication.clean_user_data import *
 from data_cleaning.vpn.clean_vpn_data import *
-from sqlalchemy.orm import Session
 from db.db import get_db
 from db.models import *
-
-# Define constants
-DATABASE_NAME = "FortiFetch.db"
-DB_DIRECTORY = os.path.join(os.path.dirname(__file__), "../db")
-SCHEMA_FILE = os.path.join(DB_DIRECTORY, "schema.sql")
-DB_PATH = os.path.join(DB_DIRECTORY, DATABASE_NAME)
 
 
 def write_device_info():
@@ -38,12 +23,9 @@ def write_device_info():
     print("[bold blue]Updating devices in database[/bold blue] :wrench:")
     device_info = clean_device_data()
 
-    # Create a new SQLAlchemy session
     with get_db() as db:
-        # Delete all existing devices from the `Device` table
         db.query(Device).delete()
 
-        # Insert new devices into the `Device` table
         for device in device_info:
             new_device = Device(
                 hostname=device["hostname"],
@@ -53,7 +35,6 @@ def write_device_info():
             )
             db.add(new_device)
 
-        # Commit the transaction to persist the changes in the database
         db.commit()
 
     print(
