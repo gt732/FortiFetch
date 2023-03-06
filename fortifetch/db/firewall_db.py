@@ -29,7 +29,6 @@ def write_device_info():
         for device in device_info:
             new_device = Device(
                 hostname=device["hostname"],
-                serial_number=device["serial_number"],
                 version=device["version"],
                 model=device["model"],
             )

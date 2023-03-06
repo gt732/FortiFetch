@@ -72,16 +72,14 @@ def show_devices():
             show_header=True, header_style="bold blue", box=box.HEAVY, show_lines=True
         )
         table.add_column("Hostname", style="bold")
-        table.add_column("Serial Number", style="bold")
-        table.add_column("Version", style="bold")
         table.add_column("Model", style="bold")
+        table.add_column("Version", style="bold")
 
         for device in devices:
             table.add_row(
                 device.hostname,
-                device.serial_number,
-                device.version,
                 device.model,
+                device.version,
                 style="white",
             )
 

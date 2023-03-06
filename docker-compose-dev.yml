@@ -1,0 +1,30 @@
+version: '3'
+services:
+  fortifetch:
+    build: .
+    depends_on:
+      - postgres
+    environment:
+      - FORTIFETCH_DB_HOSTNAME=postgres
+      - FORTIFETCH_DB_PORT=5432
+      - FORTIFETCH_DB_NAME=fastapi
+      - FORTIFETCH_DB_USERNAME=postgres
+      - FORTIFETCH_DB_PASSWORD=admin123
+      - FORTIFETCH_SCHEME=http
+      - FORTIFETCH_USERNAME=admin
+      - FORTIFETCH_PASSWORD=admin
+      - FORTIFETCH_INVENTORY=/usr/src/app/fortifetch/inventory/inventory.yaml
+    volumes:
+      - ./inventory:/usr/src/app/fortifetch/inventory
+    command: tail -f /dev/null
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin123
+      - POSTGRES_DB=fastapi
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+
+volumes:
+  postgres-db:

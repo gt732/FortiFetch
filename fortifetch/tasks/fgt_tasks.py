@@ -48,7 +48,7 @@ def get_fortigate_device_info() -> List[Dict]:
     Returns:
         Device data in a list of dictionaries
     """
-    return get_fortigate_data("/api/v2/monitor/system/csf")
+    return get_fortigate_data("/api/v2/monitor/system/firmware/")
 
 
 def get_fortigate_interface_info() -> List[Dict]:

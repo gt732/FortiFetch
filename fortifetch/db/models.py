@@ -20,7 +20,6 @@ class Device(Base):
     __tablename__ = "device"
     device_id = Column(Integer, primary_key=True)
     hostname = Column(Text)
-    serial_number = Column(Text)
     version = Column(Text)
     model = Column(Text)
 

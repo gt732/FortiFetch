@@ -17,28 +17,11 @@ def clean_device_data() -> List[Dict]:
         for device, value in firewall.items():
             if not value:
                 continue
-            hostname = value["devices"]["fortigate"][0]["host_name"]
-            serial_number = value["devices"]["fortigate"][0]["serial"]
-            model = value["devices"]["fortigate"][0]["model"]
-            firmware_version_major = value["devices"]["fortigate"][0][
-                "firmware_version_major"
-            ]
-            firmware_version_minor = value["devices"]["fortigate"][0][
-                "firmware_version_minor"
-            ]
-            firmware_version_patch = value["devices"]["fortigate"][0][
-                "firmware_version_patch"
-            ]
-            version = f"{firmware_version_major}.{firmware_version_minor}.{firmware_version_patch}"
-
-            hostname = hostname.strip()
-            serial_number = serial_number.strip()
-            model = model.strip()
-            version = version.strip()
-
+            hostname = device
+            model = value["current"].get("platform-id", "")
+            version = value["current"].get("version", "")
             cleaned_dict = {
                 "hostname": hostname,
-                "serial_number": serial_number,
                 "model": model,
                 "version": version,
             }
