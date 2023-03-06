@@ -24,6 +24,8 @@ def clean_vpn_monitor_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for vpn in value:
 
                 vpn_p1_name = vpn["name"]

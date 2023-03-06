@@ -24,6 +24,8 @@ def clean_admin_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for admin in value:
                 admin_name = admin.get("name", "")
                 admin_wildcard = admin.get("wildcard", "")
@@ -111,6 +113,8 @@ def clean_admin_profile_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for admin in value:
                 admin_name = admin.get("name", "")
                 admin_scope = admin.get("scope", "")

@@ -24,6 +24,8 @@ def clean_interface_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for interface in value:
                 intf_name = interface.get("name", "")
                 intf_vdom = interface.get("vdom", "")
@@ -116,6 +118,8 @@ def clean_policy_route_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for route in value:
                 route_seq_num = route.get("seq-num", "")
                 route_input_device = str(route.get("input-device", ""))

@@ -6,6 +6,7 @@ import os
 import sys
 import sqlite3
 from typing import Union, Dict, Optional, List
+from db.db import get_db
 
 # Add the parent directory of 'fortifetch' to sys.path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -58,11 +59,6 @@ def execute_sql(sql: str, params: Optional[tuple] = None) -> List[Dict]:
     Returns:
         A list of dictionaries containing the results of the query.
     """
-    with sqlite3.connect(DB_PATH) as conn:
-        conn.row_factory = sqlite3.Row
-        cursor = conn.cursor()
-        if params:
-            cursor.execute(sql, params)
-        else:
-            cursor.execute(sql)
-        return [dict(row) for row in cursor.fetchall()]
+    with get_db() as db:
+        result = db.execute(sql, params)
+        return [dict(row) for row in result]

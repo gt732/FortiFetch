@@ -576,7 +576,7 @@ class FortiGuard(Base):
     interface_select_method = Column(Text)
     interface = Column(Text)
     device_id = Column(Integer, ForeignKey("device.device_id", ondelete="CASCADE"))
-    device = relationship("Device", backref="fortiguard")
+    device = relationship("Device")
 
 
 class Admin(Base):
@@ -657,5 +657,5 @@ class VpnMonitor(Base):
     phase1_name = Column(Text, nullable=False)
     phase2_name = Column(Text, nullable=False)
     phase2_status = Column(Text, nullable=False)
-    device_id = Column(Integer, ForeignKey("device.device_id"), nullable=False)
-    device = relationship("Device", backref="vpnmonitor")
+    device_id = Column(Integer, ForeignKey("device.device_id", ondelete="CASCADE"))
+    device = relationship("Device")

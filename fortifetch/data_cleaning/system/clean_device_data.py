@@ -24,6 +24,8 @@ def clean_device_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             hostname = value["devices"]["fortigate"][0]["host_name"]
             serial_number = value["devices"]["fortigate"][0]["serial"]
             model = value["devices"]["fortigate"][0]["model"]
@@ -63,6 +65,8 @@ def clean_fortiguard_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             forti_fortiguard_anycast = value.get("fortiguard-anycast", "")
             forti_fortiguard_anycast_source = value.get("fortiguard-anycast-source", "")
             forti_protocol = value.get("protocol", "")
@@ -209,6 +213,8 @@ def clean_dns_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             dns_primary = value.get("primary", "")
             dns_secondary = value.get("secondary", "")
             dns_protocol = value.get("protocol", "")
@@ -265,6 +271,8 @@ def clean_snmpv2_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for snmp in value:
                 snmpv2_id = snmp.get("id", "")
                 snmpv2_name = snmp.get("name", "")
@@ -316,6 +324,8 @@ def clean_snmpv3_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for snmp in value:
                 snmpv3_name = snmp.get("name", "")
                 snmpv3_status = snmp.get("status", "")
