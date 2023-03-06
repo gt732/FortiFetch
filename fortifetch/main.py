@@ -323,3 +323,7 @@ def show_interface(hostname: Optional[str] = None):
             )
         console = Console()
         console.print(table)
+
+
+if __name__ == "__main__":
+    app()

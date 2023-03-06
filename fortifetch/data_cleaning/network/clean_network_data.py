@@ -57,6 +57,8 @@ def clean_static_route_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for route in value:
                 route_seq_num = route.get("seq-num", "")
                 route_status = route.get("status", "")
@@ -163,6 +165,5 @@ def clean_policy_route_data() -> List[Dict]:
                     "internet_service_id": route_internet_service_id,
                     "internet_service_custom": route_internet_service_custom,
                 }
-
-            cleaned_data.append(cleaned_dict)
+                cleaned_data.append(cleaned_dict)
     return cleaned_data

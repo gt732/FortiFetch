@@ -13,8 +13,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # imports
 from typing import List, Dict, Optional
-from backend import firewall_db
-from backend import general_db
+from db import firewall_db
+from db import general_db
 
 
 class FortiFetch:
@@ -36,7 +36,7 @@ class FortiFetch:
         firewall_db.write_dnsfilter_info()
 
         # Uncomment the following line to enable the internetservice info, this will take a long time since there is 1000+ entries
-        # db.write_internetservice_info()
+        # firewall_db.write_internetservice_info()
 
         firewall_db.write_ippool_info()
 
