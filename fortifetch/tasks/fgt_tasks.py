@@ -2,12 +2,16 @@
 This module contains all the fortigate api functions
 which are used to retreive information from the fortigate.
 """
+import os
+import sys
 
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from typing import Union, Dict, Optional, List
 from fortigate_api import Fortigate
 from shared.config import settings
 import yaml
 import os
+from rich import print
 
 
 def get_fortigate_data(url: str) -> List[Dict]:
@@ -29,17 +33,22 @@ def get_fortigate_data(url: str) -> List[Dict]:
 
     device_info = []
     for host in inventory:
-        device_dict = {}
-        fgt = Fortigate(
-            host=host["host"],
-            scheme=settings.FORTIFETCH_SCHEME,
-            username=settings.FORTIFETCH_USERNAME,
-            password=settings.FORTIFETCH_PASSWORD,
-        )
-        fgt.login()
-        device_dict[host["hostname"]] = fgt.get(url=url)
-        device_info.append(device_dict)
-        fgt.logout()
+        try:
+            fgt = Fortigate(
+                host=host["host"],
+                scheme=settings.FORTIFETCH_SCHEME,
+                username=settings.FORTIFETCH_USERNAME,
+                password=settings.FORTIFETCH_PASSWORD,
+            )
+            fgt.login()
+            device_info.append({host["hostname"]: fgt.get(url=url)})
+            fgt.logout()
+        except Exception as e:
+            print(
+                f"[bold red]Unable to connect {host['hostname']}[/bold red] :pouting_face:"
+            )
+            print(e)
+            continue
     return device_info
 
 

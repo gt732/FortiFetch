@@ -1,0 +1,30 @@
+version: '3'
+services:
+  fortifetch:
+    image: gt732/fortifetch
+    depends_on:
+      - postgres
+    environment:
+      - FORTIFETCH_DB_HOSTNAME=${FORTIFETCH_DB_HOSTNAME}
+      - FORTIFETCH_DB_PORT=${FORTIFETCH_DB_PORT}
+      - FORTIFETCH_DB_NAME=${FORTIFETCH_DB_NAME}
+      - FORTIFETCH_DB_USERNAME=${FORTIFETCH_DB_USERNAME}
+      - FORTIFETCH_DB_PASSWORD=${FORTIFETCH_DB_PASSWORD}
+      - FORTIFETCH_SCHEME=${FORTIFETCH_SCHEME}
+      - FORTIFETCH_USERNAME=${FORTIFETCH_USERNAME}
+      - FORTIFETCH_PASSWORD=${FORTIFETCH_PASSWORD}
+      - FORTIFETCH_INVENTORY=${FORTIFETCH_INVENTORY}
+    volumes:
+      - ./inventory:/usr/src/app/fortifetch/inventory
+    command: tail -f /dev/null
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=${FORTIFETCH_DB_USERNAME}
+      - POSTGRES_PASSWORD=${FORTIFETCH_DB_PASSWORD}
+      - POSTGRES_DB=${FORTIFETCH_DB_NAME}
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+
+volumes:
+  postgres-db:
