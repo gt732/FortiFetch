@@ -3,14 +3,6 @@ This module contains functions for cleaning the data returned from the fortigate
 before it is written to the database.
 """
 
-# import os sys
-import os
-import sys
-
-# Add the parent directory of 'fortifetch' to sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-# import modules
 from typing import List, Dict, Optional
 from tasks.fgt_tasks import *
 import json
@@ -25,6 +17,8 @@ def clean_av_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for profile in value:
                 profile_name = profile.get("name", "")
                 profile_comment = str(profile.get("comment", ""))
@@ -70,6 +64,8 @@ def clean_dnsfilter_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for profile in value:
                 profile_name = profile.get("name", "")
                 profile_comment = profile.get("comment", "")
@@ -103,6 +99,8 @@ def clean_ips_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for ips in value:
                 ips_name = ips.get("name", "")
                 ips_comment = ips.get("comment", "")
@@ -134,6 +132,8 @@ def clean_sslssh_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for sslssh in value:
                 sslssh_name = sslssh.get("name", "")
                 sslssh_comment = sslssh.get("comment", "")
@@ -193,6 +193,8 @@ def clean_webfilter_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for webfilter in value:
                 webfilter_name = webfilter.get("name", "")
                 webfilter_comment = webfilter.get("comment", "")
@@ -226,6 +228,8 @@ def clean_application_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for profile in value:
                 profile_name = profile.get("name", "")
                 profile_entries = profile.get("entries", "")

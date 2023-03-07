@@ -3,14 +3,6 @@ This module contains functions for cleaning the data returned from the fortigate
 before it is written to the database.
 """
 
-# import os sys
-import os
-import sys
-
-# Add the parent directory of 'fortifetch' to sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-# import modules
 from typing import List, Dict, Optional
 from tasks.fgt_tasks import *
 import json
@@ -25,6 +17,8 @@ def clean_address_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for address in value:
                 address_name = address.get("name", "")
                 address_type = address.get("type", "")
@@ -60,6 +54,8 @@ def clean_address_group_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for address in value:
                 address_name = address.get("name", "")
                 address_member = address.get("member", "")
@@ -89,6 +85,8 @@ def clean_internetservice_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for internet_service in value:
                 service_name = internet_service.get("name", "")
                 service_type = internet_service.get("type", "")
@@ -111,6 +109,8 @@ def clean_ippool_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for ippool in value:
                 pool_name = ippool.get("name", "")
                 pool_type = ippool.get("type", "")
@@ -153,6 +153,8 @@ def clean_vip_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for vip in value:
                 vip_name = vip.get("name", "")
                 vip_comment = vip.get("comment", "")
@@ -209,6 +211,8 @@ def clean_trafficshapers_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for trafficshapers in value:
                 trafficshapers_name = trafficshapers.get("name", "")
                 trafficshapers_guaranteed_bandwidth = trafficshapers.get(
@@ -266,6 +270,8 @@ def clean_trafficpolicy_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for trafficpolicy in value:
                 policy_id = trafficpolicy.get("policyid", "")
                 trafficpolicy_name = trafficpolicy.get("name", "")
@@ -374,6 +380,8 @@ def clean_fwpolicy_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for fwpolicy in value:
                 policy_id = fwpolicy.get("policyid", "")
                 fwpolicy_status = fwpolicy.get("status", "")

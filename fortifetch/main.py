@@ -12,37 +12,10 @@ from rich.table import Table
 from rich import box
 from fortifetch.fortifetch import FortiFetch
 from typing import List, Dict, Optional
+from db.db import get_db
+from db.models import *
 
 app = typer.Typer()
-
-
-@app.command("create-database")
-def create_sql_database():
-    """
-    Creates a new SQL database named 'FortiFetch.db' using the FortiFetch library.
-
-    Usage: create-database
-
-    This command creates a new SQL database named
-    'FortiFetch.db' in the db directory. This database is used to store the
-    fortigate device information.
-
-    """
-    print("Creating database: FortiFetch.db")
-    FortiFetch.create_sql_database()
-
-
-@app.command("delete-database")
-def delete_sql_database():
-    """
-    Deletes the SQL database named 'FortiFetch.db' using the FortiFetch library.
-
-    Usage: delete-database
-
-    This command deletes the SQL database named 'FortiFetch.db' from the db directory.
-    """
-    print("Deleting database: FortiFetch.db")
-    FortiFetch.delete_sql_database()
 
 
 @app.command("execute-sql")
@@ -92,24 +65,26 @@ def show_devices():
     includes columns for hostname, serial number, firmware version, and device model.
 
     """
-    devices = FortiFetch.execute_sql("SELECT * FROM device")
-    table = Table(
-        show_header=True, header_style="bold blue", box=box.HEAVY, show_lines=True
-    )
-    table.add_column("Hostname", style="bold")
-    table.add_column("Serial Number", style="bold")
-    table.add_column("Version", style="bold")
-    table.add_column("Model", style="bold")
-    for device in devices:
-        table.add_row(
-            device["hostname"],
-            device["serial_number"],
-            device["version"],
-            device["model"],
-            style="white",
+    with get_db() as db:
+        devices = db.query(Device).all()
+
+        table = Table(
+            show_header=True, header_style="bold blue", box=box.HEAVY, show_lines=True
         )
-    console = Console()
-    console.print(table)
+        table.add_column("Hostname", style="bold")
+        table.add_column("Model", style="bold")
+        table.add_column("Version", style="bold")
+
+        for device in devices:
+            table.add_row(
+                device.hostname,
+                device.model,
+                device.version,
+                style="white",
+            )
+
+        console = Console()
+        console.print(table)
 
 
 @app.command("show-dns")
@@ -129,38 +104,21 @@ def show_dns(hostname: Optional[str] = None):
       DNS information for. If provided, only the DNS information for that device will be displayed.
 
     """
-    if hostname:
-        devices = FortiFetch.execute_sql(
-            f"""
-            SELECT device.hostname, dns.primary_dns, dns.secondary_dns
-            FROM device
-            JOIN dns ON device.device_id = dns.device_id
-            WHERE device.hostname = '{hostname}'                                        
-            """
-        )
-        table = Table(
-            show_header=True, header_style="bold blue", box=box.HEAVY, show_lines=True
-        )
-        table.add_column("Hostname", style="bold")
-        table.add_column("Primary DNS", style="bold")
-        table.add_column("Secondary DNS", style="bold")
-        for device in devices:
-            table.add_row(
-                device["hostname"],
-                device["primary_dns"],
-                device["secondary_dns"],
-                style="white",
+    with get_db() as db:
+        if hostname:
+            devices = (
+                db.query(Device.hostname, DNS.primary_dns, DNS.secondary_dns)
+                .filter(Device.hostname == hostname)
+                .join(DNS)
+                .all()
             )
-        console = Console()
-        console.print(table)
-    else:
-        devices = FortiFetch.execute_sql(
-            """
-            SELECT device.hostname, dns.primary_dns, dns.secondary_dns
-            FROM device
-            JOIN dns ON device.device_id = dns.device_id                                        
-            """
-        )
+        else:
+            devices = (
+                db.query(Device.hostname, DNS.primary_dns, DNS.secondary_dns)
+                .join(DNS)
+                .all()
+            )
+
         table = Table(
             show_header=True, header_style="bold blue", box=box.HEAVY, show_lines=True
         )
@@ -169,10 +127,7 @@ def show_dns(hostname: Optional[str] = None):
         table.add_column("Secondary DNS", style="bold")
         for device in devices:
             table.add_row(
-                device["hostname"],
-                device["primary_dns"],
-                device["secondary_dns"],
-                style="white",
+                device.hostname, device.primary_dns, device.secondary_dns, style="white"
             )
         console = Console()
         console.print(table)
@@ -195,15 +150,16 @@ def show_vpn_status(hostname: Optional[str] = None):
       VPN information for. If provided, only the VPN information for that device will be displayed.
 
     """
-    if hostname:
-        devices = FortiFetch.execute_sql(
-            f"""
-            SELECT device.hostname , vpnmonitor.phase1_name , vpnmonitor.phase2_name , vpnmonitor.phase2_status 
-            FROM device
-            JOIN vpnmonitor
-            WHERE device.hostname = '{hostname}'                            
-            """
-        )
+    with get_db() as db:
+        query = db.query(
+            Device.hostname,
+            VpnMonitor.phase1_name,
+            VpnMonitor.phase2_name,
+            VpnMonitor.phase2_status,
+        ).join(VpnMonitor, Device.device_id == VpnMonitor.device_id)
+        if hostname:
+            query = query.filter(Device.hostname == hostname)
+        devices = query.all()
         table = Table(
             show_header=True, header_style="bold blue", box=box.HEAVY, show_lines=True
         )
@@ -213,36 +169,10 @@ def show_vpn_status(hostname: Optional[str] = None):
         table.add_column("VPN Status", style="bold")
         for device in devices:
             table.add_row(
-                device["hostname"],
-                device["phase1_name"],
-                device["phase2_name"],
-                device["phase2_status"],
-                style="white",
-            )
-        console = Console()
-        console.print(table)
-    else:
-        devices = FortiFetch.execute_sql(
-            """
-            SELECT device.hostname , vpnmonitor.phase1_name , vpnmonitor.phase2_name , vpnmonitor.phase2_status 
-            FROM device
-            JOIN vpnmonitor
-            ON device.device_id = vpnmonitor.device_id                                
-            """
-        )
-        table = Table(
-            show_header=True, header_style="bold blue", box=box.HEAVY, show_lines=True
-        )
-        table.add_column("Hostname", style="bold")
-        table.add_column("VPN Tunnel", style="bold")
-        table.add_column("VPN Phase2", style="bold")
-        table.add_column("VPN Status", style="bold")
-        for device in devices:
-            table.add_row(
-                device["hostname"],
-                device["phase1_name"],
-                device["phase2_name"],
-                device["phase2_status"],
+                device.hostname,
+                device.phase1_name,
+                device.phase2_name,
+                device.phase2_status,
                 style="white",
             )
         console = Console()
@@ -266,16 +196,32 @@ def show_interface(hostname: Optional[str] = None):
       interface information for. If provided, only the interface information for that device will be displayed.
 
     """
-    if hostname:
-        devices = FortiFetch.execute_sql(
-            f"""
-            SELECT device.hostname, interface.name , interface.type, interface.ip, interface.status
-            FROM device
-            JOIN interface
-            ON device.device_id = interface.device_id
-            WHERE device.hostname = '{hostname}'                              
-            """
-        )
+    with get_db() as db:
+        if hostname:
+            devices = (
+                db.query(
+                    Device.hostname,
+                    Interface.name,
+                    Interface.type,
+                    Interface.ip,
+                    Interface.status,
+                )
+                .filter(Device.hostname == hostname)
+                .join(Interface)
+                .all()
+            )
+        else:
+            devices = (
+                db.query(
+                    Device.hostname,
+                    Interface.name,
+                    Interface.type,
+                    Interface.ip,
+                    Interface.status,
+                )
+                .join(Interface)
+                .all()
+            )
         table = Table(
             show_header=True, header_style="bold blue", box=box.HEAVY, show_lines=True
         )
@@ -286,40 +232,16 @@ def show_interface(hostname: Optional[str] = None):
         table.add_column("Interface Status", style="bold")
         for device in devices:
             table.add_row(
-                device["hostname"],
-                device["name"],
-                device["type"],
-                device["ip"],
-                device["status"],
+                device.hostname,
+                device.name,
+                device.type,
+                device.ip,
+                device.status,
                 style="white",
             )
         console = Console()
         console.print(table)
-    else:
-        devices = FortiFetch.execute_sql(
-            """
-            SELECT device.hostname, interface.name , interface.type, interface.ip, interface.status
-            FROM device
-            JOIN interface
-            ON device.device_id = interface.device_id                               
-            """
-        )
-        table = Table(
-            show_header=True, header_style="bold blue", box=box.HEAVY, show_lines=True
-        )
-        table.add_column("Hostname", style="bold")
-        table.add_column("Interface Name", style="bold")
-        table.add_column("Interface Type", style="bold")
-        table.add_column("Interface IP", style="bold")
-        table.add_column("Interface Status", style="bold")
-        for device in devices:
-            table.add_row(
-                device["hostname"],
-                device["name"],
-                device["type"],
-                device["ip"],
-                device["status"],
-                style="white",
-            )
-        console = Console()
-        console.print(table)
+
+
+if __name__ == "__main__":
+    app()

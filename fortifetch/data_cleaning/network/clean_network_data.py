@@ -3,14 +3,6 @@ This module contains functions for cleaning the data returned from the fortigate
 before it is written to the database.
 """
 
-# import os sys
-import os
-import sys
-
-# Add the parent directory of 'app' to sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-# import modules
 from typing import List, Dict, Optional
 from tasks.fgt_tasks import *
 
@@ -24,6 +16,8 @@ def clean_interface_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for interface in value:
                 intf_name = interface.get("name", "")
                 intf_vdom = interface.get("vdom", "")
@@ -57,6 +51,8 @@ def clean_static_route_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for route in value:
                 route_seq_num = route.get("seq-num", "")
                 route_status = route.get("status", "")
@@ -114,6 +110,8 @@ def clean_policy_route_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for route in value:
                 route_seq_num = route.get("seq-num", "")
                 route_input_device = str(route.get("input-device", ""))
@@ -163,6 +161,5 @@ def clean_policy_route_data() -> List[Dict]:
                     "internet_service_id": route_internet_service_id,
                     "internet_service_custom": route_internet_service_custom,
                 }
-
-            cleaned_data.append(cleaned_dict)
+                cleaned_data.append(cleaned_dict)
     return cleaned_data

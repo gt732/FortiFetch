@@ -1,2 +1,6 @@
 typer[all]
+rich
 fortigate-api
+SQLAlchemy==1.4.46
+psycopg2-binary
+pydantic

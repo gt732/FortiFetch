@@ -2,15 +2,6 @@
 This module contains functions for cleaning the data returned from the fortigate api tasks
 before it is written to the database.
 """
-
-# import os sys
-import os
-import sys
-
-# Add the parent directory of 'fortifetch' to sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-# import modules
 from typing import List, Dict, Optional
 from tasks.fgt_tasks import *
 
@@ -24,28 +15,13 @@ def clean_device_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
-            hostname = value["devices"]["fortigate"][0]["host_name"]
-            serial_number = value["devices"]["fortigate"][0]["serial"]
-            model = value["devices"]["fortigate"][0]["model"]
-            firmware_version_major = value["devices"]["fortigate"][0][
-                "firmware_version_major"
-            ]
-            firmware_version_minor = value["devices"]["fortigate"][0][
-                "firmware_version_minor"
-            ]
-            firmware_version_patch = value["devices"]["fortigate"][0][
-                "firmware_version_patch"
-            ]
-            version = f"{firmware_version_major}.{firmware_version_minor}.{firmware_version_patch}"
-
-            hostname = hostname.strip()
-            serial_number = serial_number.strip()
-            model = model.strip()
-            version = version.strip()
-
+            if not value:
+                continue
+            hostname = device
+            model = value["current"].get("platform-id", "")
+            version = value["current"].get("version", "")
             cleaned_dict = {
                 "hostname": hostname,
-                "serial_number": serial_number,
                 "model": model,
                 "version": version,
             }
@@ -63,6 +39,8 @@ def clean_fortiguard_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             forti_fortiguard_anycast = value.get("fortiguard-anycast", "")
             forti_fortiguard_anycast_source = value.get("fortiguard-anycast-source", "")
             forti_protocol = value.get("protocol", "")
@@ -209,6 +187,8 @@ def clean_dns_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             dns_primary = value.get("primary", "")
             dns_secondary = value.get("secondary", "")
             dns_protocol = value.get("protocol", "")
@@ -265,6 +245,8 @@ def clean_snmpv2_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for snmp in value:
                 snmpv2_id = snmp.get("id", "")
                 snmpv2_name = snmp.get("name", "")
@@ -316,6 +298,8 @@ def clean_snmpv3_data() -> List[Dict]:
     cleaned_data = []
     for firewall in device_info:
         for device, value in firewall.items():
+            if not value:
+                continue
             for snmp in value:
                 snmpv3_name = snmp.get("name", "")
                 snmpv3_status = snmp.get("status", "")

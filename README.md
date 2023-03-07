@@ -1,11 +1,11 @@
 # FortiFetch
 ![alt text](https://i.imgur.com/4NBl5Xm.png)
 
-FortiFetch is a Python application that gathers information from FortiGate firewalls' API and saves the information to a SQLite3 database. FortiFetch is built using Python and the Typer/Rich library for console output, and is designed to be easy to install, configure, and use. The purpose of this app is to quickly take a live snapshot of the network for analysis and configuration verification.
+FortiFetch is a Python application that gathers information from FortiGate firewalls' API and saves the information to a Postgres database using the SQLAlchemy library. FortiFetch is built using the Typer/Rich library for console output, and is designed to be easy to install, configure, and use. The purpose of this app is to quickly take a live snapshot of the network for analysis and configuration verification.
 
 ## Tested on Fortigate VM version 7.2.4
 
-Tables in SQL database, check the db schema file for complete column list.
+Tables in Postgres database, check the sqlalchemy models file for complete column list.
 
 - device
 - interface
@@ -37,95 +37,39 @@ To install FortiFetch, follow these steps:
 
 ## Docker
 
+### Set up the following environmental variables in your environment:
+
+```
+export FORTIFETCH_SCHEME=http or https #changeme   
+export FORTIFETCH_USERNAME=admin #changeme
+export FORTIFETCH_PASSWORD=admin #changeme
+export FORTIFETCH_INVENTORY=/path/to/your/inventory.yml
+export FORTIFETCH_DB_HOSTNAME=postgres
+export FORTIFETCH_DB_PORT=5432
+export FORTIFETCH_DB_NAME=fortifetch
+export FORTIFETCH_DB_USERNAME=postgres #changeme
+export FORTIFETCH_DB_PASSWORD=admin123 #changeme
+export FORTIFETCH_INVENTORY=/usr/src/app/fortifetch/inventory/inventory.yml
+```
+
 Create a base folder
 
 ```
 mkdir your_folder
 ```
-cd into your_folder
+cd into your_folder, and create a docker-compose.yml file - copy the contents from the repo into your compose file
 
 ```
 cd your_folder
+touch docker-compose.yml
 ```
 
-Create another folder called fortifetch and place your inventory.yaml file inside the folder
+Create another folder called inventory and place your inventory.yml file inside the folder
 
 ```
-mkdir fortifetch
+mkdir inventory
 ```
-
-Example
-
-```
-your_folder
-└── fortifetch
-    └── inventory.yaml
-```
-
-From the root dir of your_folder pull the docker image, update the environmental variables
-
-```
-docker run -d \
-  --name fortifetch \
-  -v $(pwd)/fortifetch:/app/fortifetch \
-  -e FORTIFETCH_USERNAME=username \
-  -e FORTIFETCH_PASSWORD=password \
-  -e FORTIFETCH_SCHEME=http \
-  -e FORTIFETCH_INVENTORY=/app/fortifetch/inventory.yaml \
-  gt732/fortifetch \
-  tail -f /dev/null
-```
-Attach to the container and you are all set
-
-```
-docker exec -it fortifetch /bin/bash
-```
-![alt text](https://i.imgur.com/GTbWaAv.png)
-## Using pip - Create a folder and a new virtual environment using venv.
-
-Create a new folder for fortifetch
-
-```
-mkdir fortifetch
-```
-
-Change into the new folder
-
-```
-cd fortifetch
-```
-
-Create a virtualenv
-
-```
-python -m venv .
-```
-
-Activate the virtual environment
-
-```
-source bin/activate
-```
-
-Install FortiFetch using pip
-
-```
-pip install fortifetch
-```
-
-### Set up the following environmental variables in your environment:
-
-```
-export FORTIFETCH_USERNAME=your_username
-export FORTIFETCH_PASSWORD=your_password
-export FORTIFETCH_INVENTORY=/your/path/inventory.yaml
-export FORTIFETCH_SCHEME="http" or "https"
-```
-
-You can replace the values with your own FortiGate credentials and inventory file path. These environmental variables are used by FortiFetch to authenticate with your FortiGate devices and retrieve their information.
-
-### Create an inventory file in YAML format with a list of your FortiGate devices, using the following format:
-
+Example inventory.yml
 ```
 ---
 - hostname: example-hostname-1
@@ -136,30 +80,42 @@ You can replace the values with your own FortiGate credentials and inventory fil
   host: 192.168.0.3
 ```
 
-Replace the values with your own FortiGate device hostnames and IP addresses. Save the file as inventory.yaml and provide its path as the value of FORTIFETCH_INVENTORY environmental variable.
+Example dir
+
+```
+your_folder
+├── docker-compose.yml
+└── inventory
+    └── inventory.yml
+```
+
+From the ROOT dir of your_folder run the docker compose command
+
+```
+docker compose up -d
+```
+Attach to the container and you are all set
+
+```
+docker exec -it fortifetch-fortifetch-1 bash
+```
+Inside the container run
+```
+python main.py --help
+```
+
 ## Usage
 To use FortiFetch, you can run the following commands in your terminal:
 
-```
-fortifetch create-database: Creates a new SQLite3 database for FortiFetch.
-fortifetch delete-database: Deletes the SQLite3 database for FortiFetch.
-fortifetch execute-sql: Executes a SQL command on the FortiFetch database.
-fortifetch update-all-devices: Retrieves information about all FortiGate devices and saves it to the FortiFetch database.
-fortifetch show-devices: Displays a table of all devices in the FortiFetch database.
-fortifetch show-dns: Displays a table of DNS information for all devices in the FortiFetch database.
-fortifetch show-vpn-status: Displays a table of VPN information for all devices in the FortiFetch database.
-fortifetch show-interface: Displays a table of interface information for all devices in the FortiFetch database.
-You can also use the --help flag with any command to see more detailed usage instructions.
-```
+![alt text](https://i.imgur.com/ZaCOfrK.png)
+![alt text](https://i.imgur.com/Dh0yanS.png)
+![alt text](https://i.imgur.com/kK86tOD.png)
+![alt text](https://i.imgur.com/ulfIxvC.png)
+![alt text](https://i.imgur.com/CLbjH2F.png)
+![alt text](https://i.imgur.com/lBosUC9.png)
 
-## Example
-![alt text](https://i.imgur.com/AnZyzOR.png)
-![alt text](https://i.imgur.com/kXJcrhB.png)
-![alt text](https://i.imgur.com/sia2Pit.png)
-![alt text](https://i.imgur.com/JVypaDs.png)
-![alt text](https://i.imgur.com/xsTtiSB.png)
-![alt text](https://i.imgur.com/dVbVoTD.png)
-
+## If a device is unable to connect you will see the following
+![alt text](https://i.imgur.com/fstNDvc.png)
 ## Contributing
 If you'd like to contribute to FortiFetch, please follow these steps:
 
