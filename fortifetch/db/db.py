@@ -1,3 +1,7 @@
+"""
+This module contains sqlalchemy connection and session functions.
+"""
+
 import os
 import sys
 

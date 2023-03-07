@@ -20,9 +20,9 @@ services:
   postgres:
     image: postgres
     environment:
+      - POSTGRES_DB=${FORTIFETCH_DB_NAME}
       - POSTGRES_USER=${FORTIFETCH_DB_USERNAME}
       - POSTGRES_PASSWORD=${FORTIFETCH_DB_PASSWORD}
-      - POSTGRES_DB=${FORTIFETCH_DB_NAME}
     volumes:
       - postgres-db:/var/lib/postgresql/data
 
