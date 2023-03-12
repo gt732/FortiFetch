@@ -1,0 +1,4 @@
+- host: host1
+  hostname: hostname1
+- host: host2
+  hostname: hostname2
